@@ -5,18 +5,26 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
+using Domain.Entities;
 
 namespace Infrastructure
 {
-    internal class CarRentalContext : DbContext
+    public class CarRentalContext : DbContext
     {
+        public CarRentalContext()
+        {
+        }
+
         public CarRentalContext(DbContextOptions<CarRentalContext> options) : base(options)
         {
         }
 
+        public DbSet<Car> Cars { get; set; }
+        public DbSet<Driver> Drivers { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["CarRentalDatabase"].ConnectionString);
+            // optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=CarRental;Trusted_Connection=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
