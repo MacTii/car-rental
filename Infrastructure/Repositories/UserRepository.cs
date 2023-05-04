@@ -24,10 +24,10 @@ namespace Infrastructure.Repositories
             return users;
         }
 
-        public User? GetByID(int userID)
+        public User GetByID(int userID)
         {
             var user = _context.Users.Find(userID);
-            return user;
+            return user ?? throw new ArgumentException("Invalid user ID");
         }
 
         public void Insert(User user)
@@ -35,9 +35,20 @@ namespace Infrastructure.Repositories
             _context.Users.Add(user);
         }
 
-        public void Update(User user)
+        public void Update(int userID, User user)
         {
-            _context.Entry(user).State = EntityState.Modified;
+            var existingUser = _context.Users.Find(userID);
+            if (existingUser == null)
+            {
+                throw new ArgumentException($"User with ID {userID} not found.");
+            }
+
+            existingUser.Name = user.Name;
+            existingUser.Surname = user.Surname;
+            existingUser.Email = user.Email;
+            existingUser.PhoneNumber = user.PhoneNumber;
+
+            _context.Entry(existingUser).State = EntityState.Modified;
         }
 
         public void Delete(int userID)
