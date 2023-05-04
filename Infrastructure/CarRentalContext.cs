@@ -20,7 +20,7 @@ namespace Infrastructure
         }
 
         public DbSet<Car> Cars { get; set; }
-        public DbSet<Driver> Drivers { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -29,7 +29,23 @@ namespace Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(e => e.Name)
+                    //.IsRequired()
+                    .HasMaxLength(50);
 
+                entity.Property(e => e.Surname)
+                    //.IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.PhoneNumber)
+                    //.IsRequired()
+                    .HasMaxLength(50);
+            });
         }
     }
 }
