@@ -54,13 +54,14 @@ namespace Infrastructure.Repositories
             _context.Entry(existingCar).State = EntityState.Modified;
         }
 
-        public void Delete(int userID)
+        public void Delete(int carID)
         {
-            var user = _context.Users.Find(userID);
-            if (user != null)
+            var car = _context.Cars.Find(carID);
+            if (car == null)
             {
-                _context.Users.Remove(user);
+                throw new InvalidOperationException($"Car with ID {carID} not found.");
             }
+            _context.Cars.Remove(car);
         }
 
         public void Save()

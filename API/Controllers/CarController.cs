@@ -96,8 +96,11 @@ namespace API.Controllers
         public ActionResult DeleteCar(int carID)
         {
             _carService.DeleteCar(carID);
-
-            return NoContent(); // return 204 No Content
+            return Ok(
+                new
+                {
+                    Response = "Car record deleted successfully"
+                });
         }
     }
 }
