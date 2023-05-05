@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.ServiceRegistrations
+namespace Application
 {
-    public static class DomainService
+    public static class ServiceRegistration
     {
-        public static void RegisterServices(IServiceCollection service)
+        public static IServiceCollection AddApplicationServices(this IServiceCollection service)
         {
-            
+            return service;
         }
     }
 }
