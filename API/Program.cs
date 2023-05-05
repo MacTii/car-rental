@@ -1,13 +1,9 @@
-using Application.ServiceRegistrations;
-using Domain.ServiceRegistrations;
-using Infrastructure.ServiceRegistrations;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-InfrastructureService.RegisterServices(builder.Services, builder.Configuration);
-DomainService.RegisterServices(builder.Services);
-ApplicationService.RegisterServices(builder.Services);
+Infrastructure.InfrastructureServices.AddInfrastructureServices(builder.Services, builder.Configuration);
+Domain.DomainServices.AddDomainServices(builder.Services);
+Application.ApplicationServices.AddApplicationServices(builder.Services);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

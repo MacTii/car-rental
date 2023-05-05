@@ -10,11 +10,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure.ServiceRegistrations
+namespace Infrastructure
 {
-    public static class InfrastructureService
+    public static class InfrastructureServices
     {
-        public static void RegisterServices(IServiceCollection service, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructureServices(this IServiceCollection service, IConfiguration configuration)
         {
             service.AddDbContext<CarRentalContext>(options =>
             {
@@ -22,6 +22,9 @@ namespace Infrastructure.ServiceRegistrations
             });
 
             service.AddScoped<IUserRepository, UserRepository>();
+            service.AddScoped<ICarRepository, CarRepository>();
+
+            return service;
         }
     }
 }
