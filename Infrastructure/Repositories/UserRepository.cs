@@ -54,10 +54,11 @@ namespace Infrastructure.Repositories
         public void Delete(int userID)
         {
             var user = _context.Users.Find(userID);
-            if (user != null)
+            if (user == null)
             {
-                _context.Users.Remove(user);
+                throw new InvalidOperationException($"User with ID {userID} not found.");
             }
+            _context.Users.Remove(user);
         }
 
         public void Save()

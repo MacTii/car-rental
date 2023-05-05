@@ -95,8 +95,11 @@ namespace API.Controllers
         public ActionResult DeleteUser(int userID)
         {
             _userService.DeleteUser(userID);
-
-            return NoContent(); // return 204 No Content
+            return Ok(
+                new
+                {
+                    Response = "User record deleted successfully"
+                });
         }
     }
 }
