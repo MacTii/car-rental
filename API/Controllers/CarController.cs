@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.Mapper.DTOs;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -43,52 +44,52 @@ namespace API.Controllers
         [HttpGet("cars/{carID}")]
         public ActionResult GetCarByID(int carID)
         {
-            var car = _carService.GetCar(carID);
+            var carDTO = _carService.GetCar(carID);
 
             // HTTP 200
             return Ok(
                 new
                 {
                     Response = "Car record retrieved successfully",
-                    Data = car
+                    Data = carDTO
                 });
         }
 
         [HttpPost("cars")]
-        public ActionResult AddCar(Car car)
+        public ActionResult AddCar(CarDTO carDTO)
         {
-            if (car == null)
+            if (carDTO == null)
             {
                 return BadRequest("Invalid input data"); // return 400 Bad Request
             }
 
-            _carService.AddCar(car);
+            _carService.AddCar(carDTO);
 
             // HTTP 200
             return Ok(
                 new
                 {
                     Response = "Car record created successfully",
-                    Data = car
+                    Data = carDTO
                 });
         }
 
         [HttpPut("cars/{carID}")]
-        public ActionResult UpdateCar(int carID, Car car)
+        public ActionResult UpdateCar(int carID, CarDTO carDTO)
         {
-            if (car == null)
+            if (carDTO == null)
             {
                 return BadRequest("Invalid input data"); // return 400 Bad Request
             }
 
-            _carService.UpdateCar(carID, car);
+            _carService.UpdateCar(carID, carDTO);
 
             // HTTP 200
             return Ok(
                 new
                 {
                     Response = "Car record updated successfully",
-                    Data = car
+                    Data = carDTO
                 });
         }
 

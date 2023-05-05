@@ -8,6 +8,7 @@ namespace Application.Mapper.DTOs
 {
     public class CarDTO
     {
+        public int ID { get; set; }
         public string Make { get; set; } = null!;
         public string Model { get; set; } = null!;
         public string RegistrationNumber { get; set; } = null!;
