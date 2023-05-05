@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public static class ServiceRegistration
+    public static class DomainServices
     {
         public static IServiceCollection AddDomainServices(this IServiceCollection service)
         {

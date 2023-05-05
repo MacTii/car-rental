@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure
 {
-    public static class ServiceRegistration
+    public static class InfrastructureServices
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection service, IConfiguration configuration)
         {

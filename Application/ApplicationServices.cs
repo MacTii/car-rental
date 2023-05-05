@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application
 {
-    public static class ServiceRegistration
+    public static class ApplicationServices
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection service)
         {
