@@ -8,6 +8,8 @@ namespace API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        #region Injection
+
         private readonly ILogger<UserController> _logger;
         private readonly IUserRepository _userRepository;
 
@@ -16,6 +18,8 @@ namespace API.Controllers
             _logger = logger;
             _userRepository = userRepository;
         }
+
+        #endregion Injection
 
         [HttpGet("users")]
         public ActionResult GetUsers()
