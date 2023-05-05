@@ -46,6 +46,19 @@ namespace Infrastructure
                     //.IsRequired()
                     .HasMaxLength(50);
             });
+
+            modelBuilder.Entity<Car>(entity =>
+            {
+                entity.Property(e => e.Make)
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Model)
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.RegistrationNumber)
+                    .HasMaxLength(10);
+
+            });
         }
     }
 }
