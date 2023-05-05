@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [Route("api")] // Remove /User from URL route
     [ApiController]
-    // [Route("[controller]")] Remove /User from URL route
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
@@ -17,7 +17,7 @@ namespace API.Controllers
             _userRepository = userRepository;
         }
 
-        [HttpGet("/users")]
+        [HttpGet("users")]
         public ActionResult GetUsers()
         {
             var users = _userRepository.GetAll();
@@ -35,7 +35,7 @@ namespace API.Controllers
                 });
         }
 
-        [HttpGet("/users/{userID}")]
+        [HttpGet("users/{userID}")]
         public ActionResult GetUserByID(int userID)
         {
             var user = _userRepository.GetByID(userID);
@@ -49,7 +49,7 @@ namespace API.Controllers
                 });
         }
 
-        [HttpPost("/users")]
+        [HttpPost("users")]
         public ActionResult AddUser(User user)
         {
             if (user == null)
@@ -68,7 +68,7 @@ namespace API.Controllers
                 });
         }
 
-        [HttpPut("/users/{userID}")]
+        [HttpPut("users/{userID}")]
         public ActionResult UpdateUser(int userID, User user)
         {
             if (user == null)
