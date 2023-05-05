@@ -39,7 +39,7 @@ namespace Infrastructure.Repositories
             var existingCar = _context.Cars.Find(carID);
             if (existingCar == null)
             {
-                throw new ArgumentException($"User with ID {carID} not found.");
+                throw new ArgumentException($"Car with ID {carID} not found.");
             }
 
             existingCar.Make = car.Make;
