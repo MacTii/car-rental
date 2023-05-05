@@ -8,7 +8,7 @@ namespace Domain.Entities
 {
     public class Car
     {
-        public int Id { get; set; }
+        public int ID { get; set; }
         public string Make { get; set; } = null!;
         public string Model { get; set; } = null!;
         public string RegistrationNumber { get; set; } = null!;
