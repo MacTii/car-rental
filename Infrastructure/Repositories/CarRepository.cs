@@ -11,12 +11,16 @@ namespace Infrastructure.Repositories
 {
     public class CarRepository : ICarRepository
     {
+        #region Injection
+
         private readonly CarRentalContext _context;
 
         public CarRepository(CarRentalContext context)
         {
             _context = context;
         }
+
+        #endregion Injection
 
         public IEnumerable<Car> GetAll()
         {

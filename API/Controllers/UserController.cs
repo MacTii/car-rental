@@ -11,12 +11,12 @@ namespace API.Controllers
         #region Injection
 
         private readonly ILogger<UserController> _logger;
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
 
-        public UserController(ILogger<UserController> logger, IUserRepository userRepository)
+        public UserController(ILogger<UserController> logger, IUserService userService)
         {
             _logger = logger;
-            _userRepository = userRepository;
+            _userService = userService;
         }
 
         #endregion Injection
@@ -24,7 +24,7 @@ namespace API.Controllers
         [HttpGet("users")]
         public ActionResult GetUsers()
         {
-            var users = _userRepository.GetAll();
+            var users = _userService.GetUsers();
             if (!users.Any())
             {
                 return NoContent(); // Returns HTTP 204 if there are no records
@@ -42,7 +42,7 @@ namespace API.Controllers
         [HttpGet("users/{userID}")]
         public ActionResult GetUserByID(int userID)
         {
-            var user = _userRepository.GetByID(userID);
+            var user = _userService.GetUser(userID);
 
             // HTTP 200
             return Ok(
@@ -61,7 +61,7 @@ namespace API.Controllers
                 return BadRequest("Invalid input data"); // return 400 Bad Request
             }
 
-            _userRepository.Insert(user);
+            _userService.AddUser(user);
 
             // HTTP 200
             return Ok(
@@ -80,7 +80,7 @@ namespace API.Controllers
                 return BadRequest("Invalid input data"); // return 400 Bad Request
             }
 
-            _userRepository.Update(userID, user);
+            _userService.UpdateUser(userID, user);
 
             // HTTP 200
             return Ok(
@@ -94,7 +94,7 @@ namespace API.Controllers
         [HttpDelete("users/{userID}")]
         public ActionResult DeleteUser(int userID)
         {
-            _userRepository.Delete(userID);
+            _userService.DeleteUser(userID);
 
             return NoContent(); // return 204 No Content
         }

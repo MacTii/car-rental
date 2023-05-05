@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Application.Interfaces;
+using Application.Services;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,9 @@ namespace Application
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection service)
         {
+            service.AddScoped<ICarService, CarService>();
+            service.AddScoped<IUserService, UserService>();
+
             return service;
         }
     }

@@ -12,12 +12,12 @@ namespace API.Controllers
         #region Injection
 
         private readonly ILogger<CarController> _logger;
-        private readonly ICarRepository _carRepository;
+        private readonly ICarService _carService;
 
-        public CarController(ILogger<CarController> logger, ICarRepository carRepository)
+        public CarController(ILogger<CarController> logger, ICarService carService)
         {
             _logger = logger;
-            _carRepository = carRepository;
+            _carService = carService;
         }
 
         #endregion Injection
@@ -25,7 +25,7 @@ namespace API.Controllers
         [HttpGet("cars")]
         public ActionResult GetCars()
         {
-            var cars = _carRepository.GetAll();
+            var cars = _carService.GetCars();
             if (!cars.Any())
             {
                 return NoContent(); // Returns HTTP 204 if there are no records
@@ -43,7 +43,7 @@ namespace API.Controllers
         [HttpGet("cars/{carID}")]
         public ActionResult GetCarByID(int carID)
         {
-            var car = _carRepository.GetByID(carID);
+            var car = _carService.GetCar(carID);
 
             // HTTP 200
             return Ok(
@@ -62,7 +62,7 @@ namespace API.Controllers
                 return BadRequest("Invalid input data"); // return 400 Bad Request
             }
 
-            _carRepository.Insert(car);
+            _carService.AddCar(car);
 
             // HTTP 200
             return Ok(
@@ -81,7 +81,7 @@ namespace API.Controllers
                 return BadRequest("Invalid input data"); // return 400 Bad Request
             }
 
-            _carRepository.Update(carID, car);
+            _carService.UpdateCar(carID, car);
 
             // HTTP 200
             return Ok(
@@ -95,7 +95,7 @@ namespace API.Controllers
         [HttpDelete("cars/{carID}")]
         public ActionResult DeleteCar(int carID)
         {
-            _carRepository.Delete(carID);
+            _carService.DeleteCar(carID);
 
             return NoContent(); // return 204 No Content
         }
