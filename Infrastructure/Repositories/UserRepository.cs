@@ -26,8 +26,11 @@ namespace Infrastructure.Repositories
 
         public User GetByID(int userID)
         {
+            if(userID < 1)
+                throw new ArgumentException($"Invalid user ID: {userID}. User ID must be greater than or equal to 1.");
+
             var user = _context.Users.Find(userID);
-            return user ?? throw new ArgumentException("Invalid user ID");
+            return user ?? throw new InvalidOperationException($"User with ID: {userID} not found.");
         }
 
         public void Insert(User user)
@@ -37,11 +40,12 @@ namespace Infrastructure.Repositories
 
         public void Update(int userID, User user)
         {
+            if (userID < 1)
+                throw new ArgumentException($"Invalid user ID: {userID}. User ID must be greater than or equal to 1.");
+
             var existingUser = _context.Users.Find(userID);
             if (existingUser == null)
-            {
-                throw new ArgumentException($"User with ID {userID} not found.");
-            }
+                throw new InvalidOperationException($"User with ID: {userID} not found.");
 
             existingUser.Name = user.Name;
             existingUser.Surname = user.Surname;
@@ -53,11 +57,13 @@ namespace Infrastructure.Repositories
 
         public void Delete(int userID)
         {
+            if (userID < 1)
+                throw new ArgumentException($"Invalid user ID: {userID}. User ID must be greater than or equal to 1.");
+
             var user = _context.Users.Find(userID);
             if (user == null)
-            {
-                throw new InvalidOperationException($"User with ID {userID} not found.");
-            }
+                throw new InvalidOperationException($"User with ID: {userID} not found.");
+
             _context.Users.Remove(user);
         }
 
