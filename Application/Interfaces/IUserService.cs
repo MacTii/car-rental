@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Mapper.DTOs;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace Application.Interfaces
 {
     public interface IUserService
     {
-        public IEnumerable<User> GetUsers();
-        public User GetUser(int userID);
-        public void AddUser(User user);
-        public void UpdateUser(int userID, User user);
+        public IEnumerable<UserDTO> GetUsers();
+        public UserDTO GetUser(int userID);
+        public void AddUser(UserDTO userDTO);
+        public void UpdateUser(int userID, UserDTO userDTO);
         public void DeleteUser(int userID);
     }
 }

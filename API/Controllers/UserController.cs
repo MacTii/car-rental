@@ -1,4 +1,5 @@
 using Application.Interfaces;
+using Application.Mapper.DTOs;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,8 +25,8 @@ namespace API.Controllers
         [HttpGet("users")]
         public ActionResult GetUsers()
         {
-            var users = _userService.GetUsers();
-            if (!users.Any())
+            var usersDTO = _userService.GetUsers();
+            if (!usersDTO.Any())
             {
                 return NoContent(); // Returns HTTP 204 if there are no records
             }
@@ -35,7 +36,7 @@ namespace API.Controllers
                 new
                 {
                     Response = "User records retrieved successfully",
-                    Data = users
+                    Data = usersDTO
                 });
         }
 
@@ -54,40 +55,40 @@ namespace API.Controllers
         }
 
         [HttpPost("users")]
-        public ActionResult AddUser(User user)
+        public ActionResult AddUser(UserDTO userDTO)
         {
-            if (user == null)
+            if (userDTO == null)
             {
                 return BadRequest("Invalid input data"); // return 400 Bad Request
             }
 
-            _userService.AddUser(user);
+            _userService.AddUser(userDTO);
 
             // HTTP 200
             return Ok(
                 new
                 {
                     Response = "User record created successfully",
-                    Data = user
+                    Data = userDTO
                 });
         }
 
         [HttpPut("users/{userID}")]
-        public ActionResult UpdateUser(int userID, User user)
+        public ActionResult UpdateUser(int userID, UserDTO userDTO)
         {
-            if (user == null)
+            if (userDTO == null)
             {
                 return BadRequest("Invalid input data"); // return 400 Bad Request
             }
 
-            _userService.UpdateUser(userID, user);
+            _userService.UpdateUser(userID, userDTO);
 
             // HTTP 200
             return Ok(
                 new
                 {
                     Response = "User record updated successfully",
-                    Data = user
+                    Data = userDTO
                 });
         }
 
