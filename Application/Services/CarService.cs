@@ -1,4 +1,6 @@
 ﻿using Application.Interfaces;
+using Application.Mapper.DTOs;
+using AutoMapper;
 using Domain.Entities;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,37 +16,39 @@ namespace Application.Services
         #region Injection
 
         private readonly ILogger<CarService> _logger;
+        private readonly IMapper _mapper;
         private readonly ICarRepository _carRepository;
 
-        public CarService(ILogger<CarService> logger, ICarRepository carRepository)
+        public CarService(ILogger<CarService> logger, IMapper mapper, ICarRepository carRepository)
         {
             _logger = logger;
+            _mapper = mapper;
             _carRepository = carRepository;
         }
 
         #endregion Injection
 
-        public IEnumerable<Car> GetCars()
+        public IEnumerable<CarDTO> GetCars()
         {
             var cars = _carRepository.GetAll();
-            return cars;
+            return _mapper.Map<IEnumerable<CarDTO>>(cars);
         }
 
-        public Car GetCar(int carID)
+        public CarDTO GetCar(int carID)
         {
             var car = _carRepository.GetByID(carID);
-            return car;
+            return _mapper.Map<CarDTO>(car);
         }
 
-        public void AddCar(Car car)
+        public void AddCar(CarDTO carDTO)
         {
-            _carRepository.Insert(car);
+            _carRepository.Insert(_mapper.Map<Car>(carDTO));
             _carRepository.Save();
         }
 
-        public void UpdateCar(int carID, Car car)
+        public void UpdateCar(int carID, CarDTO carDTO)
         {
-            _carRepository.Update(carID, car);
+            _carRepository.Update(carID, _mapper.Map<Car>(carDTO));
             _carRepository.Save();
         }
 

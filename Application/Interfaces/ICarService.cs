@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Mapper.DTOs;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace Application.Interfaces
 {
     public interface ICarService
     {
-        public IEnumerable<Car> GetCars();
-        public Car GetCar(int carID);
-        public void AddCar(Car car);
-        public void UpdateCar(int carID, Car car);
+        public IEnumerable<CarDTO> GetCars();
+        public CarDTO GetCar(int carID);
+        public void AddCar(CarDTO carDTO);
+        public void UpdateCar(int carID, CarDTO carDTO);
         public void DeleteCar(int carID);
     }
 }
