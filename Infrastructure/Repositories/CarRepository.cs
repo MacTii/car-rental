@@ -30,8 +30,11 @@ namespace Infrastructure.Repositories
 
         public Car GetByID(int carID)
         {
+            if (carID < 1)
+                throw new ArgumentException($"Invalid car ID: {carID}. Car ID must be greater than or equal to 1.");
+
             var car = _context.Cars.Find(carID);
-            return car ?? throw new ArgumentException("Invalid car ID");
+            return car ?? throw new InvalidOperationException($"Car with ID: {carID} not found.");
         }
 
         public void Insert(Car car)
@@ -41,11 +44,12 @@ namespace Infrastructure.Repositories
 
         public void Update(int carID, Car car)
         {
+            if(carID < 1)
+                throw new ArgumentException($"Invalid car ID: {carID}. Car ID must be greater than or equal to 1.");
+
             var existingCar = _context.Cars.Find(carID);
             if (existingCar == null)
-            {
-                throw new ArgumentException($"Car with ID {carID} not found.");
-            }
+                throw new InvalidOperationException($"Car with ID: {carID} not found.");
 
             existingCar.Make = car.Make;
             existingCar.Model = car.Model;
@@ -56,11 +60,13 @@ namespace Infrastructure.Repositories
 
         public void Delete(int carID)
         {
+            if (carID < 1)
+                throw new ArgumentException($"Invalid car ID: {carID}. Car ID must be greater than or equal to 1.");
+
             var car = _context.Cars.Find(carID);
             if (car == null)
-            {
-                throw new InvalidOperationException($"Car with ID {carID} not found.");
-            }
+                throw new InvalidOperationException($"Car with ID: {carID} not found.");
+
             _context.Cars.Remove(car);
         }
 
