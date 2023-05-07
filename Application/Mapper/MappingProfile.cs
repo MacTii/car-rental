@@ -18,6 +18,9 @@ namespace Application.Mapper
 
             CreateMap<CarDTO, Car>();
             CreateMap<Car, CarDTO>();
+
+            CreateMap<RentalDTO, Rental>();
+            CreateMap<Rental, RentalDTO>();
         }
     }
 }

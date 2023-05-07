@@ -22,10 +22,11 @@ namespace Infrastructure
                 options.UseSqlServer(configuration.GetConnectionString("CarRentalDatabase"));
             });
 
+            service.AddTransient<DataSeeder>();
+
             service.AddScoped<IUserRepository, UserRepository>();
             service.AddScoped<ICarRepository, CarRepository>();
-
-            service.AddTransient<DataSeeder>();
+            service.AddScoped<IRentalRepository, RentalRepository>();
 
             return service;
         }
