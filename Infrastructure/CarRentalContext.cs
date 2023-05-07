@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 using Domain.Entities;
+using Domain.Enums;
 
 namespace Infrastructure
 {
@@ -33,19 +34,39 @@ namespace Infrastructure
             modelBuilder.Entity<User>(entity =>
             {
                 entity.Property(e => e.Name)
-                    //.IsRequired()
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Surname)
-                    //.IsRequired()
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Email)
                     .HasMaxLength(100);
 
                 entity.Property(e => e.PhoneNumber)
-                    //.IsRequired()
                     .HasMaxLength(50);
+
+                entity.Property(e => e.DateOfBirth)
+                    .HasColumnType("date");
+
+                entity.Property(e => e.IsActive)
+                    .HasDefaultValue(true);
+
+                entity.Property(e => e.Gender)
+                    .HasConversion(
+                        v => v.ToString(),
+                        v => (GenderEnum)Enum.Parse(typeof(GenderEnum), v));
+
+                entity.Property(e => e.UserRole)
+                    .HasConversion(
+                        v => v.ToString(),
+                        v => (UserRoleEnum)Enum.Parse(typeof(UserRoleEnum), v));
+
+                entity.Property(e => e.IdentificationNumber)
+                    .HasMaxLength(9);
+
+                entity.Property(e => e.DrivingLicenseNumber)
+                    .HasMaxLength(13);
+
             });
 
             modelBuilder.Entity<Car>(entity =>
