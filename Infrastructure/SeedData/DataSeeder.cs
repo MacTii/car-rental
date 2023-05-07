@@ -24,6 +24,7 @@ namespace Infrastructure.SeedData
         {
             SeedUsers();
             SeedCars();
+            SeedRentals();
         }
 
         private void SeedUsers()
@@ -56,6 +57,18 @@ namespace Infrastructure.SeedData
                     new Car { Make = "Kia", Model = "Sportage", RegistrationNumber = "1D7RE3GK7B" },
                     new Car { Make = "Volkswagen", Model = "Passat", RegistrationNumber = "2G4GR5EK9C" },
                     new Car { Make = "Suzuki", Model = "Daewoo Lacetti", RegistrationNumber = "1N6AF0LX8E" }
+                );
+                _context.SaveChanges();
+            }
+        }
+
+        private void SeedRentals()
+        {
+            if (!_context.Rentals.Any())
+            {
+                _context.Rentals.AddRange(
+                    new Rental { CarID = 31, UserID = 16, RentDate = new DateTime(2023,5,6) },
+                    new Rental { CarID = 32, UserID = 17, RentDate = new DateTime(2023, 3, 23), ReturnDate = new DateTime(2023, 9, 23) }
                 );
                 _context.SaveChanges();
             }

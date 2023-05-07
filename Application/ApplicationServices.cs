@@ -15,6 +15,7 @@ namespace Application
         {
             service.AddScoped<ICarService, CarService>();
             service.AddScoped<IUserService, UserService>();
+            service.AddScoped<IRentalService, RentalService>();
 
             return service;
         }

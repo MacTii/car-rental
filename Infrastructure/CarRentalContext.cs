@@ -21,6 +21,7 @@ namespace Infrastructure
 
         public DbSet<Car> Cars { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Rental> Rentals { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -59,6 +60,9 @@ namespace Infrastructure
                     .HasMaxLength(10);
 
             });
+
+            modelBuilder.Entity<Rental>(entity =>
+                entity.ToTable(t => t.HasCheckConstraint("CK_Rental_Dates", "ReturnDate >= RentDate")));
         }
     }
 }
