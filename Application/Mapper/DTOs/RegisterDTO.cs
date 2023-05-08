@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace Application.Mapper.DTOs
 {
-    public class UserDTO
+    public class RegisterDTO
     {
-        public int ID { get; set; }
-        public int UserCredentialsID { get; set; }
+        public string Username { get; set; } = null!;
+        public string FirstPassword { get; set; } = null!;
+        public string SecondPassword { get; set; } = null!;
         public string Name { get; set; } = null!;
         public string Surname { get; set; } = null!;
         public string? Email { get; set; }
