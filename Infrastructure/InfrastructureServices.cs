@@ -27,6 +27,7 @@ namespace Infrastructure
             service.AddScoped<IUserRepository, UserRepository>();
             service.AddScoped<ICarRepository, CarRepository>();
             service.AddScoped<IRentalRepository, RentalRepository>();
+            service.AddScoped<IUserCredentialsRepository, UserCredentialsRepository>();
 
             return service;
         }

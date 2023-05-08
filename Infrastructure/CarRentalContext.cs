@@ -23,6 +23,7 @@ namespace Infrastructure
         public DbSet<Car> Cars { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Rental> Rentals { get; set; }
+        public DbSet<UserCredentials> UserCredentials { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -48,18 +49,10 @@ namespace Infrastructure
                 entity.Property(e => e.DateOfBirth)
                     .HasColumnType("date");
 
-                entity.Property(e => e.IsActive)
-                    .HasDefaultValue(true);
-
                 entity.Property(e => e.Gender)
                     .HasConversion(
                         v => v.ToString(),
                         v => (GenderEnum)Enum.Parse(typeof(GenderEnum), v));
-
-                entity.Property(e => e.UserRole)
-                    .HasConversion(
-                        v => v.ToString(),
-                        v => (UserRoleEnum)Enum.Parse(typeof(UserRoleEnum), v));
 
                 entity.Property(e => e.IdentificationNumber)
                     .HasMaxLength(9);
@@ -90,6 +83,17 @@ namespace Infrastructure
 
             modelBuilder.Entity<Rental>(entity =>
                 entity.ToTable(t => t.HasCheckConstraint("CK_Rental_Dates", "ReturnDate >= RentDate")));
+
+            modelBuilder.Entity<UserCredentials>(entity =>
+            {
+                entity.Property(e => e.IsActive)
+                    .HasDefaultValue(true);
+
+                entity.Property(e => e.UserRole)
+                    .HasConversion(
+                        v => v.ToString(),
+                        v => (UserRoleEnum)Enum.Parse(typeof(UserRoleEnum), v));
+            });
         }
     }
 }
