@@ -21,6 +21,10 @@ namespace API.Middlewares
             {
                 await HandleExceptionAsync(context, e, HttpStatusCode.BadRequest, "Bad request", e.Message); // 400
             }
+            catch(UnauthorizedAccessException e)
+            {
+                await HandleExceptionAsync(context, e, HttpStatusCode.Unauthorized, "Unauthorized", e.Message); // 401
+            }
             catch (InvalidOperationException e)
             {
                 await HandleExceptionAsync(context, e, HttpStatusCode.NotFound, "Not found", e.Message); // 404
