@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(CarRentalContext))]
-    [Migration("20230507131134_user-upgrade-isactive")]
-    partial class userupgradeisactive
+    [Migration("20230508152237_user-credentials-update")]
+    partial class usercredentialsupdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,30 +105,26 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("DrivingLicenseNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
-
-                    b.Property<string>("IdentificationNumber")
+                    b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                    b.Property<string>("IdentificationNumber")
+                        .IsRequired()
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -140,8 +136,49 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("UserRole")
+                    b.Property<int>("UserCredentialsID")
                         .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserCredentialsID");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Domain.Entities.UserCredentials", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("TokenCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("TokenExpires")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserRole")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -149,7 +186,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Users");
+                    b.ToTable("UserCredentials");
                 });
 
             modelBuilder.Entity("Domain.Entities.Rental", b =>
@@ -169,6 +206,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("Car");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.HasOne("Domain.Entities.UserCredentials", "UserCredentials")
+                        .WithMany()
+                        .HasForeignKey("UserCredentialsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserCredentials");
                 });
 #pragma warning restore 612, 618
         }
