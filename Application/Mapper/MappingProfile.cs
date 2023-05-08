@@ -21,6 +21,9 @@ namespace Application.Mapper
 
             CreateMap<RentalDTO, Rental>();
             CreateMap<Rental, RentalDTO>();
+
+            CreateMap<RegisterDTO, UserCredentials>();
+            CreateMap<RegisterDTO, User>();
         }
     }
 }
