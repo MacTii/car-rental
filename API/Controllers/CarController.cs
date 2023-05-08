@@ -28,9 +28,7 @@ namespace API.Controllers
         {
             var cars = _carService.GetCars();
             if (!cars.Any())
-            {
                 return NoContent(); // Returns HTTP 204 if there are no records
-            }
 
             // HTTP 200
             return Ok(
@@ -59,9 +57,7 @@ namespace API.Controllers
         public ActionResult AddCar(CarDTO carDTO)
         {
             if (carDTO == null)
-            {
                 return BadRequest("Invalid input data"); // return 400 Bad Request
-            }
 
             _carService.AddCar(carDTO);
 
@@ -78,9 +74,7 @@ namespace API.Controllers
         public ActionResult UpdateCar(int carID, CarDTO carDTO)
         {
             if (carDTO == null)
-            {
                 return BadRequest("Invalid input data"); // return 400 Bad Request
-            }
 
             _carService.UpdateCar(carID, carDTO);
 
