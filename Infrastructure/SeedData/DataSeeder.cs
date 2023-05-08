@@ -22,9 +22,9 @@ namespace Infrastructure.SeedData
 
         public void SeedData()
         {
-            SeedUsers();
+            // SeedUsers();
             SeedCars();
-            SeedRentals();
+            // SeedRentals();
         }
 
         private void SeedUsers()
