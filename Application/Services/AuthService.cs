@@ -23,6 +23,7 @@ namespace Application.Services
         private readonly IMapper _mapper;
         private readonly IUserCredentialsRepository _userCredentialsRepository;
         private readonly IUserRepository _userRepository;
+        // private readonly IHttpContextAccessor _httpContextAccessor;
 
         public AuthService(IConfiguration configuration, IMapper mapper, IUserCredentialsRepository userCredentialsRepository,
             IUserRepository userRepository)
@@ -34,6 +35,17 @@ namespace Application.Services
         }
 
         #endregion Injection
+
+        public string GetMyName()
+        {
+            /*var result = string.Empty;
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+            }
+            return result;*/
+            return string.Empty;
+        }
 
         public UserCredentials Register(RegisterDTO request)
         {

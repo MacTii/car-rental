@@ -60,12 +60,6 @@ namespace Infrastructure
                 entity.Property(e => e.DrivingLicenseNumber)
                     .HasMaxLength(13);
 
-                entity.Property(e => e.Username)
-                    .HasMaxLength(10);
-
-                entity.Property(e => e.PasswordHash)
-                    .HasMaxLength(20);
-
             });
 
             modelBuilder.Entity<Car>(entity =>
@@ -86,6 +80,12 @@ namespace Infrastructure
 
             modelBuilder.Entity<UserCredentials>(entity =>
             {
+                entity.Property(e => e.Username)
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.PasswordHash)
+                    .HasMaxLength(20);
+
                 entity.Property(e => e.IsActive)
                     .HasDefaultValue(true);
 

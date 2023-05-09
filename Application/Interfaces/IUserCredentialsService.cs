@@ -8,6 +8,6 @@ namespace Application.Interfaces
 {
     public interface IUserCredentialsService
     {
-        public string GetMyName();
+        
     }
 }

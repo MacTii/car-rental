@@ -13,19 +13,18 @@ namespace API.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IAuthService _authService;
-        private readonly IUserCredentialsService _userCredentialsService;
 
         public AuthController(IConfiguration configuration, IAuthService authService, IUserCredentialsService userCredentialsService)
         {
             _configuration = configuration;
             _authService = authService;
-            _userCredentialsService = userCredentialsService;
         }
 
-        [HttpGet, Authorize]
+        [HttpGet("claim-type")]
+        [Authorize]
         public ActionResult GetMe()
         {
-            var username = _userCredentialsService.GetMyName();
+            var username = _authService.GetMyName();
             return Ok(username);
         }
 
