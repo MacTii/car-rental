@@ -10,6 +10,7 @@ namespace Application.Interfaces
 {
     public interface IAuthService
     {
+        public string GetMyName();
         public UserCredentials Register(RegisterDTO request);
         public string Login(LoginDTO request);
     }
