@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Mapper.DTOs;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
