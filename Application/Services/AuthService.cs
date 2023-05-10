@@ -21,17 +21,19 @@ namespace Application.Services
 
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
+        private readonly IAuthenticationHelper _authenticationHelper;
         private readonly IUserCredentialsRepository _userCredentialsRepository;
         private readonly IUserRepository _userRepository;
         // private readonly IHttpContextAccessor _httpContextAccessor;
 
         public AuthService(IConfiguration configuration, IMapper mapper, IUserCredentialsRepository userCredentialsRepository,
-            IUserRepository userRepository)
+            IUserRepository userRepository, IAuthenticationHelper authenticationHelper)
         {
             _configuration = configuration;
             _mapper = mapper;
             _userCredentialsRepository = userCredentialsRepository;
             _userRepository = userRepository;
+            _authenticationHelper = authenticationHelper;
         }
 
         #endregion Injection
@@ -56,7 +58,7 @@ namespace Application.Services
             if (request.FirstPassword != request.SecondPassword)
                 throw new ArgumentException("The passwords provided are not identical!");
 
-            CreatePasswordHash(request.FirstPassword, out byte[] passwordHash, out byte[] passwordSalt);
+            _authenticationHelper.CreatePasswordHash(request.FirstPassword, out byte[] passwordHash, out byte[] passwordSalt);
 
             // mapping RegisterDTO -> UserCredentials
             var userCredentials = _mapper.Map<UserCredentials>(request);
@@ -79,10 +81,10 @@ namespace Application.Services
             if (user == null)
                 throw new InvalidOperationException("User not found!");
 
-            if (!VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
+            if (!_authenticationHelper.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
                 throw new UnauthorizedAccessException("Wrong password!");
 
-            string token = CreateToken(user);
+            string token = _authenticationHelper.CreateToken(user);
 
             // var refreshToken = GenerateRefreshToken();
             // SetRefreshToken(refreshToken);
@@ -135,46 +137,5 @@ namespace Application.Services
             user.TokenCreated = newRefreshToken.Created;
             user.TokenExpires = newRefreshToken.Expires;
         }*/
-
-        private string CreateToken(UserCredentials user)
-        {
-            List<Claim> claims = new()
-            {
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.UserRole.ToString())
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                _configuration.GetSection("AppSettings:Token").Value ?? string.Empty));
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials: creds);
-
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return jwt;
-        }
-
-        private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using (var hmac = new HMACSHA512())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-            }
-        }
-
-        private static bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
-        {
-            using (var hmac = new HMACSHA512(passwordSalt))
-            {
-                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                return computedHash.SequenceEqual(passwordHash);
-            }
-        }
     }
 }
