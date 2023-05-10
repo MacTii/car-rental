@@ -24,6 +24,9 @@ namespace Application.Mapper
 
             CreateMap<RegisterDTO, UserCredentials>();
             CreateMap<RegisterDTO, User>();
+
+            CreateMap<UserCredentialsDTO, UserCredentials>();
+            CreateMap<UserCredentials, UserCredentialsDTO>();
         }
     }
 }

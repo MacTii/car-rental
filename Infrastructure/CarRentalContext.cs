@@ -83,9 +83,6 @@ namespace Infrastructure
                 entity.Property(e => e.Username)
                     .HasMaxLength(10);
 
-                entity.Property(e => e.PasswordHash)
-                    .HasMaxLength(20);
-
                 entity.Property(e => e.IsActive)
                     .HasDefaultValue(true);
 
