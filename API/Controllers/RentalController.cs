@@ -25,8 +25,8 @@ namespace API.Controllers
         [HttpGet("rentals")]
         public ActionResult GetCars()
         {
-            var rentals = _rentalService.GetRentals();
-            if (!rentals.Any())
+            var rentalDTOs = _rentalService.GetRentals();
+            if (!rentalDTOs.Any())
             {
                 return NoContent(); // Returns HTTP 204 if there are no records
             }
@@ -36,7 +36,7 @@ namespace API.Controllers
                 new
                 {
                     Response = "Rental records retrieved successfully",
-                    Data = rentals
+                    Data = rentalDTOs
                 });
         }
 

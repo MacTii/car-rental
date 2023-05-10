@@ -27,8 +27,8 @@ namespace API.Controllers
         [HttpGet("cars")]
         public ActionResult GetCars()
         {
-            var cars = _carService.GetCars();
-            if (!cars.Any())
+            var carDTOs = _carService.GetCars();
+            if (!carDTOs.Any())
                 return NoContent(); // Returns HTTP 204 if there are no records
 
             // HTTP 200
@@ -36,7 +36,7 @@ namespace API.Controllers
                 new
                 {
                     Response = "Cars records retrieved successfully",
-                    Data = cars
+                    Data = carDTOs
                 });
         }
 

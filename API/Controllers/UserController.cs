@@ -43,14 +43,14 @@ namespace API.Controllers
         [HttpGet("users/{userID}")]
         public ActionResult GetUserByID(int userID)
         {
-            var user = _userService.GetUser(userID);
+            var userDTO = _userService.GetUser(userID);
 
             // HTTP 200
             return Ok(
                 new
                 {
                     Response = "User record retrieved successfully",
-                    Data = user
+                    Data = userDTO
                 });
         }
 
