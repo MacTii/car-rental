@@ -55,10 +55,10 @@ namespace Infrastructure
                         v => (GenderEnum)Enum.Parse(typeof(GenderEnum), v));
 
                 entity.Property(e => e.IdentificationNumber)
-                    .HasMaxLength(9);
+                    .HasMaxLength(15);
 
                 entity.Property(e => e.DrivingLicenseNumber)
-                    .HasMaxLength(13);
+                    .HasMaxLength(20);
 
             });
 
@@ -71,7 +71,12 @@ namespace Infrastructure
                     .HasMaxLength(100);
 
                 entity.Property(e => e.RegistrationNumber)
-                    .HasMaxLength(10);
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Color)
+                    .HasConversion(
+                        v => v.ToString(),
+                        v => (ColorEnum)Enum.Parse(typeof(ColorEnum), v));
 
             });
 
