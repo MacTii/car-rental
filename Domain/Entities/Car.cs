@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,9 @@ namespace Domain.Entities
         public string Make { get; set; } = null!;
         public string Model { get; set; } = null!;
         public string RegistrationNumber { get; set; } = null!;
+        public int Year { get; set; }
+        public ColorEnum Color { get; set; }
+        public decimal PricePerDay { get; set; }
+        public bool IsAvailable { get; set; }
     }
 }
