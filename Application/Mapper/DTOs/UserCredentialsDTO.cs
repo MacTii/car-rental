@@ -14,9 +14,9 @@ namespace Application.Mapper.DTOs
         public byte[] PasswordHash { get; set; } = null!;
         public byte[] PasswordSalt { get; set; } = null!;
         public string? RefreshToken { get; set; }
-        public DateTime? TokenCreated { get; set; }
-        public DateTime? TokenExpires { get; set; }
+        public string? TokenCreated { get; set; }
+        public string? TokenExpires { get; set; }
         public bool IsActive { get; set; } = true;
-        public UserRoleEnum UserRole { get; set; }
+        public string UserRole { get; set; } = null!;
     }
 }

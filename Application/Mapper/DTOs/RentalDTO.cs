@@ -11,8 +11,8 @@ namespace Application.Mapper.DTOs
         public int ID { get; set; }
         public int CarID { get; set; }
         public int UserID { get; set; }
-        public DateTime RentDate { get; set; }
-        public DateTime? ReturnDate { get; set; }
+        public string RentDate { get; set; } = null!;
+        public string? ReturnDate { get; set; }
         public string? Comments { get; set; }
     }
 }
