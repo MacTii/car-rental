@@ -162,16 +162,106 @@ namespace Infrastructure.SeedData
 
             if (!_context.Cars.Any())
             {
-                cars[0] = new Car { Make = "Lotus", Model = "Esprit", RegistrationNumber = "1FTEX1C87A" };
-                cars[1] = new Car { Make = "Chrysler", Model = "LHS", RegistrationNumber = "WAUSH78E67" };
-                cars[2] = new Car { Make = "Ford", Model = "Focus", RegistrationNumber = "WA1VMAFEXA" };
-                cars[3] = new Car { Make = "Lexus", Model = "GS", RegistrationNumber = "TRURD38JX8" };
-                cars[4] = new Car { Make = "Mitsubishi", Model = "Lancer", RegistrationNumber = "1FTEX1C87A" };
-                cars[5] = new Car { Make = "GMC", Model = "Yukon XL 1500", RegistrationNumber = "SCFEBBAC0A" };
-                cars[6] = new Car { Make = "Mercedes-Benz", Model = "SL-Class", RegistrationNumber = "WAUYGAFCXC" };
-                cars[7] = new Car { Make = "Kia", Model = "Sportage", RegistrationNumber = "1D7RE3GK7B" };
-                cars[8] = new Car { Make = "Volkswagen", Model = "Passat", RegistrationNumber = "2G4GR5EK9C" };
-                cars[9] = new Car { Make = "Suzuki", Model = "Daewoo Lacetti", RegistrationNumber = "1N6AF0LX8E" };
+                cars[0] = new Car
+                {
+                    Make = "Lotus",
+                    Model = "Esprit",
+                    RegistrationNumber = "1FTEX1C87A",
+                    Year = 1999,
+                    Color = ColorEnum.Black,
+                    PricePerDay = 400.5m,
+                    IsAvailable = true
+                };
+                cars[1] = new Car
+                {
+                    Make = "Chrysler",
+                    Model = "LHS",
+                    RegistrationNumber = "WAUSH78E67",
+                    Year = 2001,
+                    Color = ColorEnum.Black,
+                    PricePerDay = 350m,
+                    IsAvailable = true
+                };
+                cars[2] = new Car
+                {
+                    Make = "Ford",
+                    Model = "Focus",
+                    RegistrationNumber = "WA1VMAFEXA",
+                    Year = 2002,
+                    Color = ColorEnum.White,
+                    PricePerDay = 300.5m,
+                    IsAvailable = true
+                };
+                cars[3] = new Car
+                {
+                    Make = "Lexus",
+                    Model = "GS",
+                    RegistrationNumber = "TRURD38JX8",
+                    Year = 2010,
+                    Color = ColorEnum.Black,
+                    PricePerDay = 650m,
+                    IsAvailable = true
+                };
+                cars[4] = new Car
+                {
+                    Make = "Mitsubishi",
+                    Model = "Lancer",
+                    RegistrationNumber = "1FTEX1C87A",
+                    Year = 2005,
+                    Color = ColorEnum.Red,
+                    PricePerDay = 570m,
+                    IsAvailable = true
+                };
+                cars[5] = new Car
+                {
+                    Make = "GMC",
+                    Model = "Yukon XL 1500",
+                    RegistrationNumber = "SCFEBBAC0A",
+                    Year = 2007,
+                    Color = ColorEnum.Purple,
+                    PricePerDay = 340,
+                    IsAvailable = true
+                };
+                cars[6] = new Car
+                {
+                    Make = "Mercedes-Benz",
+                    Model = "SL-Class",
+                    RegistrationNumber = "WAUYGAFCXC",
+                    Year = 2010,
+                    Color = ColorEnum.Black,
+                    PricePerDay = 250,
+                    IsAvailable = true
+                };
+                cars[7] = new Car
+                {
+                    Make = "Kia",
+                    Model = "Sportage",
+                    RegistrationNumber = "1D7RE3GK7B",
+                    Year = 1990,
+                    Color = ColorEnum.Black,
+                    PricePerDay = 80m,
+                    IsAvailable = true
+                };
+                cars[8] = new Car
+                {
+                    Make = "Volkswagen",
+                    Model = "Passat",
+                    RegistrationNumber = "2G4GR5EK9C",
+                    Year = 2005,
+                    Color = ColorEnum.Green,
+                    PricePerDay = 320.6m,
+                    IsAvailable = true
+                };
+                cars[9] = new Car
+                {
+                    Make = "Suzuki",
+                    Model = "Daewoo Lacetti",
+                    RegistrationNumber = "1N6AF0LX8E",
+                    Year = 2012,
+                    Color = ColorEnum.Gray,
+                    PricePerDay = 550.3m,
+                    IsAvailable = true
+                };
 
                 _context.Cars.AddRange(cars);
                 _context.SaveChanges();
@@ -185,7 +275,7 @@ namespace Infrastructure.SeedData
             if (!_context.Rentals.Any())
             {
                 _context.Rentals.AddRange(
-                    new Rental { RentDate = new DateTime(2023, 5, 6), User = users[0], Car = cars[0]},
+                    new Rental { RentDate = new DateTime(2023, 5, 6), User = users[0], Car = cars[0] },
                     new Rental { RentDate = new DateTime(2023, 3, 23), ReturnDate = new DateTime(2023, 9, 23), User = users[1], Car = cars[1] }
                 );
                 _context.SaveChanges();
