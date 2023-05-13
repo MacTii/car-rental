@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -18,13 +19,48 @@ namespace Application.Helpers
         #region Injection
 
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IUserCredentialsRepository _userCredentialsRepository;
 
-        public AuthenticationHelper(IConfiguration configuration)
+        public AuthenticationHelper(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, 
+            IUserCredentialsRepository userCredentialsRepository)
         {
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
+            _userCredentialsRepository = userCredentialsRepository;
         }
 
         #endregion Injection
+
+        public RefreshToken GenerateRefreshToken()
+        {
+            var refreshToken = new RefreshToken
+            {
+                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                Expires = DateTime.Now.AddDays(7),
+                Created = DateTime.Now
+            };
+
+            return refreshToken;
+        }
+
+        public void SetRefreshToken(RefreshToken newRefreshToken, UserCredentials user)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = newRefreshToken.Expires
+            };
+
+            _httpContextAccessor.HttpContext.Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
+
+            user.RefreshToken = newRefreshToken.Token;
+            user.TokenCreated = newRefreshToken.Created;
+            user.TokenExpires = newRefreshToken.Expires;
+
+            _userCredentialsRepository.Update(user.ID, user);
+            _userCredentialsRepository.Save();
+        }
 
         public string CreateToken(UserCredentials user)
         {

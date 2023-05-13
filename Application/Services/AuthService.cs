@@ -12,6 +12,7 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Services
 {
@@ -24,29 +25,30 @@ namespace Application.Services
         private readonly IAuthenticationHelper _authenticationHelper;
         private readonly IUserCredentialsRepository _userCredentialsRepository;
         private readonly IUserRepository _userRepository;
-        // private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public AuthService(IConfiguration configuration, IMapper mapper, IUserCredentialsRepository userCredentialsRepository,
-            IUserRepository userRepository, IAuthenticationHelper authenticationHelper)
+            IUserRepository userRepository, IAuthenticationHelper authenticationHelper, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
             _mapper = mapper;
             _userCredentialsRepository = userCredentialsRepository;
             _userRepository = userRepository;
             _authenticationHelper = authenticationHelper;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         #endregion Injection
 
-        public string GetMyName()
+        public string GetMyUsername()
         {
-            /*var result = string.Empty;
+            var result = string.Empty;
             if (_httpContextAccessor.HttpContext != null)
             {
-                result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+                Claim? claim = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name);
+                result = claim != null ? claim.Value : string.Empty;
             }
-            return result;*/
-            return string.Empty;
+            return result;
         }
 
         public UserCredentials Register(RegisterDTO request)
@@ -86,56 +88,36 @@ namespace Application.Services
 
             string token = _authenticationHelper.CreateToken(user);
 
-            // var refreshToken = GenerateRefreshToken();
-            // SetRefreshToken(refreshToken);
+            var refreshToken = _authenticationHelper.GenerateRefreshToken();
+            _authenticationHelper.SetRefreshToken(refreshToken, user);
 
             return token;
         }
 
-        /*public async Task<string> RefreshToken()
+        public string RefreshToken()
         {
-            var refreshToken = Request.Cookies["refreshToken"];
+            var refreshToken = _httpContextAccessor.HttpContext.Request.Cookies["refreshToken"];
 
-            if (!user.RefreshToken.Equals(refreshToken))
+            var username = GetMyUsername();
+            var userCredentials = _userCredentialsRepository.GetByUsername(username);
+            if (userCredentials == null)
+                throw new InvalidOperationException("User credentials not found!"); // KeyNotFoundException, NotFoundException
+
+            if (!userCredentials.RefreshToken.Equals(refreshToken))
             {
-                return Unauthorized("Invalid Refresh Token.");
+                throw new UnauthorizedAccessException("Invalid Refresh Token!"); // Unauthorized, UnauthorizedException();
             }
-            else if (user.TokenExpires < DateTime.Now)
+            else if (userCredentials.TokenExpires < DateTime.Now)
             {
-                return Unauthorized("Token expired.");
+                throw new SecurityTokenExpiredException("Token expired!"); // Unauthorized, TokenExpiredException();
             }
 
-            string token = CreateToken(user);
-            var newRefreshToken = GenerateRefreshToken();
-            SetRefreshToken(newRefreshToken, user);
+            string token = _authenticationHelper.CreateToken(userCredentials);
+
+            var newRefreshToken = _authenticationHelper.GenerateRefreshToken();
+            _authenticationHelper.SetRefreshToken(newRefreshToken, userCredentials);
 
             return token;
         }
-
-        private RefreshToken GenerateRefreshToken()
-        {
-            var refreshToken = new RefreshToken
-            {
-                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-                Expires = DateTime.Now.AddDays(7),
-                Created = DateTime.Now
-            };
-
-            return refreshToken;
-        }
-
-        private void SetRefreshToken(RefreshToken newRefreshToken, UserCredentials user)
-        {
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = newRefreshToken.Expires
-            };
-            Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
-
-            user.RefreshToken = newRefreshToken.Token;
-            user.TokenCreated = newRefreshToken.Created;
-            user.TokenExpires = newRefreshToken.Expires;
-        }*/
     }
 }
