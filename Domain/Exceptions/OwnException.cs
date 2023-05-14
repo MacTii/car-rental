@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Enums
+namespace Domain.Exceptions
 {
-    public enum UserRoleEnum
+    public class OwnException : Exception
     {
-        User,
-        Admin
+        public OwnException() : base()
+        {
+        }
     }
 }

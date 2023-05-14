@@ -6,9 +6,16 @@ using System.Threading.Tasks;
 
 namespace Domain.Enums
 {
-    public enum UserRoleEnum
+    public enum ColorEnum
     {
-        User,
-        Admin
+        Red,
+        Green,
+        Blue,
+        Purple,
+        Orange,
+        Yellow,
+        White,
+        Black,
+        Gray
     }
 }

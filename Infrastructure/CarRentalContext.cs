@@ -55,15 +55,9 @@ namespace Infrastructure
                         v => (GenderEnum)Enum.Parse(typeof(GenderEnum), v));
 
                 entity.Property(e => e.IdentificationNumber)
-                    .HasMaxLength(9);
+                    .HasMaxLength(15);
 
                 entity.Property(e => e.DrivingLicenseNumber)
-                    .HasMaxLength(13);
-
-                entity.Property(e => e.Username)
-                    .HasMaxLength(10);
-
-                entity.Property(e => e.PasswordHash)
                     .HasMaxLength(20);
 
             });
@@ -77,7 +71,19 @@ namespace Infrastructure
                     .HasMaxLength(100);
 
                 entity.Property(e => e.RegistrationNumber)
-                    .HasMaxLength(10);
+                    .HasMaxLength(15);
+
+                entity.Property(e => e.Color)
+                    .HasConversion(
+                        v => v.ToString(),
+                        v => (ColorEnum)Enum.Parse(typeof(ColorEnum), v));
+
+                entity.Property(e => e.PricePerDay)
+                    .HasPrecision(5, 2);
+
+                entity.Property(e => e.IsAvailable)
+                    .IsRequired()
+                    .HasDefaultValue(true);
 
             });
 
@@ -86,7 +92,11 @@ namespace Infrastructure
 
             modelBuilder.Entity<UserCredentials>(entity =>
             {
+                entity.Property(e => e.Username)
+                    .HasMaxLength(10);
+
                 entity.Property(e => e.IsActive)
+                    .IsRequired()
                     .HasDefaultValue(true);
 
                 entity.Property(e => e.UserRole)

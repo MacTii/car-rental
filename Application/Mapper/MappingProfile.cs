@@ -13,8 +13,10 @@ namespace Application.Mapper
     {
         public MappingProfile()
         {
-            CreateMap<UserDTO, User>();
-            CreateMap<User, UserDTO>();
+            CreateMap<UserDTO, User>()
+                .ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => DateTime.ParseExact(src.DateOfBirth, "dd.MM.yyyy", null)));
+            CreateMap<User, UserDTO>()
+                .ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => src.DateOfBirth.ToString("dd.MM.yyyy")));
 
             CreateMap<CarDTO, Car>();
             CreateMap<Car, CarDTO>();
@@ -24,6 +26,9 @@ namespace Application.Mapper
 
             CreateMap<RegisterDTO, UserCredentials>();
             CreateMap<RegisterDTO, User>();
+
+            CreateMap<UserCredentialsDTO, UserCredentials>();
+            CreateMap<UserCredentials, UserCredentialsDTO>();
         }
     }
 }

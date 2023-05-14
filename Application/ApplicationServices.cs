@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Helpers;
+using Application.Interfaces;
 using Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,6 +19,7 @@ namespace Application
             service.AddScoped<IRentalService, RentalService>();
             service.AddScoped<IUserCredentialsService, UserCredentialsService>();
             service.AddScoped<IAuthService, AuthService>();
+            service.AddScoped<IAuthenticationHelper, AuthenticationHelper>();
 
             return service;
         }
