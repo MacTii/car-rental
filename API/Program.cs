@@ -99,7 +99,7 @@ try
     app.UseMiddleware<RequestLoggingMiddleware>();
     app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
-    // Add CorsMiddleware
+    // Add CORS middleware
     app.UseCors(builder =>
     {
         builder.AllowAnyOrigin()
