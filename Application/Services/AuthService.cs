@@ -1,16 +1,9 @@
 ﻿using Application.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Domain.Entities;
 using Application.Mapper.DTOs;
-using System.Security.Cryptography;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 
@@ -20,17 +13,15 @@ namespace Application.Services
     {
         #region Injection
 
-        private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
         private readonly IAuthenticationHelper _authenticationHelper;
         private readonly IUserCredentialsRepository _userCredentialsRepository;
         private readonly IUserRepository _userRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthService(IConfiguration configuration, IMapper mapper, IUserCredentialsRepository userCredentialsRepository,
+        public AuthService(IMapper mapper, IUserCredentialsRepository userCredentialsRepository,
             IUserRepository userRepository, IAuthenticationHelper authenticationHelper, IHttpContextAccessor httpContextAccessor)
         {
-            _configuration = configuration;
             _mapper = mapper;
             _userCredentialsRepository = userCredentialsRepository;
             _userRepository = userRepository;
