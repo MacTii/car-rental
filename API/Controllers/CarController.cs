@@ -25,6 +25,7 @@ namespace API.Controllers
         #endregion Injection
 
         [HttpGet("cars")]
+        [Authorize]
         public ActionResult GetCars()
         {
             var carDTOs = _carService.GetCars();
@@ -41,6 +42,7 @@ namespace API.Controllers
         }
 
         [HttpGet("cars/{carID}")]
+        [Authorize]
         public ActionResult GetCarByID(int carID)
         {
             var carDTO = _carService.GetCar(carID);
@@ -55,6 +57,7 @@ namespace API.Controllers
         }
 
         [HttpPost("cars")]
+        [Authorize]
         public ActionResult AddCar(CarDTO carDTO)
         {
             if (carDTO == null)
@@ -72,6 +75,7 @@ namespace API.Controllers
         }
 
         [HttpPut("cars/{carID}")]
+        [Authorize]
         public ActionResult UpdateCar(int carID, CarDTO carDTO)
         {
             if (carDTO == null)
@@ -89,6 +93,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("cars/{carID}")]
+        [Authorize]
         public ActionResult DeleteCar(int carID)
         {
             _carService.DeleteCar(carID);

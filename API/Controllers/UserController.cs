@@ -1,6 +1,7 @@
 using Application.Interfaces;
 using Application.Mapper.DTOs;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -23,6 +24,7 @@ namespace API.Controllers
         #endregion Injection
 
         [HttpGet("users")]
+        [Authorize]
         public ActionResult GetUsers()
         {
             var usersDTO = _userService.GetUsers();
@@ -41,6 +43,7 @@ namespace API.Controllers
         }
 
         [HttpGet("users/{userID}")]
+        [Authorize]
         public ActionResult GetUserByID(int userID)
         {
             var userDTO = _userService.GetUser(userID);
@@ -55,6 +58,7 @@ namespace API.Controllers
         }
 
         [HttpPost("users")]
+        [Authorize]
         public ActionResult AddUser(UserDTO userDTO)
         {
             if (userDTO == null)
@@ -74,6 +78,7 @@ namespace API.Controllers
         }
 
         [HttpPut("users/{userID}")]
+        [Authorize]
         public ActionResult UpdateUser(int userID, UserDTO userDTO)
         {
             if (userDTO == null)
@@ -93,6 +98,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("users/{userID}")]
+        [Authorize]
         public ActionResult DeleteUser(int userID)
         {
             _userService.DeleteUser(userID);

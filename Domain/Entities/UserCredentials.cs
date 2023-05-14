@@ -16,7 +16,7 @@ namespace Domain.Entities
         public string? RefreshToken { get; set; }
         public DateTime? TokenCreated { get; set; }
         public DateTime? TokenExpires { get; set; }
-        public bool IsActive { get; set; } = true;
+        public bool? IsActive { get; set; } = true;
         public UserRoleEnum UserRole { get; set; }
     }
 }

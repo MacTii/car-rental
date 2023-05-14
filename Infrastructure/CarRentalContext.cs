@@ -78,6 +78,13 @@ namespace Infrastructure
                         v => v.ToString(),
                         v => (ColorEnum)Enum.Parse(typeof(ColorEnum), v));
 
+                entity.Property(e => e.PricePerDay)
+                    .HasPrecision(5, 2);
+
+                entity.Property(e => e.IsAvailable)
+                    .IsRequired()
+                    .HasDefaultValue(true);
+
             });
 
             modelBuilder.Entity<Rental>(entity =>
@@ -89,6 +96,7 @@ namespace Infrastructure
                     .HasMaxLength(10);
 
                 entity.Property(e => e.IsActive)
+                    .IsRequired()
                     .HasDefaultValue(true);
 
                 entity.Property(e => e.UserRole)

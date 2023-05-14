@@ -16,6 +16,6 @@ namespace Domain.Entities
         public int Year { get; set; }
         public ColorEnum Color { get; set; }
         public decimal PricePerDay { get; set; }
-        public bool IsAvailable { get; set; }
+        public bool? IsAvailable { get; set; } = true;
     }
 }

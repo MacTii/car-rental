@@ -29,6 +29,7 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
+        [Authorize]
         public ActionResult Register([FromBody] RegisterDTO request)
         {
             if (request == null)
@@ -44,6 +45,7 @@ namespace API.Controllers
         }
 
         [HttpPost("login")]
+        [Authorize]
         public ActionResult Login(LoginDTO request)
         {
             if (request == null)
@@ -59,6 +61,7 @@ namespace API.Controllers
         }
 
         [HttpPost("refresh-token")]
+        [Authorize]
         public ActionResult RefreshToken()
         {
             var token = _authService.RefreshToken();
