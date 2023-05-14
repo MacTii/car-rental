@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Mapper.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,7 @@ namespace API.Controllers
         #endregion Injection
 
         [HttpGet("rentals")]
+        [Authorize]
         public ActionResult GetCars()
         {
             var rentalDTOs = _rentalService.GetRentals();
@@ -41,6 +43,7 @@ namespace API.Controllers
         }
 
         [HttpGet("rentals/{rentalID}")]
+        [Authorize]
         public ActionResult GetRentalByID(int rentalID)
         {
             var rentalDTO = _rentalService.GetRental(rentalID);
@@ -55,6 +58,7 @@ namespace API.Controllers
         }
 
         [HttpPost("rentals")]
+        [Authorize]
         public ActionResult AddRental(RentalDTO rentalDTO)
         {
             if (rentalDTO == null)
@@ -74,6 +78,7 @@ namespace API.Controllers
         }
 
         [HttpPut("rentals/{rentalID}")]
+        [Authorize]
         public ActionResult UpdateRental(int rentalID, RentalDTO rentalDTO)
         {
             if (rentalDTO == null)
@@ -93,6 +98,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("rentals/{rentalID}")]
+        [Authorize]
         public ActionResult DeleteCar(int rentalID)
         {
             _rentalService.DeleteRental(rentalID);

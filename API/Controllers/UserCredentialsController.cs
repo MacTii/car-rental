@@ -1,6 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Mapper.DTOs;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -23,6 +23,7 @@ namespace API.Controllers
         #endregion Injection
 
         [HttpGet("user-credentials")]
+        [Authorize]
         public ActionResult GetUserCredentials()
         {
             var userCredentialsDTOs = _userCredentialsService.GetUserCredentials();
@@ -41,6 +42,7 @@ namespace API.Controllers
         }
 
         [HttpGet("user-credentials/{userCredentialsID}")]
+        [Authorize]
         public ActionResult GetUserCredentialsByID(int userCredentialsID)
         {
             var user = _userCredentialsService.GetUserCredential(userCredentialsID);
@@ -55,6 +57,7 @@ namespace API.Controllers
         }
 
         [HttpPost("user-credentials")]
+        [Authorize]
         public ActionResult AddUserCredential(UserCredentialsDTO userCredentialsDTO)
         {
             if (userCredentialsDTO == null)
@@ -74,6 +77,7 @@ namespace API.Controllers
         }
 
         [HttpPut("user-credentials/{userCredentialsID}")]
+        [Authorize]
         public ActionResult UpdateUserCredential(int userCredentialsID, UserCredentialsDTO userCredentialsDTO)
         {
             if (userCredentialsDTO == null)
@@ -93,6 +97,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("user-credentials/{userCredentialsID}")]
+        [Authorize]
         public ActionResult DeleteUserCredential(int userCredentialsID)
         {
             _userCredentialsService.DeleteUserCredential(userCredentialsID);
