@@ -78,8 +78,8 @@ section {
 }
 
 .btn:hover{
-  color: #fff;
-  background: #000c6bd0;
+  color: #fff !important;
+  background: #000c6bd0 !important;
 }
 
 
