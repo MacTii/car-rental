@@ -22,7 +22,7 @@
 
 .list-group-item {
     background-color: red;
-  }
+}
 
 .quick__link {
     border: none !important;
@@ -36,7 +36,7 @@
     transition: 0.3s;
 }
 
-.quick__link a:hover{
+.quick__link a:hover {
     color: #f9a826;
 }
 
@@ -44,12 +44,12 @@
     color: #fff;
 }
 
-.office__info{
+.office__info {
     color: #ffffffc6;
     font-weight: 300;
 }
 
-.newsletter{
+.newsletter {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -59,17 +59,39 @@
     background: #020a4de9;
 }
 
-.newsletter input{
+.newsletter input {
     background: transparent;
     color: #fff;
     border: none;
     outline: none;
 }
 
-.newsletter span i{
+.newsletter span i {
     color: #fff;
 }
 
-.footer__bottom{
+.footer__bottom {
     border-top: 1px solid #7c8a972f;
+}
+
+
+@media only screen and (max-width: 768px) {
+    .footer__logo-content {
+        font-size: 0.8rem;
+    }
+
+    .quick__link,
+    .office__info {
+        font-size: 0.8rem;
+        line-height: 1.5rem;
+    }
+
+    .footer__link-title {
+        font-size: 1rem;
+        margin-top: 15px;
+    }
+
+    .footer__bottom p {
+        font-size: 0.7rem;
+    }
 }

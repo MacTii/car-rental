@@ -30,7 +30,7 @@
     font-weight: 500;
 }
 
-.blog__title{
+.blog__title {
     text-decoration: none;
     color: #000d6b;
     font-size: 1.2rem;
@@ -38,6 +38,31 @@
     transition: 0.3s;
 }
 
-.blog__title:hover{
+.blog__title:hover {
     color: #f9a826;
+}
+
+
+@media only screen and (max-width: 768px) {
+    .blog__time {
+        padding: 5px !important;
+    }
+
+    .blog__time span {
+        font-size: 0.7rem;
+    }
+
+    .blog__info p {
+        font-size: 0.7rem;
+        line-height: 1.5rem;
+        margin-top: 10px;
+    }
+
+    .blog__title {
+        font-size: 1.1rem;
+    }
+
+    .read__more {
+        font-size: 0.7rem;
+    }
 }

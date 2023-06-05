@@ -32,18 +32,44 @@
     padding-top: 150px;
 }
 
-.slider__content h1{
+.slider__content h1 {
     font-size: 3.2rem;
     font-weight: 600;
 }
 
-.reserve__btn{
+.reserve__btn {
     background: #fff !important;
     color: #000d6b;
     outline: none;
 }
 
-.reserve__btn a{
+.reserve__btn a {
     text-decoration: none;
     font-weight: 600;
+}
+
+@media only screen and (max-width: 992px) {
+    .slider__item {
+        height: 530px;
+        width: 100%;
+    }
+
+    .slider__content {
+        margin-top: -70px;
+    }
+
+    .slider__content h1 {
+        font-size: 2rem;
+    }
+}
+
+
+@media only screen and (max-width: 768px) {
+    .slider__item {
+        height: 450px;
+    }
+
+    .slider__content h1 {
+        font-size: 1.5rem;
+    }
 }
