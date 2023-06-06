@@ -18,7 +18,7 @@ namespace Infrastructure.Repositories
 
         public UserRepository(ApplicationDbContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         #endregion Injection
