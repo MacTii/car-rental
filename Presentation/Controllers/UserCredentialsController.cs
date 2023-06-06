@@ -17,8 +17,8 @@ namespace Presentation.Controllers
 
         public UserCredentialsController(ILogger<UserCredentialsController> logger, IUserCredentialsService userCredentialsService)
         {
-            _logger = logger;
-            _userCredentialsService = userCredentialsService;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _userCredentialsService = userCredentialsService ?? throw new ArgumentNullException(nameof(userCredentialsService));
         }
 
         #endregion Injection

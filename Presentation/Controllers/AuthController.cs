@@ -17,8 +17,8 @@ namespace Presentation.Controllers
 
         public AuthController(IConfiguration configuration, IAuthService authService, IUserCredentialsService userCredentialsService)
         {
-            _configuration = configuration;
-            _authService = authService;
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
         }
 
         #endregion Injection

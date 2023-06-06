@@ -19,8 +19,8 @@ namespace Presentation.Controllers
 
         public CarController(ILogger<CarController> logger, ICarService carService)
         {
-            _logger = logger;
-            _carService = carService;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _carService = carService ?? throw new ArgumentNullException(nameof(carService));
         }
 
         #endregion Injection

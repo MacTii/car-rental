@@ -18,8 +18,8 @@ namespace Presentation.Controllers
 
         public RentalController(ILogger<RentalController> logger, IRentalService rentalService)
         {
-            _logger = logger;
-            _rentalService = rentalService;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _rentalService = rentalService ?? throw new ArgumentNullException(nameof(rentalService));
         }
 
         #endregion Injection
