@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Claims;
-using Application.Interfaces;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
 using Application.Mapper.DTOs;
 using Domain.Entities;
+using Application.Interfaces.Services;
+using Application.Interfaces.Repositories;
 
 namespace Application.Services
 {
