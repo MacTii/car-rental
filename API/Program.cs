@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 using NLog.Web;
 using System;
 
-namespace YourProjectNamespace
+namespace API
 {
     public class Program
     {
