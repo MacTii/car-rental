@@ -69,10 +69,10 @@ const Footer = () => {
           <Col lg="3" md="4" sm="6">
             <div className="mb-4">
               <h5 className="footer__link-title mb-4">Head Office</h5>
-              <p className="office__info">123 Zindabazar, Sylhet, Bangladesh</p>
-              <p className="office__info">Phone: +08882343124</p>
-              <p className="office__info">Email: macti123@gmail.com</p>
-              <p className="office__info">Office Time: 10am - 7pm</p>
+              <p className="office__info">Warszawska 54, Lodz, Poland</p>
+              <p className="office__info">Phone: +48-200-300-400</p>
+              <p className="office__info">Email: carrent@gmail.com</p>
+              <p className="office__info">Office Time: 9am - 6pm</p>
             </div>
           </Col>
 
