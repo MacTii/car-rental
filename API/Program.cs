@@ -15,7 +15,7 @@ logger.Debug("init main");
 
 try
 {
-    var builder = WebApplication.CreateBuilder(args); 1
+    var builder = WebApplication.CreateBuilder(args);
 
     // Add services to the container.
     InfrastructureServices.AddInfrastructureServices(builder.Services, builder.Configuration);
