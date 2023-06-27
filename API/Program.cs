@@ -9,15 +9,13 @@ using System.Text;
 using NLog;
 using NLog.Web;
 
-// TEST
-
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
 
 try
 {
-    var builder = WebApplication.CreateBuilder(args);
+    var builder = WebApplication.CreateBuilder(args); 1
 
     // Add services to the container.
     InfrastructureServices.AddInfrastructureServices(builder.Services, builder.Configuration);
