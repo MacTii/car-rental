@@ -1,11 +1,13 @@
-﻿using Application.Interfaces;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Domain.Entities;
 using Application.Mapper.DTOs;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Application.Interfaces.Services;
+using Application.Interfaces.Repositories;
+using Application.Interfaces.Helpers;
 
 namespace Application.Services
 {
