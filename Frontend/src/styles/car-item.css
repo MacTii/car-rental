@@ -2,11 +2,20 @@
     border: 1px solid #7c8a9736;
     padding: 20px;
     border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
 
 .car__item-info span i {
     color: #f9a826;
     font-size: 1.1rem;
+}
+
+.car__img {
+    width: fit-content;
+    height: fit-content;
 }
 
 .car__item-btn {
