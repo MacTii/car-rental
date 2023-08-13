@@ -1,0 +1,20 @@
+.auth__form {
+    background: #000d6b;
+    padding: 40px;
+    border-radius: 5px;
+}
+
+.login__btn {
+    background: #fff !important;
+    color: #000d6b;
+    font-weight: 600;
+}
+
+.auth__form p {
+    color: #fff;
+    margin-top: 30px;
+}
+
+.auth__form p a {
+    color: #ffffffb2;
+}

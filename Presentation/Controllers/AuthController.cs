@@ -32,17 +32,17 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("register")]
-        public ActionResult Register([FromBody] RegisterDTO request)
+        public ActionResult Register(RegisterDTO request)
         {
             if (request == null)
                 return BadRequest("Invalid input data"); // return 400 Bad Request
 
-            var user = _authService.Register(request);
+            var token = _authService.Register(request);
             return Ok(
                 new
                 {
                     Response = "User registered successfully",
-                    Data = user
+                    Data = token
                 });
         }
 
