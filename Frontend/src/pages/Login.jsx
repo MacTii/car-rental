@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Helmet from "../components/Helmet/Helmet";
 import { Container, FormGroup, Row, Col, Form, Input } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,18 +6,34 @@ import { Link, useNavigate } from "react-router-dom";
 import "../styles/login.css";
 import urls from "../config/config";
 
+const baseURL = urls.development;
+
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [formError, setFormError] = useState(null);
+
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Check if the user already has a token in localStorage
+    const token = localStorage.getItem("token");
+    if (token) {
+      // If token exists, redirect to the Home page
+      navigate("/home");
+    }
+  }, [navigate]);
+
   const handleLogin = () => {
+    if (!username || !password) {
+      setFormError("Please fill in all fields.");
+      return;
+    }
+
     const data = {
       username: username,
       password: password,
     };
-
-    const baseURL = urls.development;
 
     fetch(`${baseURL}/api/login`, {
       method: "POST",
@@ -35,10 +51,11 @@ const Login = () => {
           console.log("Logged in successfully!");
           console.log("Token:", result.data);
 
-          navigate('/home');
+          navigate("/home");
         } else {
           // Login failed, handle the error
           console.error("Invalid login credentials.");
+          //toast.error("Invalid login credentials.")
         }
       })
       .catch((error) => {
@@ -71,7 +88,7 @@ const Login = () => {
                     placeholder="Enter your password"
                   />
                 </FormGroup>
-
+                {formError && <p className="error__message">{formError}</p>}
                 <button
                   type="button"
                   className="login__btn btn"

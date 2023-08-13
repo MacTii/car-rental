@@ -1,8 +1,9 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 import { Container, Row, Col } from "reactstrap";
 import { Link, NavLink } from "react-router-dom";
 import "../../styles/header.css";
+import urls from "../../config/config";
 
 const navLinks = [
   {
@@ -24,13 +25,43 @@ const navLinks = [
   {
     path: "/contact",
     display: "Contact",
-  }
+  },
 ];
 
+const baseURL = urls.development;
+
 const Header = () => {
+  const [username, setUsername] = useState("");
+  const [token, setToken] = useState(null);
   const menuRef = useRef(null);
 
   const toggleMenu = () => menuRef.current.classList.toggle("menu__active");
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+
+      fetchUsername(storedToken);
+    }
+  }, [token]);
+
+  const fetchUsername = (token) => {
+    fetch(`${baseURL}/api/username`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.text())
+      .then((result) => {
+        setUsername(result);
+      })
+      .catch((error) => {
+        console.error("An error occurred:", error);
+      });
+  };
 
   return (
     <header className="header">
@@ -46,16 +77,28 @@ const Header = () => {
                 </span>
               </div>
             </Col>
-            <Col lg="6" md="6" sm="6">
-              <div className="header__top__right d-flex align-items-center justify-content-end gap-3">
-                <Link to="/login" className="d-flex align-items-center gap-1">
-                  <i class="ri-login-circle-line"></i> Login
-                </Link>
-                <Link to="/register" className="d-flex align-items-center gap-1">
-                  <i class="ri-user-line"></i> Register
-                </Link>
-              </div>
-            </Col>
+            {token ? (
+              <Col lg="6" md="6" sm="6">
+                <div className="header__top__right d-flex align-items-center justify-content-end gap-3">
+                  {`Hi, ${username}`}
+                  <i class="ri-user-line"></i>
+                </div>
+              </Col>
+            ) : (
+              <Col lg="6" md="6" sm="6">
+                <div className="header__top__right d-flex align-items-center justify-content-end gap-3">
+                  <Link to="/login" className="d-flex align-items-center gap-1">
+                    <i class="ri-login-circle-line"></i> Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="d-flex align-items-center gap-1"
+                  >
+                    <i class="ri-user-line"></i> Register
+                  </Link>
+                </div>
+              </Col>
+            )}
           </Row>
         </Container>
       </div>
