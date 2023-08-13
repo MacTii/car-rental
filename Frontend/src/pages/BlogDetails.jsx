@@ -6,7 +6,7 @@ import blogData from "../assets/data/blogData.js";
 import Helmet from "../components/Helmet/Helmet";
 import { Link } from "react-router-dom";
 
-import commentImg from "../assets/all-images/ava-1.jpg";
+import commentImg from "../assets/all-images/ava-5.jpg";
 
 import "../styles/blog-details.css";
 
@@ -49,17 +49,18 @@ const BlogDetails = () => {
               </div>
 
               <div className="comment__list mt-5">
-                <h4 className="mb-5">3 Comments</h4>
+                <h4 className="mb-5">1 Comments</h4>
 
                 <div className="single__comment d-flex gap-3">
                   <img src={commentImg} alt="" />
                   <div className="comment__content">
-                    <h6 className="fw-bold">David Visa</h6>
-                    <p className="section__description mb-0">14 July, 2022</p>
+                    <h6 className="fw-bold">Anna Kowalska</h6>
+                    <p className="section__description mb-0">14th July 2022</p>
                     <p className="section__description">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      At, veniam distinctio consectetur dignissimos sunt
-                      inventore sapiente eos voluptatem minima cumque.
+                      Thank you for sharing these helpful tips on car
+                      maintenance. I'm really glad to learn more about taking
+                      care of my vehicle. I will definitely use this information
+                      to keep my car in the best condition. Thanks again!
                     </p>
 
                     <span className="replay d-flex align-items-center gap-1">

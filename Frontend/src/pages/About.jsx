@@ -8,7 +8,7 @@ import BecomeDriverSection from "../components/UI/BecomeDriverSection";
 
 import driveImg from "../assets/all-images/drive.jpg";
 import OurMembers from "../components/UI/OurMembers";
-import '../styles/about.css'
+import "../styles/about.css";
 
 const About = () => {
   return (
@@ -30,16 +30,18 @@ const About = () => {
                   We Are Committed To Provide Safe Ride Solutions
                 </h2>
                 <p className="section__description">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Nesciunt ut eligendi adipisci sit ex! Cum quis esse laborum
-                  explicabo cupiditate harum iure sed provident eveniet.
-                  Voluptatem maxime odit voluptatibus qui?
+                  Your safety is our top priority. We are dedicated to offering
+                  secure and reliable transportation solutions that meet your
+                  needs. Our experienced drivers and well-maintained vehicles
+                  ensure a comfortable and secure journey for every passenger.
                 </p>
                 <p className="section__description">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Nesciunt ut eligendi adipisci sit ex! Cum quis esse laborum
-                  explicabo cupiditate harum iure sed provident eveniet.
-                  Voluptatem maxime odit voluptatibus qui?
+                  At Rent Car Service, we prioritize your safety above all else.
+                  Our mission is to deliver safe and reliable transportation
+                  solutions that cater to your needs. With our team of
+                  experienced drivers and meticulously maintained vehicles, we
+                  ensure a comfortable and secure journey for each and every
+                  passenger.
                 </p>
                 <div className="d-flex align-items-center gap-3 mt-4">
                   <span className="fs-4">
@@ -47,7 +49,7 @@ const About = () => {
                   </span>
                   <div>
                     <h6 className="section__subtitle">Need Any Help?</h6>
-                    <h4>+48-400-300-200</h4>
+                    <h4>+48 200-300-400</h4>
                   </div>
                 </div>
               </div>
