@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Helmet from "../components/Helmet/Helmet";
 import { Container, FormGroup, Row, Col, Form, Input } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "../styles/register.css";
 import urls from "../config/config";
+
+const baseURL = urls.development;
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -19,6 +21,17 @@ const Register = () => {
   const [gender, setGender] = useState("");
   const [identificationNumber, setIdentificationNumber] = useState("");
   const [drivingLicenseNumber, setDrivingLicenseNumber] = useState("");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if the user already has a token in localStorage
+    const token = localStorage.getItem("token");
+    if (token) {
+      // If token exists, redirect to the Home page
+      navigate("/home");
+    }
+  }, [navigate]);
 
   const handleRegister = () => {
     const data = {
@@ -36,8 +49,6 @@ const Register = () => {
       drivingLicenseNumber: drivingLicenseNumber,
     };
 
-    const baseURL = urls.development;
-
     fetch(`${baseURL}/api/register`, {
       method: "POST",
       headers: {
@@ -53,6 +64,8 @@ const Register = () => {
           localStorage.setItem("token", result.data); // Save token in localStorage
           console.log("Registered successfully!");
           console.log("Token:", result.data);
+
+          navigate('/home');
         } else {
           // Login failed, handle the error
           console.error("Invalid register credentials.");

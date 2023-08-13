@@ -18,3 +18,9 @@
 .auth__form p a {
     color: #ffffffb2;
 }
+
+.error__message {
+    color: red !important;
+    font-size: 14px;
+    margin-top: 5px;
+}
