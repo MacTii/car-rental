@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Helmet from "../components/Helmet/Helmet";
-import { Container, FormGroup, Row, Col, Form, Input } from "reactstrap";
+import {
+  Container,
+  FormGroup,
+  Row,
+  Col,
+  Form,
+  Input,
+  InputGroup,
+  Button,
+} from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import "../styles/register.css";
 import urls from "../config/config";
@@ -22,6 +32,10 @@ const Register = () => {
   const [identificationNumber, setIdentificationNumber] = useState("");
   const [drivingLicenseNumber, setDrivingLicenseNumber] = useState("");
 
+  const [formError, setFormError] = useState(null);
+  const [showFirstPassword, setShowFirstPassword] = useState(false);
+  const [showSecondPassword, setShowSecondPassword] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,7 +47,32 @@ const Register = () => {
     }
   }, [navigate]);
 
+  const clearFormErrorWithDelay = () => {
+    setTimeout(() => {
+      setFormError(null);
+    }, 3000);
+  };
+
   const handleRegister = () => {
+    if (
+      !username ||
+      !firstPassword ||
+      !secondPassword ||
+      !name ||
+      !surname ||
+      !email ||
+      !phoneNumber ||
+      !address ||
+      !dateOfBirth ||
+      !gender ||
+      !identificationNumber ||
+      !drivingLicenseNumber
+    ) {
+      setFormError("Please fill in all fields.");
+      clearFormErrorWithDelay();
+      return;
+    }
+
     const data = {
       username: username,
       firstPassword: firstPassword,
@@ -65,15 +104,19 @@ const Register = () => {
           console.log("Registered successfully!");
           console.log("Token:", result.data);
 
-          navigate('/home');
+          navigate("/home");
         } else {
-          // Login failed, handle the error
+          // Register failed, handle the error
           console.error("Invalid register credentials.");
+          setFormError(""); // ERROR FROM BACKEND
+          clearFormErrorWithDelay();
         }
       })
       .catch((error) => {
         // Handle error
         console.error("An error occurred:", error);
+        setFormError("Something went wrong!");
+        clearFormErrorWithDelay();
       });
   };
 
@@ -94,20 +137,34 @@ const Register = () => {
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Input
-                    type="password"
-                    value={firstPassword}
-                    onChange={(e) => setFirstPassword(e.target.value)}
-                    placeholder="Enter your password"
-                  />
+                  <InputGroup>
+                    <Input
+                      type={showFirstPassword ? "text" : "password"}
+                      value={firstPassword}
+                      onChange={(e) => setFirstPassword(e.target.value)}
+                      placeholder="Enter your password"
+                    />
+                    <Button
+                      onClick={() => setShowFirstPassword(!showFirstPassword)}
+                    >
+                      {showFirstPassword ? <FaEyeSlash /> : <FaEye />}
+                    </Button>
+                  </InputGroup>
                 </FormGroup>
                 <FormGroup>
-                  <Input
-                    type="password"
-                    value={secondPassword}
-                    onChange={(e) => setSecondPassword(e.target.value)}
-                    placeholder="Confirm your password"
-                  />
+                  <InputGroup>
+                    <Input
+                      type={showSecondPassword ? "text" : "password"}
+                      value={secondPassword}
+                      onChange={(e) => setSecondPassword(e.target.value)}
+                      placeholder="Confirm your password"
+                    />
+                    <Button
+                      onClick={() => setShowSecondPassword(!showSecondPassword)}
+                    >
+                      {showSecondPassword ? <FaEyeSlash /> : <FaEye />}
+                    </Button>
+                  </InputGroup>
                 </FormGroup>
                 <FormGroup>
                   <Input
@@ -186,7 +243,7 @@ const Register = () => {
                     placeholder="Enter your driving license number"
                   />
                 </FormGroup>
-
+                {formError && <p className="error__message">{formError}</p>}
                 <button
                   type="button"
                   className="register__btn btn"
