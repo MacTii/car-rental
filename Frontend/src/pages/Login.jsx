@@ -1,17 +1,30 @@
 import React, { useState, useEffect } from "react";
 import Helmet from "../components/Helmet/Helmet";
-import { Container, FormGroup, Row, Col, Form, Input } from "reactstrap";
+import {
+  Container,
+  FormGroup,
+  Row,
+  Col,
+  Form,
+  Input,
+  InputGroup,
+  Button,
+} from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import "../styles/login.css";
 import urls from "../config/config";
+import { clear } from "@testing-library/user-event/dist/clear";
 
 const baseURL = urls.development;
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
   const [formError, setFormError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -24,9 +37,16 @@ const Login = () => {
     }
   }, [navigate]);
 
+  const clearFormErrorWithDelay = () => {
+    setTimeout(() => {
+      setFormError(null);
+    }, 3000);
+  };
+
   const handleLogin = () => {
     if (!username || !password) {
       setFormError("Please fill in all fields.");
+      clearFormErrorWithDelay();
       return;
     }
 
@@ -49,18 +69,22 @@ const Login = () => {
           // Successfully logged in, token received
           localStorage.setItem("token", result.data); // Save token in localStorage
           console.log("Logged in successfully!");
-          console.log("Token:", result.data);
+          // console.log("Token:", result.data);
 
           navigate("/home");
         } else {
           // Login failed, handle the error
           console.error("Invalid login credentials.");
+          setFormError("Invalid login credentials");
+          clearFormErrorWithDelay();
           //toast.error("Invalid login credentials.")
         }
       })
       .catch((error) => {
         // Handle error
         console.error("An error occurred:", error);
+        setFormError("Something went wrong!");
+        clearFormErrorWithDelay();
       });
   };
 
@@ -81,12 +105,17 @@ const Login = () => {
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your password"
-                  />
+                  <InputGroup>
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Enter your password"
+                    />
+                    <Button onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </Button>
+                  </InputGroup>
                 </FormGroup>
                 {formError && <p className="error__message">{formError}</p>}
                 <button
