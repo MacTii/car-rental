@@ -15,7 +15,10 @@ namespace Application.Mapper.DTOs
         public string RegistrationNumber { get; set; } = null!;
         public int Year { get; set; }
         public string Color { get; set; } = null!;
+        public string Engine { get; set; } = null!;
+        public int Speed { get; set; }
         public decimal PricePerDay { get; set; }
         public bool IsAvailable { get; set; }
+        public string Image { get; set; } = null!; // base64 string
     }
 }

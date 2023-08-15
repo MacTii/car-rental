@@ -15,7 +15,10 @@ namespace Domain.Entities
         public string RegistrationNumber { get; set; } = null!;
         public int Year { get; set; }
         public ColorEnum Color { get; set; }
+        public string Engine { get; set; } = null!;
+        public int Speed { get; set; }
         public decimal PricePerDay { get; set; }
         public bool? IsAvailable { get; set; } = true;
+        public byte[] Image { get; set; } = null!;
     }
 }

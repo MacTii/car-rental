@@ -18,8 +18,10 @@ namespace Application.Mapper
             CreateMap<User, UserDTO>()
                 .ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => src.DateOfBirth.ToString("dd.MM.yyyy")));
 
-            CreateMap<CarDTO, Car>();
-            CreateMap<Car, CarDTO>();
+            CreateMap<CarDTO, Car>()
+                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => Convert.FromBase64String(src.Image)));
+            CreateMap<Car, CarDTO>()
+                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => Convert.ToBase64String(src.Image)));
 
             CreateMap<RentalDTO, Rental>();
             CreateMap<Rental, RentalDTO>();
