@@ -14,11 +14,11 @@ namespace Application.Mapper.DTOs
         public string SecondPassword { get; set; } = null!;
         public string Name { get; set; } = null!;
         public string Surname { get; set; } = null!;
-        public string? Email { get; set; }
+        public string Email { get; set; } = null!;
         public string PhoneNumber { get; set; } = null!;
         public string Address { get; set; } = null!;
-        public DateTime DateOfBirth { get; set; }
-        public GenderEnum Gender { get; set; }
+        public string DateOfBirth { get; set; } = null!;
+        public string Gender { get; set; } = null!;
         public string IdentificationNumber { get; set; } = null!;
         public string DrivingLicenseNumber { get; set; } = null!;
     }

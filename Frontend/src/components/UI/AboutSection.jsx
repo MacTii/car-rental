@@ -20,35 +20,46 @@ const AboutSection = ({ aboutClass }) => {
               <h4 className="section__subtitle">About Us</h4>
               <h2 className="section__title">Welcome to car rent service</h2>
               <p className="section__description">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora
-                excepturi ipsam magnam vitae quo unde quis, iure nihil
-                praesentium molestiae nam dignissimos commodi, repellat odio
-                eveniet? Quisquam a illo, veniam laborum cum harum dolor tempore
-                deleniti at, eveniet necessitatibus. Perspiciatis?
+                At our car rental service, we strive to provide you with a
+                seamless and enjoyable experience for all your transportation
+                needs. Whether you're traveling for business or pleasure, our
+                wide range of vehicles and exceptional customer service ensure
+                that you have a reliable and comfortable journey.
+              </p>
+              <p className="section__description">
+                Why choose our car rental service?
               </p>
 
-              <div className="about__section-item d-flex align-items-center">
-                <p className="section__description d-flex align-items-center gap-2">
-                  <i class="ri-checkbox-circle-line"></i> Lorem ipsum dolor sit
-                  amet.
-                </p>
+              <div className="row">
+                <div className="col text-center">
+                  <div className="about__section-item d-flex align-items-center">
+                    <p className="section__description d-flex align-items-center gap-2">
+                      <i class="ri-checkbox-circle-line"></i> Diverse Fleet
+                    </p>
+                  </div>
 
-                <p className="section__description d-flex align-items-center gap-2">
-                  <i class="ri-checkbox-circle-line"></i> Lorem ipsum dolor sit
-                  amet.
-                </p>
-              </div>
+                  <div className="about__section-item d-flex align-items-center">
+                    <p className="section__description d-flex align-items-center gap-2">
+                      <i class="ri-checkbox-circle-line"></i> Competitive Prices
+                    </p>
+                  </div>
+                </div>
 
-              <div className="about__section-item d-flex align-items-center">
-                <p className="section__description d-flex align-items-center gap-2">
-                  <i class="ri-checkbox-circle-line"></i> Lorem ipsum dolor sit
-                  amet.
-                </p>
+                <div className="col text-center">
+                  <div className="about__section-item d-flex align-items-center">
+                    <p className="section__description d-flex align-items-center gap-2">
+                      <i class="ri-checkbox-circle-line"></i> Convenient
+                      Locations
+                    </p>
+                  </div>
 
-                <p className="section__description d-flex align-items-center gap-2">
-                  <i class="ri-checkbox-circle-line"></i> Lorem ipsum dolor sit
-                  amet.
-                </p>
+                  <div className="about__section-item d-flex align-items-center">
+                    <p className="section__description d-flex align-items-center gap-2">
+                      <i class="ri-checkbox-circle-line"></i> Excellent Customer
+                      Service
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </Col>

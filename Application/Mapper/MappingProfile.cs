@@ -25,7 +25,8 @@ namespace Application.Mapper
             CreateMap<Rental, RentalDTO>();
 
             CreateMap<RegisterDTO, UserCredentials>();
-            CreateMap<RegisterDTO, User>();
+            CreateMap<RegisterDTO, User>()
+                .ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => DateTime.ParseExact(src.DateOfBirth, "dd.MM.yyyy", null)));
 
             CreateMap<UserCredentialsDTO, UserCredentials>();
             CreateMap<UserCredentials, UserCredentialsDTO>();

@@ -46,10 +46,9 @@ const Footer = () => {
               </h1>
             </div>
             <p className="footer__logo-content">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Explicabo numquam vel quam maxime commodi voluptatem iste natus
-              fugit beatae itaque magnam, laudantium et impedit repellendus,
-              quis deserunt? Vitae, est cum?
+              Choose the best car rental service for your needs. We offer a wide
+              selection of vehicles, competitive prices, and exceptional
+              customer service to ensure a smooth and enjoyable experience.
             </p>
           </Col>
 

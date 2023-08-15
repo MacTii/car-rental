@@ -26,8 +26,8 @@ const BlogItem = ({ item }) => {
             {title}
           </Link>
           <p className="section__description mt-3">
-            {description.length > 100
-              ? description.substr(0, 100)
+            {description.length > 250
+              ? description.substr(0, 250)
               : description}
           </p>
 

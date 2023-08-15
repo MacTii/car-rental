@@ -44,7 +44,7 @@ namespace Application.Services
             return result;
         }
 
-        public UserCredentials Register(RegisterDTO request)
+        public string Register(RegisterDTO request)
         {
             var existingUser = _userCredentialsRepository.GetByUsername(request.Username);
             if (existingUser != null)
@@ -60,6 +60,8 @@ namespace Application.Services
             userCredentials.PasswordHash = passwordHash;
             userCredentials.PasswordSalt = passwordSalt;
 
+            string token = GetToken(userCredentials);
+
             // mapping RegisterDTO -> User
             var user = _mapper.Map<User>(request);
             user.UserCredentials = userCredentials;
@@ -67,22 +69,19 @@ namespace Application.Services
             _userRepository.Insert(user);
             _userRepository.Save();
 
-            return userCredentials;
+            return token;
         }
 
         public string Login(LoginDTO request)
         {
-            var user = _userCredentialsRepository.GetByUsername(request.Username);
-            if (user == null)
+            var userCredentials = _userCredentialsRepository.GetByUsername(request.Username);
+            if (userCredentials == null)
                 throw new InvalidOperationException("User not found!");
 
-            if (!_authenticationHelper.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
+            if (!_authenticationHelper.VerifyPasswordHash(request.Password, userCredentials.PasswordHash, userCredentials.PasswordSalt))
                 throw new UnauthorizedAccessException("Wrong password!");
 
-            string token = _authenticationHelper.CreateToken(user);
-
-            var refreshToken = _authenticationHelper.GenerateRefreshToken();
-            _authenticationHelper.SetRefreshToken(refreshToken, user);
+            string token = GetToken(userCredentials);
 
             return token;
         }
@@ -105,10 +104,17 @@ namespace Application.Services
                 throw new SecurityTokenExpiredException("Token expired!"); // Unauthorized, TokenExpiredException();
             }
 
+            string token = GetToken(userCredentials);
+
+            return token;
+        }
+
+        private string GetToken(UserCredentials userCredentials)
+        {
             string token = _authenticationHelper.CreateToken(userCredentials);
 
-            var newRefreshToken = _authenticationHelper.GenerateRefreshToken();
-            _authenticationHelper.SetRefreshToken(newRefreshToken, userCredentials);
+            var refreshToken = _authenticationHelper.GenerateRefreshToken();
+            _authenticationHelper.SetRefreshToken(refreshToken, userCredentials);
 
             return token;
         }
