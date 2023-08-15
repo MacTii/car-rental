@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import HeroSlider from "../components/UI/HeroSlider";
 import Helmet from "../components/Helmet/Helmet";
@@ -14,7 +14,32 @@ import Testimonial from "../components/UI/Testimonial";
 
 import BlogList from "../components/UI/BlogList";
 
+import urls from "../config/config";
+
+const baseURL = urls.development;
+
 const Home = () => {
+  const [cars, setCars] = useState([]);
+
+  useEffect(() => {
+    fetch(`${baseURL}/api/cars`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.data) {
+          console.log(result.data); // show car list
+          setCars(result.data);
+        } else {
+          console.error("List of cars is empty!");
+        }
+      })
+      .catch((error) => {
+        console.error("An error occurred:", error);
+      });
+  }, []);
+
   return (
     <Helmet title="Home">
       {/* === hero section === */}
@@ -60,8 +85,8 @@ const Home = () => {
               <h6 className="section__subtitle">Come with</h6>
               <h2 className="section__title">Hot Offers</h2>
             </Col>
-            {carData.slice(0, 6).map((item) => (
-              <CarItem item={item} key={item.id} />
+            {cars.slice(0, 6).map((car) => (
+              <CarItem item={car} key={car.id} />
             ))}
           </Row>
         </Container>
@@ -95,7 +120,6 @@ const Home = () => {
           </Row>
         </Container>
       </section>
-
     </Helmet>
   );
 };

@@ -15,7 +15,6 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import "../styles/login.css";
 import urls from "../config/config";
-import { clear } from "@testing-library/user-event/dist/clear";
 
 const baseURL = urls.development;
 
@@ -32,8 +31,9 @@ const Login = () => {
     // Check if the user already has a token in localStorage
     const token = localStorage.getItem("token");
     if (token) {
-      // If token exists, redirect to the Home page
-      navigate("/home");
+      navigate("/home"); // If token exists, redirect to the Home page
+      // window.location.href="/home"
+      // return <Link to="/home"></Link>
     }
   }, [navigate]);
 

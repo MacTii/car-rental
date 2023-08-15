@@ -31,20 +31,21 @@ const navLinks = [
 const baseURL = urls.development;
 
 const Header = () => {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(null);
   const [token, setToken] = useState(null);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
   const toggleMenu = () => menuRef.current.classList.toggle("menu__active");
+  const toggleUserMenu = () => setIsUserMenuOpen(!isUserMenuOpen);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
-
       fetchUsername(storedToken);
     }
-  }, [token]);
+  }, [token, username]);
 
   const fetchUsername = (token) => {
     fetch(`${baseURL}/api/username`, {
@@ -56,7 +57,8 @@ const Header = () => {
     })
       .then((response) => response.text())
       .then((result) => {
-        setUsername(result);
+        console.log(result.data);
+        setUsername(result.data);
       })
       .catch((error) => {
         console.error("An error occurred:", error);
@@ -79,10 +81,31 @@ const Header = () => {
             </Col>
             {token ? (
               <Col lg="6" md="6" sm="6">
-                <div className="header__top__right d-flex align-items-center justify-content-end gap-3">
+                <div
+                  className="header__top__right d-flex align-items-center justify-content-end gap-3"
+                  onClick={toggleUserMenu}
+                >
                   {`Hi, ${username}`}
-                  <i class="ri-user-line"></i>
+                  <i class="ri-user-line header__icon"></i>
                 </div>
+                {isUserMenuOpen && (
+                  <div className="flex flex-col user__menu__list">
+                    <ul className="flex flex-col gap-4">
+                      <li>Profile</li>
+                      <li
+                        onClick={() => {
+                          // clear data from local storage and session storage
+                          localStorage.clear();
+                          sessionStorage.clear();
+
+                          window.location.href = "/home"; // redirect the user to the logout page
+                        }}
+                      >
+                        Logout
+                      </li>
+                    </ul>
+                  </div>
+                )}
               </Col>
             ) : (
               <Col lg="6" md="6" sm="6">
