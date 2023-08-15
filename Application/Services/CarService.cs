@@ -3,6 +3,7 @@ using Application.Interfaces.Services;
 using Application.Mapper.DTOs;
 using AutoMapper;
 using Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -57,6 +58,21 @@ namespace Application.Services
         {
             _carRepository.Delete(carID);
             _carRepository.Save();
+        }
+
+        public CarDTO UploadImage(IFormFile formFile, int carID)
+        {
+            var car = _carRepository.GetByID(carID);
+            using (MemoryStream memoryStream = new())
+            {
+                formFile.CopyTo(memoryStream);
+                car.Image = memoryStream.ToArray();
+            }
+
+            _carRepository.Update(carID, car);
+            _carRepository.Save();
+
+            return _mapper.Map<CarDTO>(car);
         }
     }
 }

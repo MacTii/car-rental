@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.Services;
 using Application.Mapper.DTOs;
+using Application.Services;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +27,7 @@ namespace Presentation.Controllers
         #endregion Injection
 
         [HttpGet("cars")]
-        [Authorize]
+        // [Authorize]
         public ActionResult GetCars()
         {
             var carDTOs = _carService.GetCars();
@@ -103,6 +104,18 @@ namespace Presentation.Controllers
                 {
                     Response = "Car record deleted successfully"
                 });
+        }
+
+        [HttpPut("cars/upload-image/{carID}")]
+        [Authorize]
+        public ActionResult UploadImage(IFormFile formFile, int carID)
+        {
+            var carDTO = _carService.UploadImage(formFile, carID);
+            return Ok(new
+            {
+                Response = "Car image uploaded successfully",
+                Data = carDTO
+            });
         }
     }
 }

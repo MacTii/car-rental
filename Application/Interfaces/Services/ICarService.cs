@@ -1,5 +1,6 @@
 ﻿using Application.Mapper.DTOs;
 using Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace Application.Interfaces.Services
         public void AddCar(CarDTO carDTO);
         public void UpdateCar(int carID, CarDTO carDTO);
         public void DeleteCar(int carID);
+        public CarDTO UploadImage(IFormFile formFile, int carID);
     }
 }
