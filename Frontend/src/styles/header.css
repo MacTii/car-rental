@@ -32,12 +32,61 @@
     text-decoration: none;
     color: #fff;
     font-size: .9rem;
+    transition: color 0.3s ease-in-out;
 }
 
 .header__top__right a:hover {
-    color: #fff;
+    color: #f9a826;
 }
 
+/* === menu drop down list === */
+.user__menu__list {
+    position: absolute;
+    top: 4.5rem;
+    right: 1.2rem;
+    width: 120px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: white;
+    border: 1px solid gray;
+}
+
+.user__menu__list::before {
+    content: '';
+    position: absolute;
+    top: -0.7rem;
+    right: 1.1rem;
+    width: 20px;
+    height: 20px;
+    transform: rotate(45deg);
+    background-color: white;
+    border-left: 1px solid gray;
+    border-top: 1px solid gray;
+}
+
+.user__menu__list ul {
+    list-style: none;
+    padding: 1px;
+    margin: 0;
+}
+
+.user__menu__list ul li {
+    cursor: pointer;
+    color: #333;
+    /* add text color */
+}
+
+/* === header icon === */
+
+/* add fluidity to the color change */
+.header__icon {
+    transition: color 0.3s ease-in-out;
+}
+
+.header__icon:hover {
+    color: #f9a826;
+    cursor: pointer;
+}
 
 /* ==== header middle style ===  */
 
@@ -204,7 +253,7 @@
         font-size: 0.9rem;
     }
 
-    .menu__active{
+    .menu__active {
         display: block;
     }
 }
