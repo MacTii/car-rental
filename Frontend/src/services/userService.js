@@ -1,11 +1,11 @@
 import urls from "../config/config";
 
 const baseURL = urls.development;
-const token = localStorage.getItem("token");
 
 // --- GET USER (USING TOKEN) ---
 export const getUsername = async () => {
   try {
+    const token = localStorage.getItem("token");
     const response = await fetch(`${baseURL}/api/username`, {
       method: "GET",
       headers: {
@@ -23,6 +23,7 @@ export const getUsername = async () => {
 // -- GET USER BY USERNAME ---
 export const getUserByUsername = async (username) => {
   try {
+    const token = localStorage.getItem("token");
     const response = await fetch(`${baseURL}/api/users/username/${username}`, {
       method: "GET",
       headers: {
