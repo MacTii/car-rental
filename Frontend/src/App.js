@@ -1,8 +1,13 @@
-import React from 'react';
-import Layout from './components/Layout/Layout';
+import React from "react";
+import Layout from "./components/Layout/Layout";
+import { AuthContext } from "./context/AuthContext";
 
 function App() {
-  return <Layout />;
+  return (
+    <AuthContext>
+      <Layout />
+    </AuthContext>
+  );
 }
 
 export default App;

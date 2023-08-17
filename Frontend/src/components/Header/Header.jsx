@@ -2,8 +2,10 @@ import React, { useRef, useState, useEffect } from "react";
 
 import { Container, Row, Col } from "reactstrap";
 import { Link, NavLink } from "react-router-dom";
+
 import "../../styles/header.css";
 import urls from "../../config/config";
+import { useAuth } from "../../context/AuthContext";
 
 const navLinks = [
   {
@@ -34,18 +36,21 @@ const Header = () => {
   const [username, setUsername] = useState(null);
   const [token, setToken] = useState(null);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  
   const menuRef = useRef(null);
 
   const toggleMenu = () => menuRef.current.classList.toggle("menu__active");
   const toggleUserMenu = () => setIsUserMenuOpen(!isUserMenuOpen);
 
+  const { isAuthenticated } = useAuth();
+  console.log("Authenticated: ", isAuthenticated);
+
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-      fetchUsername(storedToken);
+    setToken(localStorage.getItem("token"));
+    if (token) {
+      fetchUsername(token);
     }
-  }, [token, username]);
+  }, [isAuthenticated, token]);
 
   const fetchUsername = (token) => {
     fetch(`${baseURL}/api/username`, {
@@ -57,8 +62,8 @@ const Header = () => {
     })
       .then((response) => response.text())
       .then((result) => {
-        console.log(result.data);
-        setUsername(result.data);
+        console.log("Username: ", result);
+        setUsername(result);
       })
       .catch((error) => {
         console.error("An error occurred:", error);
@@ -75,18 +80,18 @@ const Header = () => {
               <div className="header__top__left">
                 <span>Need Help?</span>
                 <span className="header__top__help">
-                  <i class="ri-phone-fill"></i> +48 200-300-400
+                  <i className="ri-phone-fill"></i> +48 200-300-400
                 </span>
               </div>
             </Col>
-            {token ? (
+            {isAuthenticated ? (
               <Col lg="6" md="6" sm="6">
                 <div
                   className="header__top__right d-flex align-items-center justify-content-end gap-3"
                   onClick={toggleUserMenu}
                 >
                   {`Hi, ${username}`}
-                  <i class="ri-user-line header__icon"></i>
+                  <i className="ri-user-line header__icon"></i>
                 </div>
                 {isUserMenuOpen && (
                   <div className="flex flex-col user__menu__list">
@@ -111,13 +116,13 @@ const Header = () => {
               <Col lg="6" md="6" sm="6">
                 <div className="header__top__right d-flex align-items-center justify-content-end gap-3">
                   <Link to="/login" className="d-flex align-items-center gap-1">
-                    <i class="ri-login-circle-line"></i> Login
+                    <i className="ri-login-circle-line"></i> Login
                   </Link>
                   <Link
                     to="/register"
                     className="d-flex align-items-center gap-1"
                   >
-                    <i class="ri-user-line"></i> Register
+                    <i className="ri-user-line"></i> Register
                   </Link>
                 </div>
               </Col>
@@ -134,7 +139,7 @@ const Header = () => {
               <div className="logo">
                 <h1>
                   <Link to="/home" className="d-flex align-items-center gap-3">
-                    <i class="ri-car-line"></i>
+                    <i className="ri-car-line"></i>
                     <span>
                       Rent Car <br /> Service
                     </span>
@@ -145,7 +150,7 @@ const Header = () => {
             <Col lg="3" md="3" sm="4">
               <div className="header__location d-flex align-items-center gap-2">
                 <span>
-                  <i class="ri-earth-line"></i>
+                  <i className="ri-earth-line"></i>
                 </span>
                 <div className="header__location-content">
                   <h4>Poland</h4>
@@ -156,7 +161,7 @@ const Header = () => {
             <Col lg="3" md="3" sm="4">
               <div className="header__location d-flex align-items-center gap-2">
                 <span>
-                  <i class="ri-time-line"></i>
+                  <i className="ri-time-line"></i>
                 </span>
                 <div className="header__location-content">
                   <h4>Monday to Friday</h4>
@@ -172,7 +177,7 @@ const Header = () => {
             >
               <button className="header__btn btn">
                 <Link to="/contact">
-                  <i class="ri-phone-line"></i> Request a call
+                  <i className="ri-phone-line"></i> Request a call
                 </Link>
               </button>
             </Col>
@@ -185,7 +190,7 @@ const Header = () => {
         <Container>
           <div className="navigation__wrapper d-flex align-items-center justify-content-between">
             <span className="mobile__menu">
-              <i class="ri-menu-line" onClick={toggleMenu}></i>
+              <i className="ri-menu-line" onClick={toggleMenu}></i>
             </span>
             <div className="navigation" ref={menuRef} onClick={toggleMenu}>
               <div className="menu">
@@ -206,7 +211,7 @@ const Header = () => {
               <div className="search__box">
                 <input type="text" placeholder="Search" />
                 <span>
-                  <i class="ri-search-line"></i>
+                  <i className="ri-search-line"></i>
                 </span>
               </div>
             </div>
