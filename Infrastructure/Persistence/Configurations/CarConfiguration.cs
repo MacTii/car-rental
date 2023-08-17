@@ -34,6 +34,18 @@ namespace Infrastructure.Persistence.Configurations
             entity.Property(e => e.IsAvailable)
                 .IsRequired()
                 .HasDefaultValue(true);
+
+            entity.Property(e => e.Engine)
+                .HasMaxLength(15);
+
+            entity.Property(e => e.GPS)
+                .HasMaxLength(20);
+
+            entity.Property(e => e.SeatType)
+                .HasMaxLength(15);
+
+            entity.Property(e => e.Description)
+                .HasMaxLength(400);
         }
     }
 }

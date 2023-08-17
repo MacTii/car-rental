@@ -171,7 +171,16 @@ namespace Infrastructure.SeedData
                     Year = 1999,
                     Color = ColorEnum.Black,
                     PricePerDay = 400.5m,
-                    IsAvailable = true
+                    IsAvailable = true,
+                    Engine = "Automatic",
+                    Speed = 220,
+                    Image = Array.Empty<byte>(),
+                    GPS = "GPS Navigation",
+                    Ratings = 20,
+                    SeatType = "Heated seats",
+                    Description = "The Lotus Esprit is an iconic sports car known for its distinctive wedge-shaped " +
+                    "design and impressive performance. Manufactured by Lotus, it gained fame through appearances in media " +
+                    "like James Bond films. With agile handling and various engine options, the Esprit is a symbol of automotive innovation."
                 };
                 cars[1] = new Car
                 {
@@ -181,7 +190,17 @@ namespace Infrastructure.SeedData
                     Year = 2001,
                     Color = ColorEnum.Black,
                     PricePerDay = 350m,
-                    IsAvailable = true
+                    IsAvailable = true,
+                    Engine = "Automatic",
+                    Speed = 200,
+                    Image = Array.Empty<byte>(),
+                    GPS = "GPS Navigation",
+                    Ratings = 43,
+                    SeatType = "Heated seats",
+                    Description = "The Chrysler LHS is a luxurious sedan renowned for its elegant design, comfort, " +
+                    "and refined driving experience. It embodies a harmonious blend of style and sophistication, offering spaciousness, " +
+                    "premium materials, and modern technology. With its powerful engine and smooth suspension, " +
+                    "the LHS delivers both performance and a comfortable ride."
                 };
                 cars[2] = new Car
                 {
@@ -191,7 +210,16 @@ namespace Infrastructure.SeedData
                     Year = 2002,
                     Color = ColorEnum.White,
                     PricePerDay = 300.5m,
-                    IsAvailable = true
+                    IsAvailable = true,
+                    Engine = "Manual",
+                    Speed = 200,
+                    Image = Array.Empty<byte>(),
+                    GPS = "GPS Navigation",
+                    Ratings = 54,
+                    SeatType = "Heated seats",
+                    Description = "The Ford Focus is a compact car known for its practicality, efficiency, " +
+                    "and enjoyable driving experience. With a range of body styles, it offers a comfortable interior, " +
+                    "modern technology, and agile handling, making it a versatile choice for urban and daily driving."
                 };
                 cars[3] = new Car
                 {
@@ -201,7 +229,16 @@ namespace Infrastructure.SeedData
                     Year = 2010,
                     Color = ColorEnum.Black,
                     PricePerDay = 650m,
-                    IsAvailable = true
+                    IsAvailable = true,
+                    Engine = "Manual",
+                    Speed = 180,
+                    Image = Array.Empty<byte>(),
+                    GPS = "GPS Navigation",
+                    Ratings = 15,
+                    SeatType = "Heated seats",
+                    Description = "The Lexus GS is a luxury sedan that seamlessly blends sophisticated design, " +
+                    "advanced technology, and refined performance. With its opulent interior, cutting-edge features, " +
+                    "and dynamic driving capabilities, it embodies Lexus's commitment to providing an elevated driving experience."
                 };
                 cars[4] = new Car
                 {
@@ -211,7 +248,16 @@ namespace Infrastructure.SeedData
                     Year = 2005,
                     Color = ColorEnum.Red,
                     PricePerDay = 570m,
-                    IsAvailable = true
+                    IsAvailable = true,
+                    Engine = "Automatic",
+                    Speed = 190,
+                    Image = Array.Empty<byte>(),
+                    GPS = "GPS Navigation",
+                    Ratings = 34,
+                    SeatType = "Heated seats",
+                    Description = "\r\nThe Mitsubishi Lancer is a reliable compact car known for its practicality, affordability, " +
+                    "and consistent performance. With its compact size, comfortable interior, and efficient design, " +
+                    "it offers a budget-friendly option for everyday driving needs."
                 };
                 cars[5] = new Car
                 {
@@ -221,7 +267,16 @@ namespace Infrastructure.SeedData
                     Year = 2007,
                     Color = ColorEnum.Purple,
                     PricePerDay = 340,
-                    IsAvailable = true
+                    IsAvailable = true,
+                    Engine = "Automatic",
+                    Speed = 220,
+                    Image = Array.Empty<byte>(),
+                    GPS = "GPS Navigation",
+                    Ratings = 29,
+                    SeatType = "Heated seats",
+                    Description = "The GMC Yukon XL 1500 is a spacious full-size SUV known for its powerful capabilities and modern features. " +
+                    "With its extended size, advanced technology, and robust engine options, it's an ideal choice for those seeking " +
+                    "a versatile and capable vehicle."
                 };
                 cars[6] = new Car
                 {
@@ -231,7 +286,16 @@ namespace Infrastructure.SeedData
                     Year = 2010,
                     Color = ColorEnum.Black,
                     PricePerDay = 250,
-                    IsAvailable = true
+                    IsAvailable = true,
+                    Engine = "Manual",
+                    Speed = 200,
+                    Image = Array.Empty<byte>(),
+                    GPS = "GPS Navigation",
+                    Ratings = 37,
+                    SeatType = "Heated seats",
+                    Description = "The Mercedes-Benz SL-Class is a luxury convertible that offers timeless elegance, " +
+                    "high-performance capabilities, and advanced features. With its iconic design, opulent interior, " +
+                    "and powerful engines, it's the epitome of luxurious driving."
                 };
                 cars[7] = new Car
                 {
@@ -241,7 +305,16 @@ namespace Infrastructure.SeedData
                     Year = 1990,
                     Color = ColorEnum.Black,
                     PricePerDay = 80m,
-                    IsAvailable = true
+                    IsAvailable = true,
+                    Engine = "Automatic",
+                    Speed = 190,
+                    Image = Array.Empty<byte>(),
+                    GPS = "GPS Navigation",
+                    Ratings = 65,
+                    SeatType = "Heated seats",
+                    Description = "The Kia Sportage is a compact SUV known for its versatility, modern features, and comfortable ride. " +
+                    "With its spacious interior, user-friendly technology, and efficient engines, it offers a practical choice " +
+                    "for various driving needs."
                 };
                 cars[8] = new Car
                 {
@@ -251,7 +324,16 @@ namespace Infrastructure.SeedData
                     Year = 2005,
                     Color = ColorEnum.Green,
                     PricePerDay = 320.6m,
-                    IsAvailable = true
+                    IsAvailable = true,
+                    Engine = "Manual",
+                    Speed = 200,
+                    Image = Array.Empty<byte>(),
+                    GPS = "GPS Navigation",
+                    Ratings = 38,
+                    SeatType = "Heated seats",
+                    Description = "The Volkswagen Passat is a midsize sedan known for its refined design, practical features, " +
+                    "and balanced performance. With its spacious interior, modern technology, and comfortable ride, it offers " +
+                    "a well-rounded choice for drivers seeking a combination of style and functionality."
                 };
                 cars[9] = new Car
                 {
@@ -261,7 +343,16 @@ namespace Infrastructure.SeedData
                     Year = 2012,
                     Color = ColorEnum.Gray,
                     PricePerDay = 550.3m,
-                    IsAvailable = true
+                    IsAvailable = true,
+                    Engine = "Automatic",
+                    Speed = 150,
+                    Image = Array.Empty<byte>(),
+                    GPS = "GPS Navigation",
+                    Ratings = 13,
+                    SeatType = "Heated seats",
+                    Description = "\r\nThe Suzuki Daewoo Lacetti (Chevrolet Optra/Nubira) is a compact car known for its affordability, " +
+                    "practicality, and simple driving experience. With its compact size and functional design, it offers essential " +
+                    "space and cost-effective transportation for daily needs."
                 };
 
                 _context.Cars.AddRange(cars);

@@ -20,5 +20,9 @@ namespace Application.Mapper.DTOs
         public decimal PricePerDay { get; set; }
         public bool IsAvailable { get; set; }
         public string Image { get; set; } = null!; // base64 string
+        public int Ratings { get; set; }
+        public string GPS { get; set; } = null!;
+        public string SeatType { get; set; } = null!;
+        public string Description { get; set; } = null!;
     }
 }
