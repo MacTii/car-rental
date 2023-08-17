@@ -51,20 +51,6 @@ namespace Infrastructure.Repositories
 
             var existingCar = _context.Cars.Find(carID) ?? throw new InvalidOperationException($"Car with ID: {carID} not found.");
 
-            /*existingCar.Make = car.Make;
-            existingCar.Model = car.Model;
-            existingCar.RegistrationNumber = car.RegistrationNumber;
-            existingCar.Color = car.Color;
-            existingCar.Year = car.Year;
-            existingCar.Engine = car.Engine;
-            existingCar.Speed = car.Speed;
-            existingCar.PricePerDay = car.PricePerDay;
-            existingCar.IsAvailable = car.IsAvailable;
-            existingCar.Image = car.Image;
-            existingCar.Ratings = car.Ratings;
-            existingCar.GPS = car.GPS;
-            existingCar.SeatType = car.SeatType;
-            existingCar.Description = car.Description;*/
             CopyProperties(car, existingCar);
 
             _context.Entry(existingCar).State = EntityState.Modified;

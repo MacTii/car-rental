@@ -43,11 +43,26 @@ namespace Presentation.Controllers
                 });
         }
 
-        [HttpGet("users/{userID}")]
+        [HttpGet("users/id/{userID}")]
         [Authorize]
         public ActionResult GetUserByID(int userID)
         {
-            var userDTO = _userService.GetUser(userID);
+            var userDTO = _userService.GetUserByID(userID);
+
+            // HTTP 200
+            return Ok(
+                new
+                {
+                    Response = "User record retrieved successfully",
+                    Data = userDTO
+                });
+        }
+
+        [HttpGet("users/username/{username}")]
+        [Authorize]
+        public ActionResult GetUserByUsername(string username)
+        {
+            var userDTO = _userService.GetUserByUsername(username);
 
             // HTTP 200
             return Ok(

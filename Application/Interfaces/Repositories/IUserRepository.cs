@@ -11,6 +11,7 @@ namespace Application.Interfaces.Repositories
     {
         public IEnumerable<User> GetAll();
         public User GetByID(int userID);
+        public User GetByUsername(string username);
         public void Insert(User user);
         public void Update(int userID, User user);
         public void Delete(int userID);

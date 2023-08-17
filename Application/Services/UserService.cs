@@ -35,9 +35,15 @@ namespace Application.Services
             return _mapper.Map<IEnumerable<UserDTO>>(users);
         }
 
-        public UserDTO GetUser(int userID)
+        public UserDTO GetUserByID(int userID)
         {
             var user = _userRepository.GetByID(userID);
+            return _mapper.Map<UserDTO>(user);
+        }
+
+        public UserDTO GetUserByUsername(string username)
+        {
+            var user = _userRepository.GetByUsername(username);
             return _mapper.Map<UserDTO>(user);
         }
 
