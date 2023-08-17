@@ -13,29 +13,18 @@ import Testimonial from "../components/UI/Testimonial";
 
 import BlogList from "../components/UI/BlogList";
 
-import urls from "../config/config";
-
-const baseURL = urls.development;
+import { getCars } from "../services/carService";
 
 const Home = () => {
   const [cars, setCars] = useState([]);
 
+  const fetchCars = async () => {
+    const result = await getCars();
+    setCars(result);
+  }
+
   useEffect(() => {
-    fetch(`${baseURL}/api/cars`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.data) {
-          setCars(result.data);
-        } else {
-          console.error("List of cars is empty!");
-        }
-      })
-      .catch((error) => {
-        console.error("An error occurred:", error);
-      });
+    fetchCars();
   }, []);
 
   return (

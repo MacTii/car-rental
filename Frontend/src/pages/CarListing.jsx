@@ -4,29 +4,21 @@ import { Container, Row, Col } from "reactstrap";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
 import CarItem from "../components/UI/CarItem";
-import urls from "../config/config";
 
-const baseURL = urls.development;
+import { getCars } from "../services/carService";
 
 const CarListing = () => {
   const [cars, setCars] = useState([]);
 
   useEffect(() => {
-    fetch(`${baseURL}/api/cars`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.data) {
-          console.log(result.data); // show car list
-          setCars(result.data);
-        } else {
-          console.error("List of cars is empty!");
-        }
+    getCars()
+      .then((carsData) => {
+        console.log(carsData);
+
+        setCars(carsData);
       })
       .catch((error) => {
-        console.error("An error occurred:", error);
+        console.error(error.message);
       });
   }, []);
 

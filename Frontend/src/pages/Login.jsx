@@ -14,10 +14,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import "../styles/login.css";
-import urls from "../config/config";
 import { useAuth } from "../context/AuthContext";
-
-const baseURL = urls.development;
+import { login } from "../services/authService";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -31,8 +29,7 @@ const Login = () => {
   const { setIsAuthenticated } = useAuth();
 
   useEffect(() => {
-    // Check if the user already has a token in localStorage
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token"); // Check if the user already has a token in localStorage
     if (token) {
       navigate("/home"); // If token exists, redirect to the Home page
     }
@@ -56,35 +53,17 @@ const Login = () => {
       password: password,
     };
 
-    fetch(`${baseURL}/api/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        // Check if the response contains a token
-        if (result.data) {
-          // Successfully logged in, token received
-          localStorage.setItem("token", result.data); // Save token in localStorage
-          setIsAuthenticated(true); // set global context
-          console.log("Logged in successfully!");
-          // console.log("Token:", result.data);
+    login(data)
+      .then((token) => {
+        console.log("Logged in successfully!");
 
-          navigate("/home");
-        } else {
-          // Login failed, handle the error
-          console.error("Invalid login credentials.");
-          setFormError("Invalid login credentials");
-          clearFormErrorWithDelay();
-          //toast.error("Invalid login credentials.")
-        }
+        localStorage.setItem("token", token);
+        setIsAuthenticated(true);
+        navigate("/home");
       })
       .catch((error) => {
-        // Handle error
-        console.error("An error occurred:", error);
+        console.error(error.message);
+
         setFormError("Something went wrong!");
         clearFormErrorWithDelay();
       });

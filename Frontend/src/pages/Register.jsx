@@ -14,9 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import "../styles/register.css";
-import urls from "../config/config";
-
-const baseURL = urls.development;
+import { register } from "../services/authService";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -39,11 +37,9 @@ const Register = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if the user already has a token in localStorage
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token"); // Check if the user already has a token in localStorage
     if (token) {
-      // If token exists, redirect to the Home page
-      navigate("/home");
+      navigate("/home"); // If token exists, redirect to the Home page
     }
   }, [navigate]);
 
@@ -88,34 +84,17 @@ const Register = () => {
       drivingLicenseNumber: drivingLicenseNumber,
     };
 
-    fetch(`${baseURL}/api/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        // Check if the response contains a token
-        if (result.data) {
-          // Successfully logged in, token received
-          localStorage.setItem("token", result.data); // Save token in localStorage
-          console.log("Registered successfully!");
-          console.log("Token:", result.data);
+    register(data)
+      .then((token) => {
+        console.log("Registered successfully!");
 
-          navigate("/home");
-        } else {
-          // Register failed, handle the error
-          console.error("Invalid register credentials.");
-          setFormError(""); // ERROR FROM BACKEND
-          clearFormErrorWithDelay();
-        }
+        localStorage.setItem("token", token);
+        navigate("/home");
       })
       .catch((error) => {
-        // Handle error
-        console.error("An error occurred:", error);
-        setFormError("Something went wrong!");
+        console.error(error.message);
+
+        setFormError(error.message);
         clearFormErrorWithDelay();
       });
   };
