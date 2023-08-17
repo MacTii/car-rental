@@ -108,8 +108,13 @@ namespace Infrastructure.Migrations
                     b.Property<int>("CarID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Comments")
+                    b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime>("RentDate")
                         .HasColumnType("datetime2");

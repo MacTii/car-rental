@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -52,9 +54,7 @@ namespace Infrastructure.Repositories
             if (existingRental == null)
                 throw new InvalidOperationException($"Rental with ID: {rentalID} not found.");
 
-            existingRental.RentDate = rental.RentDate;
-            existingRental.ReturnDate = rental.ReturnDate;
-            existingRental.Comments = existingRental.Comments;
+            CopyProperties(rental, existingRental);
 
             _context.Entry(existingRental).State = EntityState.Modified;
         }
@@ -74,6 +74,21 @@ namespace Infrastructure.Repositories
         public void Save()
         {
             _context.SaveChanges();
+        }
+
+        private static void CopyProperties(object source, object destination)
+        {
+            Type type = source.GetType();
+            PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (PropertyInfo property in properties)
+            {
+                if (property.CanRead && property.CanWrite)
+                {
+                    var value = property.GetValue(source);
+                    property.SetValue(destination, value);
+                }
+            }
         }
     }
 }
