@@ -29,15 +29,15 @@ const BlogDetails = () => {
                 <h2 className="section__title mt-4">{blog.title}</h2>
                 <div className="blog__publisher d-flex align-items-center gap-4 mb-4">
                   <span className="blog__author">
-                    <i class="ri-user-line"></i> {blog.author}
+                    <i className="ri-user-line"></i> {blog.author}
                   </span>
 
                   <span className="d-flex align-items-center gap-1 section__description">
-                    <i class="ri-calendar-line"></i> {blog.date}
+                    <i className="ri-calendar-line"></i> {blog.date}
                   </span>
 
                   <span className="d-flex align-items-center gap-1 section__description">
-                    <i class="ri-time-line"></i> {blog.time}
+                    <i className="ri-time-line"></i> {blog.time}
                   </span>
                 </div>
 
@@ -64,7 +64,7 @@ const BlogDetails = () => {
                     </p>
 
                     <span className="replay d-flex align-items-center gap-1">
-                      <i class="ri-reply-line"></i> Replay
+                      <i className="ri-reply-line"></i> Replay
                     </span>
                   </div>
                 </div>
