@@ -11,7 +11,7 @@ import img08 from "../all-images/cars-img/lamborghini-aventador.png";
 const carData = [
   {
     id: 1,
-    brand: "Tesla",
+    make: "Tesla",
     rating: 112,
     carName: "Tesla Malibu",
     imgUrl: img01,
@@ -27,7 +27,7 @@ const carData = [
 
   {
     id: 2,
-    brand: "Lamborghini",
+    make: "Lamborghini",
     rating: 152,
     carName: "Lamborghini Aventador",
     imgUrl: img08,
@@ -43,7 +43,7 @@ const carData = [
 
   {
     id: 3,
-    brand: "BMW",
+    make: "BMW",
     rating: 132,
     carName: "BMW X3",
     imgUrl: img03,
@@ -59,7 +59,7 @@ const carData = [
 
   {
     id: 4,
-    brand: "Nissan",
+    make: "Nissan",
     rating: 102,
     carName: "Nissan Maxima",
     imgUrl: img04,
@@ -75,7 +75,7 @@ const carData = [
 
   {
     id: 5,
-    brand: "Toyota",
+    make: "Toyota",
     rating: 94,
     carName: "Toyota Camry",
     imgUrl: img05,
@@ -91,7 +91,7 @@ const carData = [
 
   {
     id: 6,
-    brand: "Mercedes",
+    make: "Mercedes",
     rating: 119,
     carName: "Mercedes Benz XC90",
     imgUrl: img06,
@@ -107,7 +107,7 @@ const carData = [
 
   {
     id: 7,
-    brand: "Ford",
+    make: "Ford",
     rating: 82,
     carName: "Ford Fiesta",
     imgUrl: img02,
@@ -123,7 +123,7 @@ const carData = [
 
   {
     id: 8,
-    brand: "Rolls Royce",
+    make: "Rolls Royce",
     rating: 52,
     carName: "Rolls Royce Ghost",
     imgUrl: img07,
