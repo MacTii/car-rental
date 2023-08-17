@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,11 +33,22 @@ namespace Infrastructure.Repositories
 
         public User GetByID(int userID)
         {
-            if(userID < 1)
+            if (userID < 1)
                 throw new ArgumentException($"Invalid user ID: {userID}. User ID must be greater than or equal to 1.");
 
             var user = _context.Users.Find(userID);
             return user ?? throw new InvalidOperationException($"User with ID: {userID} not found.");
+        }
+
+        public User GetByUsername(string username)
+        {
+            if (username == null) throw new ArgumentNullException(nameof(username));
+
+            var user = _context.Users
+                .Where(x => x.UserCredentials.Username == username)
+                .SingleOrDefault();
+
+            return user ?? throw new InvalidOperationException($"User with username: {username} not found.");
         }
 
         public void Insert(User user)
@@ -48,14 +61,9 @@ namespace Infrastructure.Repositories
             if (userID < 1)
                 throw new ArgumentException($"Invalid user ID: {userID}. User ID must be greater than or equal to 1.");
 
-            var existingUser = _context.Users.Find(userID);
-            if (existingUser == null)
-                throw new InvalidOperationException($"User with ID: {userID} not found.");
+            var existingUser = _context.Users.Find(userID) ?? throw new InvalidOperationException($"User with ID: {userID} not found.");
 
-            existingUser.Name = user.Name;
-            existingUser.Surname = user.Surname;
-            existingUser.Email = user.Email;
-            existingUser.PhoneNumber = user.PhoneNumber;
+            CopyProperties(user, existingUser);
 
             _context.Entry(existingUser).State = EntityState.Modified;
         }
@@ -75,6 +83,21 @@ namespace Infrastructure.Repositories
         public void Save()
         {
             _context.SaveChanges();
+        }
+
+        private static void CopyProperties(object source, object destination)
+        {
+            Type type = source.GetType();
+            PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (PropertyInfo property in properties)
+            {
+                if (property.CanRead && property.CanWrite)
+                {
+                    var value = property.GetValue(source);
+                    property.SetValue(destination, value);
+                }
+            }
         }
     }
 }

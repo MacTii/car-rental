@@ -4,8 +4,8 @@ import { Container, Row, Col } from "reactstrap";
 import { Link, NavLink } from "react-router-dom";
 
 import "../../styles/header.css";
-import urls from "../../config/config";
 import { useAuth } from "../../context/AuthContext";
+import { getUsername } from "../../services/userService";
 
 const navLinks = [
   {
@@ -30,13 +30,11 @@ const navLinks = [
   },
 ];
 
-const baseURL = urls.development;
-
 const Header = () => {
   const [username, setUsername] = useState(null);
   const [token, setToken] = useState(null);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  
+
   const menuRef = useRef(null);
 
   const toggleMenu = () => menuRef.current.classList.toggle("menu__active");
@@ -48,26 +46,13 @@ const Header = () => {
   useEffect(() => {
     setToken(localStorage.getItem("token"));
     if (token) {
-      fetchUsername(token);
+      fetchUsername();
     }
   }, [isAuthenticated, token]);
 
-  const fetchUsername = (token) => {
-    fetch(`${baseURL}/api/username`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.text())
-      .then((result) => {
-        console.log("Username: ", result);
-        setUsername(result);
-      })
-      .catch((error) => {
-        console.error("An error occurred:", error);
-      });
+  const fetchUsername = async () => {
+    const result = await getUsername();
+    setUsername(result);
   };
 
   return (
