@@ -1,10 +1,10 @@
 import urls from "../config/config";
 
 const baseURL = urls.development;
-const token = localStorage.getItem("token");
 
 export const addRental = async (data) => {
   try {
+    const token = localStorage.getItem("token");
     const response = await fetch(`${baseURL}/api/rentals`, {
       method: "POST",
       headers: {

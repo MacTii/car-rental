@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 
 import masterCard from "../../assets/all-images/master-card.jpg";
 import paypal from "../../assets/all-images/paypal.jpg";
 import "../../styles/payment-method.css";
 
-const PaymentMethod = () => {
-  const [selectedPayment, setSelectedPayment] = useState("directBankTransfer");
-
+const PaymentMethod = ({ selectedPayment, setSelectedPayment }) => {
   const handlePaymentChange = (event) => {
     setSelectedPayment(event.target.value);
   };
@@ -17,9 +15,8 @@ const PaymentMethod = () => {
         <label htmlFor="" className="d-flex align-items-center gap-2">
           <input
             type="radio"
-            name="paymentMethod"
-            value="directBankTransfer"
-            checked={selectedPayment === "directBankTransfer"}
+            value="Direct Bank Transfer"
+            checked={selectedPayment === "Direct Bank Transfer"}
             onChange={handlePaymentChange}
           />
           Direct Bank Transfer
@@ -30,9 +27,8 @@ const PaymentMethod = () => {
         <label htmlFor="" className="d-flex align-items-center gap-2">
           <input
             type="radio"
-            name="paymentMethod"
-            value="chequePayment"
-            checked={selectedPayment === "chequePayment"}
+            value="Cheque Payment"
+            checked={selectedPayment === "Cheque Payment"}
             onChange={handlePaymentChange}
           />
           Cheque Payment
@@ -43,9 +39,8 @@ const PaymentMethod = () => {
         <label htmlFor="" className="d-flex align-items-center gap-2">
           <input
             type="radio"
-            name="paymentMethod"
-            value="masterCard"
-            checked={selectedPayment === "masterCard"}
+            value="Master Card"
+            checked={selectedPayment === "Master Card"}
             onChange={handlePaymentChange}
           />
           Master Card
@@ -58,9 +53,8 @@ const PaymentMethod = () => {
         <label htmlFor="" className="d-flex align-items-center gap-2">
           <input
             type="radio"
-            name="paymentMethod"
-            value="paypal"
-            checked={selectedPayment === "paypal"}
+            value="Paypal"
+            checked={selectedPayment === "Paypal"}
             onChange={handlePaymentChange}
           />
           Paypal

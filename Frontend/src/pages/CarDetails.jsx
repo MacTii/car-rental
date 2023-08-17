@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Container, Row, Col } from "reactstrap";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 
 import BookingForm from "../components/UI/BookingForm";
 import PaymentMethod from "../components/UI/PaymentMethod";
@@ -12,23 +12,35 @@ import { addRental } from "../services/rentalService";
 
 const CarDetails = () => {
   const [bookingData, setBookingData] = useState({
-    name: "",
-    surname: "",
-    email: "",
-    phoneNumber: "",
-    address: "",
-    comment: "",
+    name: null,
+    surname: null,
+    email: null,
+    phoneNumber: null,
+    address: null,
+    comment: null,
   });
+  const [selectedPayment, setSelectedPayment] = useState(
+    "Direct Bank Transfer"
+  );
+  const [token, setToken] = useState(null);
   const { slug } = useParams();
 
   const location = useLocation(); // get object from CarItem Link
   const car = location.state;
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    setToken(localStorage.getItem("token"));
   }, [slug]);
 
   const handleRental = async () => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
     // Get username
     const username = await getUsername();
     console.log(username);
@@ -39,11 +51,12 @@ const CarDetails = () => {
 
     // Set rental data
     const rental = {
-      carID: car.id, // ID samochodu
-      userID: userData.id, // ID użytkownika (możesz dostosować to w zależności od logiki aplikacji)
-      rentDate: new Date(), // Data wynajmu
-      returnDate: null, // Data zwrotu
-      comments: bookingData.comment, // Komentarz (opcjonalny)
+      carID: car.id, // Car ID
+      userID: userData.id, // User ID
+      rentDate: new Date(), // Rent date
+      returnDate: null, // Return date (optional)
+      comment: bookingData.comment, // Comment (optional)
+      paymentMethod: selectedPayment,
     };
 
     // Add rental to db
@@ -156,7 +169,10 @@ const CarDetails = () => {
             <Col lg="5" className="mt-5">
               <div className="payment__info mt-5">
                 <h5 className="mb-4 fw-bold">Payment Information</h5>
-                <PaymentMethod />
+                <PaymentMethod
+                  selectedPayment={selectedPayment}
+                  setSelectedPayment={setSelectedPayment}
+                />
                 <div className="payment text-end mt-5">
                   <button onClick={handleRental}>Reserve Now</button>
                 </div>

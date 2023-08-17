@@ -32,7 +32,6 @@ const navLinks = [
 
 const Header = () => {
   const [username, setUsername] = useState(null);
-  const [token, setToken] = useState(null);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   const menuRef = useRef(null);
@@ -44,15 +43,16 @@ const Header = () => {
   console.log("Authenticated: ", isAuthenticated);
 
   useEffect(() => {
-    setToken(localStorage.getItem("token"));
-    if (token) {
-      fetchUsername();
-    }
-  }, [isAuthenticated, token]);
+    fetchUsername();
+  }, [isAuthenticated, username]);
 
   const fetchUsername = async () => {
-    const result = await getUsername();
-    setUsername(result);
+    const token = localStorage.getItem("token");
+    console.log(token);
+    if (token) {
+      const result = await getUsername();
+      setUsername(result);
+    }
   };
 
   return (
@@ -81,7 +81,22 @@ const Header = () => {
                 {isUserMenuOpen && (
                   <div className="flex flex-col user__menu__list">
                     <ul className="flex flex-col gap-4">
-                      <li>Profile</li>
+                      <li>
+                        <Link
+                          to="/profile"
+                          style={{ textDecoration: "none", color: "black" }}
+                        >
+                          Profile
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/rental-history"
+                          style={{ textDecoration: "none", color: "black" }}
+                        >
+                          Rental History
+                        </Link>
+                      </li>
                       <li
                         onClick={() => {
                           // clear data from local storage and session storage
