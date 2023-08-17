@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Container, Row, Col } from "reactstrap";
 import { useParams, useLocation } from "react-router-dom";
@@ -7,7 +7,18 @@ import BookingForm from "../components/UI/BookingForm";
 import PaymentMethod from "../components/UI/PaymentMethod";
 import Helmet from "../components/Helmet/Helmet";
 
+import { getUserByUsername, getUsername } from "../services/userService";
+import { addRental } from "../services/rentalService";
+
 const CarDetails = () => {
+  const [bookingData, setBookingData] = useState({
+    name: "",
+    surname: "",
+    email: "",
+    phoneNumber: "",
+    address: "",
+    comment: "",
+  });
   const { slug } = useParams();
 
   const location = useLocation(); // get object from CarItem Link
@@ -16,6 +27,29 @@ const CarDetails = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
+
+  const handleRental = async () => {
+    // Get username
+    const username = await getUsername();
+    console.log(username);
+
+    // Get user data
+    const userData = await getUserByUsername(username);
+    console.log(userData);
+
+    // Set rental data
+    const rental = {
+      carID: car.id, // ID samochodu
+      userID: userData.id, // ID użytkownika (możesz dostosować to w zależności od logiki aplikacji)
+      rentDate: new Date(), // Data wynajmu
+      returnDate: null, // Data zwrotu
+      comments: bookingData.comment, // Komentarz (opcjonalny)
+    };
+
+    // Add rental to db
+    const result = await addRental(rental);
+    console.log(result);
+  };
 
   return (
     <Helmet title={car.make}>
@@ -112,7 +146,10 @@ const CarDetails = () => {
             <Col lg="7" className="mt-5">
               <div className="booking-info mt-5">
                 <h5 className="mb-4 fw-bold">Booking Information</h5>
-                <BookingForm />
+                <BookingForm
+                  bookingData={bookingData}
+                  setBookingData={setBookingData}
+                />
               </div>
             </Col>
 
@@ -121,7 +158,7 @@ const CarDetails = () => {
                 <h5 className="mb-4 fw-bold">Payment Information</h5>
                 <PaymentMethod />
                 <div className="payment text-end mt-5">
-                  <button>Reserve Now</button>
+                  <button onClick={handleRental}>Reserve Now</button>
                 </div>
               </div>
             </Col>
