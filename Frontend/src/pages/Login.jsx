@@ -15,6 +15,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import "../styles/login.css";
 import urls from "../config/config";
+import { useAuth } from "../context/AuthContext";
 
 const baseURL = urls.development;
 
@@ -27,13 +28,13 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  const { setIsAuthenticated } = useAuth();
+
   useEffect(() => {
     // Check if the user already has a token in localStorage
     const token = localStorage.getItem("token");
     if (token) {
       navigate("/home"); // If token exists, redirect to the Home page
-      // window.location.href="/home"
-      // return <Link to="/home"></Link>
     }
   }, [navigate]);
 
@@ -68,6 +69,7 @@ const Login = () => {
         if (result.data) {
           // Successfully logged in, token received
           localStorage.setItem("token", result.data); // Save token in localStorage
+          setIsAuthenticated(true); // set global context
           console.log("Logged in successfully!");
           // console.log("Token:", result.data);
 

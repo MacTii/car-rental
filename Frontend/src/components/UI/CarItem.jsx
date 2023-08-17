@@ -1,20 +1,16 @@
 import React from "react";
 import { Col } from "reactstrap";
 import { Link } from "react-router-dom";
+
 import "../../styles/car-item.css";
 
 const CarItem = (props) => {
   const {
-    id,
     make,
     model,
-    registrationNumber,
-    year,
-    color,
     engine,
     speed,
     pricePerDay,
-    isAvailable,
     image,
   } = props.item;
 
@@ -37,13 +33,13 @@ const CarItem = (props) => {
 
           <div className="car__item-info d-flex align-items-center justify-content-between mt-3 mb-4">
             <span className="d-flex align-items-center gap-1">
-              <i class="ri-car-line"></i> {model}
+              <i className="ri-car-line"></i> {model}
             </span>
             <span className="d-flex align-items-center gap-1">
-              <i class="ri-settings-2-line"></i> {engine}
+              <i className="ri-settings-2-line"></i> {engine}
             </span>
             <span className="d-flex align-items-center gap-1">
-              <i class="ri-timer-flash-line"></i> {speed} km/h
+              <i className="ri-timer-flash-line"></i> {speed} km/h
             </span>
           </div>
 
