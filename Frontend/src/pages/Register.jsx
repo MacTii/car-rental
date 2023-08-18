@@ -14,6 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import "../styles/register.css";
+import { useAuth } from "../context/AuthContext";
 import { register } from "../services/authService";
 
 const Register = () => {
@@ -36,12 +37,13 @@ const Register = () => {
 
   const navigate = useNavigate();
 
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
+
   useEffect(() => {
-    const token = localStorage.getItem("token"); // Check if the user already has a token in localStorage
-    if (token) {
+    if (isAuthenticated) {
       navigate("/home"); // If token exists, redirect to the Home page
     }
-  }, [navigate]);
+  }, [isAuthenticated]);
 
   const clearFormErrorWithDelay = () => {
     setTimeout(() => {
@@ -89,7 +91,7 @@ const Register = () => {
         console.log("Registered successfully!");
 
         localStorage.setItem("token", token);
-        navigate("/home");
+        setIsAuthenticated(true);
       })
       .catch((error) => {
         console.error(error.message);

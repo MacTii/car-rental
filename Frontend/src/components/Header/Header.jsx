@@ -5,7 +5,7 @@ import { Link, NavLink } from "react-router-dom";
 
 import "../../styles/header.css";
 import { useAuth } from "../../context/AuthContext";
-import { getUsername } from "../../services/userService";
+import { getUsernameFromToken } from "../../services/tokenService";
 
 const navLinks = [
   {
@@ -40,20 +40,13 @@ const Header = () => {
   const toggleUserMenu = () => setIsUserMenuOpen(!isUserMenuOpen);
 
   const { isAuthenticated } = useAuth();
-  console.log("Authenticated: ", isAuthenticated);
 
   useEffect(() => {
-    fetchUsername();
-  }, [isAuthenticated, username]);
-
-  const fetchUsername = async () => {
-    const token = localStorage.getItem("token");
-    console.log(token);
-    if (token) {
-      const result = await getUsername();
+    if (localStorage.getItem("token")) {
+      const result = getUsernameFromToken();
       setUsername(result);
     }
-  };
+  }, [isAuthenticated]);
 
   return (
     <header className="header">

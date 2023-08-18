@@ -2,6 +2,7 @@ import urls from "../config/config";
 
 const baseURL = urls.development;
 
+// --- GET ALL CARS ---
 export const getCars = async () => {
   try {
     const response = await fetch(`${baseURL}/api/cars`, {

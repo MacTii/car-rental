@@ -26,14 +26,13 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const { setIsAuthenticated } = useAuth();
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
 
   useEffect(() => {
-    const token = localStorage.getItem("token"); // Check if the user already has a token in localStorage
-    if (token) {
-      navigate("/home"); // If token exists, redirect to the Home page
+    if (isAuthenticated) {
+      navigate("/home"); // If isAuthenticated, redirect to the Home page
     }
-  }, [navigate]);
+  }, [isAuthenticated]);
 
   const clearFormErrorWithDelay = () => {
     setTimeout(() => {
@@ -59,7 +58,6 @@ const Login = () => {
 
         localStorage.setItem("token", token);
         setIsAuthenticated(true);
-        navigate("/home");
       })
       .catch((error) => {
         console.error(error.message);

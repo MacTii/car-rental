@@ -5,7 +5,7 @@
 .booking__form input {
     padding: 8px 15px;
     border: 1px solid #7c8a972a;
-    color: #7c8a97;
+    color: black;
     width: 100%;
 }
 
@@ -13,7 +13,7 @@
 .textarea {
     width: 100%;
     padding: 10px 15px;
-    color: #7c8a97;
+    color: black;
     border: 1px solid #7c8a972a;
     border-radius: 4px;
 }
@@ -28,6 +28,7 @@
 .booking__form input:focus,
 .booking__form select:focus {
     outline: none;
+    border-color: black;
 }
 
 @media only screen and (max-width:768px) {
