@@ -14,9 +14,9 @@ namespace Application.Mapper
         public MappingProfile()
         {
             CreateMap<UserDTO, User>()
-                .ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => DateTime.ParseExact(src.DateOfBirth, "dd.MM.yyyy", null)));
+                .ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => DateTime.ParseExact(src.DateOfBirth, "yyyy-MM-dd", null)));
             CreateMap<User, UserDTO>()
-                .ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => src.DateOfBirth.ToString("dd.MM.yyyy")));
+                .ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => src.DateOfBirth.ToString("yyyy-MM-dd")));
 
             CreateMap<CarDTO, Car>()
                 .ForMember(dest => dest.Image, opt => opt.MapFrom(src => Convert.FromBase64String(src.Image)));
@@ -28,7 +28,7 @@ namespace Application.Mapper
 
             CreateMap<RegisterDTO, UserCredentials>();
             CreateMap<RegisterDTO, User>()
-                .ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => DateTime.ParseExact(src.DateOfBirth, "dd.MM.yyyy", null)));
+                .ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => DateTime.ParseExact(src.DateOfBirth, "yyyy-MM-dd", null)));
 
             CreateMap<UserCredentialsDTO, UserCredentials>();
             CreateMap<UserCredentials, UserCredentialsDTO>();
