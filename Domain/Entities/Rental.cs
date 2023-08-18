@@ -13,7 +13,8 @@ namespace Domain.Entities
         public int UserID { get; set; }
         public DateTime RentDate { get; set; }
         public DateTime? ReturnDate { get; set; }
-        public string? Comments { get; set; }
+        public string? Comment { get; set; }
+        public string PaymentMethod { get; set; } = null!;
         public Car Car { get; set; } = null!;
         public User User { get; set; } = null!;
     }

@@ -14,6 +14,9 @@ namespace Infrastructure.Persistence.Configurations
         public void Configure(EntityTypeBuilder<Rental> entity)
         {
             entity.ToTable(t => t.HasCheckConstraint("CK_Rental_Dates", "ReturnDate >= RentDate"));
+            
+            entity.Property(e => e.PaymentMethod)
+                .HasMaxLength(20);
         }
     }
 }

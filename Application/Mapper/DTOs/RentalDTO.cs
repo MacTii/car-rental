@@ -13,6 +13,7 @@ namespace Application.Mapper.DTOs
         public int UserID { get; set; }
         public string RentDate { get; set; } = null!;
         public string? ReturnDate { get; set; }
-        public string? Comments { get; set; }
+        public string? Comment { get; set; }
+        public string PaymentMethod { get; set; } = null!;
     }
 }

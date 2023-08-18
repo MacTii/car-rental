@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -45,16 +46,12 @@ namespace Infrastructure.Repositories
 
         public void Update(int carID, Car car)
         {
-            if(carID < 1)
+            if (carID < 1)
                 throw new ArgumentException($"Invalid car ID: {carID}. Car ID must be greater than or equal to 1.");
 
-            var existingCar = _context.Cars.Find(carID);
-            if (existingCar == null)
-                throw new InvalidOperationException($"Car with ID: {carID} not found.");
+            var existingCar = _context.Cars.Find(carID) ?? throw new InvalidOperationException($"Car with ID: {carID} not found.");
 
-            existingCar.Make = car.Make;
-            existingCar.Model = car.Model;
-            existingCar.RegistrationNumber = car.RegistrationNumber;
+            CopyProperties(car, existingCar);
 
             _context.Entry(existingCar).State = EntityState.Modified;
         }
@@ -74,6 +71,21 @@ namespace Infrastructure.Repositories
         public void Save()
         {
             _context.SaveChanges();
+        }
+
+        private static void CopyProperties(object source, object destination)
+        {
+            Type type = source.GetType();
+            PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (PropertyInfo property in properties)
+            {
+                if (property.CanRead && property.CanWrite)
+                {
+                    var value = property.GetValue(source);
+                    property.SetValue(destination, value);
+                }
+            }
         }
     }
 }

@@ -1,11 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "reactstrap";
+
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
 import CarItem from "../components/UI/CarItem";
-import carData from '../assets/data/carData'
+
+import { getCars } from "../services/carService";
 
 const CarListing = () => {
+  const [cars, setCars] = useState([]);
+
+  useEffect(() => {
+    getCars()
+      .then((carsData) => {
+        console.log(carsData);
+
+        setCars(carsData);
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+  }, []);
+
   return (
     <Helmet title="Cars">
       <CommonSection title="Car Listing" />
@@ -15,7 +31,7 @@ const CarListing = () => {
             <Col lg="12">
               <div className="d-flex align-items-center gap-3 mb-5">
                 <span className="d-flex align-items-center gap-2">
-                  <i class="ri-sort-asc"></i> Sort By
+                  <i className="ri-sort-asc"></i> Sort By
                 </span>
 
                 <select>
@@ -25,9 +41,9 @@ const CarListing = () => {
                 </select>
               </div>
             </Col>
-            {
-              carData.map(item => <CarItem item = {item} key={item.id} />)
-            }
+            {cars.map((car) => (
+              <CarItem item={car} key={car.id} />
+            ))}
           </Row>
         </Container>
       </section>

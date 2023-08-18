@@ -11,7 +11,8 @@ namespace Application.Interfaces.Services
     public interface IUserService
     {
         public IEnumerable<UserDTO> GetUsers();
-        public UserDTO GetUser(int userID);
+        public UserDTO GetUserByID(int userID);
+        public UserDTO GetUserByUsername(string username);
         public void AddUser(UserDTO userDTO);
         public void UpdateUser(int userID, UserDTO userDTO);
         public void DeleteUser(int userID);

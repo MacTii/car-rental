@@ -1,50 +1,133 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-import carData from "../assets/data/carData";
 import { Container, Row, Col } from "reactstrap";
-import Helmet from "../components/Helmet/Helmet";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
+
 import BookingForm from "../components/UI/BookingForm";
 import PaymentMethod from "../components/UI/PaymentMethod";
+import Helmet from "../components/Helmet/Helmet";
+
+import { getUserByUsername, updateUser } from "../services/userService";
+import { addRental } from "../services/rentalService";
+import { getUsernameFromToken } from "../services/tokenService";
 
 const CarDetails = () => {
+  const [bookingData, setBookingData] = useState({
+    name: "",
+    surname: "",
+    email: "",
+    phoneNumber: "",
+    address: "",
+    dateOfBirth: "",
+    gender: "",
+    identificationNumber: "",
+    drivingLicenseNumber: "",
+    returnDate: "",
+    comment: "",
+  });
+  const [selectedPayment, setSelectedPayment] = useState(
+    "Direct Bank Transfer"
+  );
+  const [token] = useState(localStorage.getItem("token"));
+  const [user, setUser] = useState(null);
   const { slug } = useParams();
 
-  const singleCarItem = carData.find((item) => item.carName === slug);
+  const location = useLocation(); // Get object from CarItem Link
+  const car = location.state;
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [singleCarItem]);
+    if(token) {
+      fetchGetUser(); // Get User
+    }
+    console.log(bookingData);
+  }, [slug]);
+
+  const fetchGetUser = async () => {
+    // Get username
+    const username = getUsernameFromToken();
+
+    // Get user data
+    const result = await getUserByUsername(username);
+
+    setUser(result); // Set user hook
+    setBookingData(result); // Set bookingData hook
+    return result;
+  };
+
+  const fetchUpdateUser = async () => {
+    // Creating a copy of 'user' with updated fields from 'bookingData'
+    const updatedUser = {
+      ...user,
+      ...bookingData, // Copying fields from 'bookingData' to 'updatedUser'
+    };
+
+    // Updating the user
+    setUser(updatedUser);
+    await updateUser(user.id, updatedUser); // Update user
+  };
+
+  const fetchAddRental = async () => {
+    // Set rental data
+    const rental = {
+      carID: car.id, // Car ID
+      userID: user.id, // User ID --> WHAT HAPPEN WHEN USER NULL
+      rentDate: new Date(), // Rent date
+      returnDate: bookingData.returnDate, // Return date (optional)
+      comment: bookingData.comment, // Comment (optional)
+      paymentMethod: selectedPayment,
+    };
+
+    // Add rental to db
+    await addRental(rental);
+  };
+
+  const handleRental = async () => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    // If user change booking information --> update user
+    fetchUpdateUser();
+
+    // Update rental
+    fetchAddRental();
+  };
 
   return (
-    <Helmet title={singleCarItem.carName}>
+    <Helmet title={car.make}>
       <section>
         <Container>
           <Row>
             <Col lg="6">
-              <img src={singleCarItem.imgUrl} alt="" className="w-100" />
+              <img
+                src={`data:image/png;base64,${car.image}`}
+                alt={car.make}
+                className="w-100"
+              />
             </Col>
             <Col lg="6">
               <div className="car__info">
-                <h2 className="section__title">{singleCarItem.carName}</h2>
+                <h2 className="section__title">{car.make}</h2>
                 <div className="d-flex align-items-center gap-5">
                   <h6 className="rent__price fw-bold fs-4">
-                    ${singleCarItem.price}.00 / Day
+                    ${car.pricePerDay}.00 / Day
                   </h6>
                   <span className="d-flex align-items-center gap-2">
                     <span style={{ color: "#f9a826" }}>
-                      <i class="ri-star-fill"></i>
-                      <i class="ri-star-fill"></i>
-                      <i class="ri-star-fill"></i>
-                      <i class="ri-star-fill"></i>
-                      <i class="ri-star-fill"></i>
+                      <i className="ri-star-fill"></i>
+                      <i className="ri-star-fill"></i>
+                      <i className="ri-star-fill"></i>
+                      <i className="ri-star-fill"></i>
+                      <i className="ri-star-fill"></i>
                     </span>
-                    ({singleCarItem.rating} ratings)
+                    ({car.ratings} ratings)
                   </span>
                 </div>
-                <p className="section__description">
-                  {singleCarItem.description}
-                </p>
+                <p className="section__description">{car.description}</p>
 
                 <div
                   className="d-flex align-items-center mt-3"
@@ -52,22 +135,26 @@ const CarDetails = () => {
                 >
                   <span className="d-flex align-items-center gap-1 section__description">
                     <i
-                      class="ri-roadster-line"
+                      className="ri-roadster-line"
                       style={{ color: "#f9a826" }}
                     ></i>
-                    {singleCarItem.model}
+                    {car.model}
                   </span>
 
                   <span className="d-flex align-items-center gap-1 section__description">
                     <i
-                      class="ri-settings-2-line "
+                      className="ri-settings-2-line "
                       style={{ color: "#f9a826" }}
                     ></i>
-                    {singleCarItem.automatic}
+                    {car.engine}
                   </span>
 
                   <span className="d-flex align-items-center gap-1 section__description">
-                    <i class="ri-timer-flash-line"></i> {singleCarItem.speed}
+                    <i
+                      className="ri-timer-flash-line"
+                      style={{ color: "#f9a826" }}
+                    ></i>
+                    {car.speed} km/h
                   </span>
                 </div>
 
@@ -76,24 +163,27 @@ const CarDetails = () => {
                   style={{ columnGap: "2.8rem" }}
                 >
                   <span className="d-flex align-items-center gap-1 section__description">
-                    <i class="ri-map-pin-line" style={{ color: "#f9a826" }}></i>{" "}
-                    {singleCarItem.gps}
+                    <i
+                      className="ri-map-pin-line"
+                      style={{ color: "#f9a826" }}
+                    ></i>
+                    {car.gps}
                   </span>
 
                   <span className="d-flex align-items-center gap-1 section__description">
                     <i
-                      class="ri-wheelchair-line"
+                      className="ri-wheelchair-line"
                       style={{ color: "#f9a826" }}
                     ></i>
-                    {singleCarItem.seatType}
+                    {car.seatType}
                   </span>
 
                   <span className="d-flex align-items-center gap-1 section__description">
                     <i
-                      class="ri-building-2-line"
+                      className="ri-building-2-line"
                       style={{ color: "#f9a826" }}
                     ></i>
-                    {singleCarItem.brand}
+                    {car.make}
                   </span>
                 </div>
               </div>
@@ -102,14 +192,23 @@ const CarDetails = () => {
             <Col lg="7" className="mt-5">
               <div className="booking-info mt-5">
                 <h5 className="mb-4 fw-bold">Booking Information</h5>
-                <BookingForm />
+                <BookingForm
+                  bookingData={bookingData}
+                  setBookingData={setBookingData}
+                />
               </div>
             </Col>
 
             <Col lg="5" className="mt-5">
               <div className="payment__info mt-5">
                 <h5 className="mb-4 fw-bold">Payment Information</h5>
-                <PaymentMethod />
+                <PaymentMethod
+                  selectedPayment={selectedPayment}
+                  setSelectedPayment={setSelectedPayment}
+                />
+                <div className="payment text-end mt-5">
+                  <button onClick={handleRental}>Reserve Now</button>
+                </div>
               </div>
             </Col>
           </Row>
