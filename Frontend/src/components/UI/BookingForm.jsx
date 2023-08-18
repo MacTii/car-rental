@@ -35,7 +35,6 @@ const BookingForm = ({ bookingData, setBookingData }) => {
           onChange={handleChange}
         />
       </FormGroup>
-
       <FormGroup className="booking__form d-inline-block me-4 mb-4">
         <input
           type="email"
@@ -47,14 +46,13 @@ const BookingForm = ({ bookingData, setBookingData }) => {
       </FormGroup>
       <FormGroup className="booking__form d-inline-block ms-1 mb-4">
         <input
-          type="number"
+          type="text"
           placeholder="Phone Number"
           name="phoneNumber"
           value={bookingData.phoneNumber}
           onChange={handleChange}
         />
       </FormGroup>
-
       <FormGroup className="booking__form d-inline-block me-4 mb-4">
         <input
           type="text"
@@ -64,9 +62,54 @@ const BookingForm = ({ bookingData, setBookingData }) => {
           onChange={handleChange}
         />
       </FormGroup>
-
       <FormGroup className="booking__form d-inline-block ms-1 mb-4">
-        <input type="date" placeholder="Return Date" />
+        <input
+          type="date"
+          placeholder="Date Of Birth"
+          name="dateOfBirth"
+          value={bookingData.dateOfBirth}
+          onChange={handleChange}
+        />
+      </FormGroup>
+      <FormGroup className="booking__form d-inline-block me-4 mb-4">
+        <select
+          placeholder="Gender"
+          name="gender"
+          value={bookingData.gender}
+          onChange={handleChange}
+        >
+          <option value="">Select gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </FormGroup>
+      <FormGroup className="booking__form d-inline-block ms-1 mb-4">
+        <input
+          type="text"
+          placeholder="Identification Number"
+          name="identificationNumber"
+          value={bookingData.identificationNumber}
+          onChange={handleChange}
+        />
+      </FormGroup>
+      <FormGroup className="booking__form d-inline-block me-4 mb-4">
+        <input
+          type="text"
+          placeholder="Driving License Number"
+          name="drivingLicenseNumber"
+          value={bookingData.drivingLicenseNumber}
+          onChange={handleChange}
+        />
+      </FormGroup>
+      <FormGroup className="booking__form d-inline-block ms-1 mb-4">
+        <input
+          type="date"
+          placeholder="Return Date"
+          name="returnDate"
+          value={bookingData.returnDate}
+          onChange={handleChange}
+        />
       </FormGroup>
 
       <FormGroup>

@@ -7,33 +7,82 @@ import BookingForm from "../components/UI/BookingForm";
 import PaymentMethod from "../components/UI/PaymentMethod";
 import Helmet from "../components/Helmet/Helmet";
 
-import { getUserByUsername, getUsername } from "../services/userService";
+import { getUserByUsername, updateUser } from "../services/userService";
 import { addRental } from "../services/rentalService";
+import { getUsernameFromToken } from "../services/tokenService";
 
 const CarDetails = () => {
   const [bookingData, setBookingData] = useState({
-    name: null,
-    surname: null,
-    email: null,
-    phoneNumber: null,
-    address: null,
-    comment: null,
+    name: "",
+    surname: "",
+    email: "",
+    phoneNumber: "",
+    address: "",
+    dateOfBirth: "",
+    gender: "",
+    identificationNumber: "",
+    drivingLicenseNumber: "",
+    returnDate: "",
+    comment: "",
   });
   const [selectedPayment, setSelectedPayment] = useState(
     "Direct Bank Transfer"
   );
-  const [token, setToken] = useState(null);
+  const [token] = useState(localStorage.getItem("token"));
+  const [user, setUser] = useState(null);
   const { slug } = useParams();
 
-  const location = useLocation(); // get object from CarItem Link
+  const location = useLocation(); // Get object from CarItem Link
   const car = location.state;
 
   const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    setToken(localStorage.getItem("token"));
+    if(token) {
+      fetchGetUser(); // Get User
+    }
+    console.log(bookingData);
   }, [slug]);
+
+  const fetchGetUser = async () => {
+    // Get username
+    const username = getUsernameFromToken();
+
+    // Get user data
+    const result = await getUserByUsername(username);
+
+    setUser(result); // Set user hook
+    setBookingData(result); // Set bookingData hook
+    return result;
+  };
+
+  const fetchUpdateUser = async () => {
+    // Creating a copy of 'user' with updated fields from 'bookingData'
+    const updatedUser = {
+      ...user,
+      ...bookingData, // Copying fields from 'bookingData' to 'updatedUser'
+    };
+
+    // Updating the user
+    setUser(updatedUser);
+    await updateUser(user.id, updatedUser); // Update user
+  };
+
+  const fetchAddRental = async () => {
+    // Set rental data
+    const rental = {
+      carID: car.id, // Car ID
+      userID: user.id, // User ID --> WHAT HAPPEN WHEN USER NULL
+      rentDate: new Date(), // Rent date
+      returnDate: bookingData.returnDate, // Return date (optional)
+      comment: bookingData.comment, // Comment (optional)
+      paymentMethod: selectedPayment,
+    };
+
+    // Add rental to db
+    await addRental(rental);
+  };
 
   const handleRental = async () => {
     if (!token) {
@@ -41,27 +90,11 @@ const CarDetails = () => {
       return;
     }
 
-    // Get username
-    const username = await getUsername();
-    console.log(username);
+    // If user change booking information --> update user
+    fetchUpdateUser();
 
-    // Get user data
-    const userData = await getUserByUsername(username);
-    console.log(userData);
-
-    // Set rental data
-    const rental = {
-      carID: car.id, // Car ID
-      userID: userData.id, // User ID
-      rentDate: new Date(), // Rent date
-      returnDate: null, // Return date (optional)
-      comment: bookingData.comment, // Comment (optional)
-      paymentMethod: selectedPayment,
-    };
-
-    // Add rental to db
-    const result = await addRental(rental);
-    console.log(result);
+    // Update rental
+    fetchAddRental();
   };
 
   return (
