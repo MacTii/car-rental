@@ -1,0 +1,39 @@
+
+
+.rental-history {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-row {
+    border-top: 1px solid #ddd;
+    padding: 10px 0;
+    align-items: center;
+}
+
+.header-col {
+    display: flex;
+    align-items: center;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.car-image {
+    max-width: 100px;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Opcjonalnie: Stylizacja hovera nad rzędem */
+.rental-row:hover {
+    background-color: #f5f5f5;
+    transition: background-color 0.2s ease;
+}
