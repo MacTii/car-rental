@@ -40,6 +40,17 @@ namespace Infrastructure.Repositories
             return rental ?? throw new InvalidOperationException($"Rental with ID: {rentalID} not found.");
         }
 
+        public IEnumerable<Rental> GetByUsername(string username)
+        {
+            if (username == null) throw new ArgumentNullException(nameof(username));
+
+            var rentals = _context.Rentals
+                .Where(x => x.User.UserCredentials.Username == username)
+                .ToList();
+
+            return rentals ?? throw new InvalidOperationException($"Rentals filtered by username: {username} not found.");
+        }
+
         public void Insert(Rental rental)
         {
             _context.Rentals.Add(rental);
