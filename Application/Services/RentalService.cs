@@ -35,10 +35,16 @@ namespace Application.Services
             return _mapper.Map<IEnumerable<RentalDTO>>(rentals);
         }
 
-        public RentalDTO GetRental(int rentalID)
+        public RentalDTO GetRentalByID(int rentalID)
         {
             var rental = _rentalRepository.GetByID(rentalID);
             return _mapper.Map<RentalDTO>(rental);
+        }
+
+        public IEnumerable<RentalDTO> GetRentalsByUsername(string username)
+        {
+            var rentals = _rentalRepository.GetByUsername(username);
+            return _mapper.Map<IEnumerable<RentalDTO>>(rentals);
         }
 
         public void AddRental(RentalDTO rentalDTO)

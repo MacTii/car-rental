@@ -10,6 +10,7 @@ import Helmet from "../components/Helmet/Helmet";
 import { getUserByUsername, updateUser } from "../services/userService";
 import { addRental } from "../services/rentalService";
 import { getUsernameFromToken } from "../services/tokenService";
+import { updateCar } from "../services/carService";
 
 const CarDetails = () => {
   const [bookingData, setBookingData] = useState({
@@ -39,10 +40,9 @@ const CarDetails = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if(token) {
+    if (token) {
       fetchGetUser(); // Get User
     }
-    console.log(bookingData);
   }, [slug]);
 
   const fetchGetUser = async () => {
@@ -69,6 +69,11 @@ const CarDetails = () => {
     await updateUser(user.id, updatedUser); // Update user
   };
 
+  const fetchUpdateCar = async () => {
+    car.isAvailable = false;
+    await updateCar(car.id, car);
+  };
+
   const fetchAddRental = async () => {
     // Set rental data
     const rental = {
@@ -92,6 +97,9 @@ const CarDetails = () => {
 
     // If user change booking information --> update user
     fetchUpdateUser();
+
+    // Update car model in db when reserverd (change IsAvailable to false)
+    fetchUpdateCar();
 
     // Update rental
     fetchAddRental();

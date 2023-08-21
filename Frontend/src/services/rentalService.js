@@ -26,11 +26,11 @@ export const addRental = async (data) => {
   }
 };
 
-// --- GET RENTAL BY USER ID ---
-export const getRentalByUserID = async (userID) => {
+// --- GET RENTAL BY USERNAME ---
+export const getRentalByUsername = async (username) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await fetch(`${baseURL}/api/rentals`, {
+    const response = await fetch(`${baseURL}/api/rentals/username/${username}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
