@@ -43,11 +43,26 @@ namespace Presentation.Controllers
                 });
         }
 
-        [HttpGet("rentals/{rentalID}")]
+        [HttpGet("rentals/id/{rentalID}")]
         [Authorize]
         public ActionResult GetRentalByID(int rentalID)
         {
-            var rentalDTO = _rentalService.GetRental(rentalID);
+            var rentalDTO = _rentalService.GetRentalByID(rentalID);
+
+            // HTTP 200
+            return Ok(
+                new
+                {
+                    Response = "Rental record retrieved successfully",
+                    Data = rentalDTO
+                });
+        }
+
+        [HttpGet("rentals/username/{username}")]
+        [Authorize]
+        public ActionResult GetRentalsByUsername(string username)
+        {
+            var rentalDTO = _rentalService.GetRentalsByUsername(username);
 
             // HTTP 200
             return Ok(
