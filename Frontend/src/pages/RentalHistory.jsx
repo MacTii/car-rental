@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "reactstrap";
 import { useNavigate } from "react-router-dom";
-import rentalHistoryData from "../assets/data/carData";
 import "../styles/rental-history.css";
 import { getUsernameFromToken } from "../services/tokenService";
 import { getRentalByUsername } from "../services/rentalService";
