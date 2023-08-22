@@ -80,7 +80,7 @@ const CarListing = () => {
                   onChange={handleFilterChange}
                 />
                 <select
-                  class="form-select"
+                  className="form-select"
                   name="color"
                   value={filters.color}
                   onChange={handleFilterChange}

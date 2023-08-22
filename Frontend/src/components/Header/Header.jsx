@@ -1,11 +1,14 @@
 import React, { useRef, useState, useEffect } from "react";
 
 import { Container, Row, Col } from "reactstrap";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 import "../../styles/header.css";
 import { useAuth } from "../../context/AuthContext";
 import { getUsernameFromToken } from "../../services/tokenService";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const navLinks = [
   {
@@ -39,7 +42,8 @@ const Header = () => {
   const toggleMenu = () => menuRef.current.classList.toggle("menu__active");
   const toggleUserMenu = () => setIsUserMenuOpen(!isUserMenuOpen);
 
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -96,7 +100,10 @@ const Header = () => {
                           localStorage.clear();
                           sessionStorage.clear();
 
-                          window.location.href = "/home"; // redirect the user to the logout page
+                          toast.success("Logged out successfully!");
+                          setIsAuthenticated(false);
+
+                          navigate("/home");
                         }}
                       >
                         Logout
@@ -211,6 +218,9 @@ const Header = () => {
           </div>
         </Container>
       </div>
+
+      {/* === toast container === */}
+      <ToastContainer />
     </header>
   );
 };

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Container, Row, Col } from "reactstrap";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import BookingForm from "../components/UI/BookingForm";
 import PaymentMethod from "../components/UI/PaymentMethod";
@@ -103,6 +104,9 @@ const CarDetails = () => {
 
     // Update rental
     fetchAddRental();
+
+    toast.success("Car reserved successfully!");
+    navigate("/home");
   };
 
   return (

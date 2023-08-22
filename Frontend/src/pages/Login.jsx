@@ -12,6 +12,7 @@ import {
 } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 import "../styles/login.css";
 import { useAuth } from "../context/AuthContext";
@@ -58,12 +59,14 @@ const Login = () => {
 
         localStorage.setItem("token", token);
         setIsAuthenticated(true);
+        toast.success("Logged in successfully!");
       })
       .catch((error) => {
         console.error(error.message);
 
         setFormError("Something went wrong!");
         clearFormErrorWithDelay();
+        toast.error("Failed to log in. Please check your credentials.");
       });
   };
 

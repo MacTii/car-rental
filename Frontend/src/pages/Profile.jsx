@@ -3,6 +3,7 @@ import "../styles/profile.css";
 import { getUserByUsername, updateUser } from "../services/userService";
 import { getUsernameFromToken } from "../services/tokenService";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const [user, setUser] = useState([]);
@@ -39,6 +40,7 @@ const Profile = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     fetchUpdateUser();
+    toast.success("Profile updated successfully!");
   };
 
   return (
