@@ -44,7 +44,7 @@ const CarDetails = () => {
     if (token) {
       fetchGetUser(); // Get User
     }
-  }, [slug]);
+  }, [slug, token]);
 
   const fetchGetUser = async () => {
     // Get username

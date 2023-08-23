@@ -6,12 +6,18 @@
     border: 1px solid #ddd;
     border-radius: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    overflow-x: auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
 }
 
 .header-row {
     border-top: 1px solid #ddd;
     padding: 10px 0;
     align-items: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .header-col {
@@ -21,6 +27,14 @@
 
 .cursor-pointer {
     cursor: pointer;
+    color: #007bff;
+    text-decoration: underline;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.cursor-pointer:hover {
+    color: #0056b3;
+    text-decoration: none;
 }
 
 .car-image {

@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
-import "../styles/profile.css";
 import { getUserByUsername, updateUser } from "../services/userService";
 import { getUsernameFromToken } from "../services/tokenService";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import "../styles/profile.css";
+
 const Profile = () => {
   const [user, setUser] = useState([]);
+  const [initialUser, setInitialUser] = useState([]);
   const [token] = useState(localStorage.getItem("token"));
+  const [editMode, setEditMode] = useState(false);
 
   const navigate = useNavigate();
 
@@ -17,12 +20,13 @@ const Profile = () => {
       return;
     }
     fetchUser();
-  }, []);
+  }, [navigate, token]);
 
   const fetchUser = async () => {
     const username = getUsernameFromToken();
     const result = await getUserByUsername(username);
     setUser(result);
+    setInitialUser(result);
   };
 
   const fetchUpdateUser = async () => {
@@ -37,9 +41,19 @@ const Profile = () => {
     }));
   };
 
+  const handleEditClick = () => {
+    setEditMode(true);
+  };
+
+  const handleCancelClick = () => {
+    setUser(initialUser);
+    setEditMode(false);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     fetchUpdateUser();
+    setEditMode(false);
     toast.success("Profile updated successfully!");
   };
 
@@ -52,6 +66,7 @@ const Profile = () => {
             <label>
               Name:
               <input
+                disabled={!editMode}
                 type="text"
                 name="name"
                 value={user.name}
@@ -61,6 +76,7 @@ const Profile = () => {
             <label>
               Phone Number:
               <input
+                disabled={!editMode}
                 type="tel"
                 name="phoneNumber"
                 value={user.phoneNumber}
@@ -70,6 +86,7 @@ const Profile = () => {
             <label>
               Date of Birth:
               <input
+                disabled={!editMode}
                 type="date"
                 name="dateOfBirth"
                 value={user.dateOfBirth}
@@ -81,6 +98,7 @@ const Profile = () => {
             <label>
               Surname:
               <input
+                disabled={!editMode}
                 type="text"
                 name="surname"
                 value={user.surname}
@@ -90,6 +108,7 @@ const Profile = () => {
             <label>
               Address:
               <input
+                disabled={!editMode}
                 type="text"
                 name="address"
                 value={user.address}
@@ -99,6 +118,7 @@ const Profile = () => {
             <label>
               Driving License Number:
               <input
+                disabled={!editMode}
                 type="text"
                 name="drivingLicenseNumber"
                 value={user.drivingLicenseNumber}
@@ -110,6 +130,7 @@ const Profile = () => {
             <label>
               Email:
               <input
+                disabled={!editMode}
                 type="email"
                 name="email"
                 value={user.email}
@@ -119,6 +140,7 @@ const Profile = () => {
             <label>
               Gender:
               <select
+                disabled={!editMode}
                 name="gender"
                 value={user.gender}
                 onChange={handleInputChange}
@@ -131,6 +153,7 @@ const Profile = () => {
             <label>
               Identification Number:
               <input
+                disabled={!editMode}
                 type="text"
                 name="identificationNumber"
                 value={user.identificationNumber}
@@ -138,7 +161,18 @@ const Profile = () => {
               />
             </label>
             <div className="submit__button">
-              <button type="submit">Save Changes</button>
+              {!editMode ? (
+                <button type="button" onClick={handleEditClick}>
+                  Edit
+                </button>
+              ) : (
+                <>
+                  <button type="button" onClick={handleCancelClick}>
+                    Cancel
+                  </button>
+                  <button type="submit">Save Changes</button>
+                </>
+              )}
             </div>
           </div>
         </div>

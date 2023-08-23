@@ -76,7 +76,7 @@ namespace Application.Services
         {
             var userCredentials = _userCredentialsRepository.GetByUsername(request.Username);
             if (userCredentials == null)
-                throw new InvalidOperationException("User not found!");
+                throw new InvalidOperationException("Wrong username!");
 
             if (!_authenticationHelper.VerifyPasswordHash(request.Password, userCredentials.PasswordHash, userCredentials.PasswordSalt))
                 throw new UnauthorizedAccessException("Wrong password!");

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Input, Container, Row, Col } from "reactstrap";
+import { useLocation } from "react-router-dom";
 
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
@@ -21,9 +22,22 @@ const CarListing = () => {
     pricePerDay: [0, 1000],
   });
 
+  const location = useLocation(); // Get object from CarItem Link
+  const car = location.state;
+
   useEffect(() => {
     fetchGetCars();
-  }, []);
+    if (car) {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        make: car.make || "",
+        model: car.model || "",
+        year: car.year || "",
+        color: car.color || "",
+        pricePerDay: car.pricePerDay || [0, 1000],
+      }));
+    }
+  }, [car]);
 
   const fetchGetCars = async () => {
     const result = await getCars();

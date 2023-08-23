@@ -10,7 +10,7 @@ const quickLinks = [
     display: "About",
   },
   {
-    path: "#",
+    path: "/privacy-policy",
     display: "Privacy Policy",
   },
   {

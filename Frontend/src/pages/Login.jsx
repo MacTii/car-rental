@@ -33,7 +33,7 @@ const Login = () => {
     if (isAuthenticated) {
       navigate("/home"); // If isAuthenticated, redirect to the Home page
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, navigate]);
 
   const clearFormErrorWithDelay = () => {
     setTimeout(() => {
@@ -55,16 +55,12 @@ const Login = () => {
 
     login(data)
       .then((token) => {
-        console.log("Logged in successfully!");
-
         localStorage.setItem("token", token);
         setIsAuthenticated(true);
         toast.success("Logged in successfully!");
       })
       .catch((error) => {
-        console.error(error.message);
-
-        setFormError("Something went wrong!");
+        setFormError(error.message);
         clearFormErrorWithDelay();
         toast.error("Failed to log in. Please check your credentials.");
       });
