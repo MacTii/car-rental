@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Row, Col, Form, FormGroup, Input } from "reactstrap";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
 import { Link } from "react-router-dom";
 
 import "../styles/contact.css";
+import { toast } from "react-toastify";
 
 const socialLinks = [
   {
@@ -26,6 +27,32 @@ const socialLinks = [
 ];
 
 const Contact = () => {
+  const [formValues, setFormValues] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const { name, email, message } = formValues;
+
+    // Sprawdzamy, czy wszystkie pola są wypełnione
+    if (name && email && message) {
+      setFormValues({ name: "", email: "", message: "" });
+      toast.success("Message was sent successfully!");
+    }
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
   return (
     <Helmet title="Contact">
       <CommonSection title="Contact" />
@@ -35,18 +62,36 @@ const Contact = () => {
             <Col lg="7" md="7">
               <h6 className="fw-bold mb-4">Get In Touch</h6>
 
-              <Form>
+              <Form onSubmit={handleSubmit}>
                 <FormGroup className="contact__form">
-                  <Input placeholder="Your Name" type="text" />
+                  <Input
+                    name="name"
+                    placeholder="Your Name"
+                    type="text"
+                    value={formValues.name}
+                    onChange={handleChange}
+                    required
+                  />
                 </FormGroup>
                 <FormGroup className="contact__form">
-                  <Input placeholder="Email" type="email" />
+                  <Input
+                    name="email"
+                    placeholder="Email"
+                    type="email"
+                    value={formValues.email}
+                    onChange={handleChange}
+                    required
+                  />
                 </FormGroup>
                 <FormGroup className="contact__form">
                   <textarea
+                    name="message"
                     rows="5"
                     placeholder="Message"
                     className="textarea"
+                    value={formValues.message}
+                    onChange={handleChange}
+                    required
                   ></textarea>
                 </FormGroup>
 
@@ -68,7 +113,7 @@ const Contact = () => {
                 </div>
 
                 <div className="d-flex align-items-center gap-2">
-                  <h6 className="mb-0 fs-6">Phone:</h6>
+                  <h6 className="mb-0 fs-6">Email:</h6>
                   <p className="section__description mb-0">carrent@gmail.com</p>
                 </div>
 

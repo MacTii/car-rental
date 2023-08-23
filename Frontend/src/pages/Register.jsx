@@ -44,7 +44,7 @@ const Register = () => {
     if (isAuthenticated) {
       navigate("/home"); // If token exists, redirect to the Home page
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, navigate]);
 
   const clearFormErrorWithDelay = () => {
     setTimeout(() => {
@@ -89,15 +89,11 @@ const Register = () => {
 
     register(data)
       .then((token) => {
-        console.log("Registered successfully!");
-
         localStorage.setItem("token", token);
         setIsAuthenticated(true);
         toast.success("Registration successful!");
       })
       .catch((error) => {
-        console.error(error.message);
-
         setFormError(error.message);
         clearFormErrorWithDelay();
         toast.error("Failed to register. Please check your fields.");

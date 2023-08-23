@@ -18,10 +18,10 @@ const RentalHistory = () => {
       return;
     }
     fetchGetRentals();
-  }, []);
+  }, [navigate, token]);
 
-  const handleCarDetails = (carMake) => {
-    navigate(`/cars/${carMake}`);
+  const handleCarDetails = (car) => {
+    navigate(`/cars/${car.make}`, { state: car });
   };
 
   const fetchGetRentals = async () => {
@@ -65,7 +65,7 @@ const RentalHistory = () => {
       {rental.map((rentalItem, index) => {
         const carRental = carRentals.find((car) => car.id === rentalItem.carID);
         return (
-          <Row key={index}>
+          <Row key={index} className="header-row">
             <Col md="2">
               <img
                 src={`data:image/png;base64,${carRental.image}`}
@@ -75,7 +75,7 @@ const RentalHistory = () => {
             </Col>
             <Col
               md="2"
-              onClick={() => handleCarDetails(carRental.make)}
+              onClick={() => handleCarDetails(carRental)}
               className="cursor-pointer"
             >
               {carRental.make}
