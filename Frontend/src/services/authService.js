@@ -17,7 +17,7 @@ export const login = async (data) => {
     if (result.data) {
       return result.data;
     } else {
-      throw new Error("Invalid login credentials.");
+      throw new Error(result.detail);
     }
   } catch (error) {
     throw new Error("An error occurred: " + error.message);
@@ -39,7 +39,7 @@ export const register = async (data) => {
     if (result.data) {
       return result.data;
     } else {
-      throw new Error(result.details);
+      throw new Error(result.detail);
     }
   } catch (error) {
     throw new Error("An error occurred: " + error.message);
