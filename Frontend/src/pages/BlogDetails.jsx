@@ -11,16 +11,23 @@ import "../styles/blog-details.css";
 import { addComment } from "../services/commentService.js";
 import { getBlogByTitle } from "../services/blogService.js";
 import { getBlogs } from "../services/blogService";
+import { getUserByUsername } from "../services/userService";
+import { getUsernameFromToken } from "../services/tokenService";
 
 const BlogDetails = () => {
   const { slug } = useParams();
   const [blog, setBlog] = useState();
   const [blogs, setBlogs] = useState([]);
+  const [token] = useState(localStorage.getItem("token"));
+  const [user, setUser] = useState();
 
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchGetBlog();
     fetchGetBlogs();
+    if (token) {
+      fetchGetUser();
+    }
   }, [slug]);
 
   const fetchGetBlog = async () => {
@@ -31,6 +38,12 @@ const BlogDetails = () => {
   const fetchGetBlogs = async () => {
     const result = await getBlogs();
     setBlogs(result);
+  };
+
+  const fetchGetUser = async () => {
+    const username = getUsernameFromToken(); // Decode token and get username
+    const user = await getUserByUsername(username); // Get user data by username
+    setUser(user);
   };
 
   if (!blog) {
@@ -132,18 +145,24 @@ const BlogDetails = () => {
                         type="text"
                         name="name"
                         placeholder="Name"
+                        value={user?.name || ""}
+                        disabled={!!user}
                         required
                       />
                       <Input
                         type="text"
                         name="surname"
                         placeholder="Surname"
+                        value={user?.surname || ""}
+                        disabled={!!user}
                         required
                       />
                       <Input
                         type="email"
                         name="email"
                         placeholder="Email"
+                        value={user?.email || ""}
+                        disabled={!!user}
                         required
                       />
                     </FormGroup>
