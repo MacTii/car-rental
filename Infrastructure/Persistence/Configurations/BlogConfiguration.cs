@@ -13,7 +13,7 @@ namespace Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Blog> entity)
         {
-            entity.Property(e => e.BlogName)
+            entity.Property(e => e.Title)
                 .HasMaxLength(50);
 
             entity.Property(e => e.AuthorName)
@@ -23,6 +23,9 @@ namespace Infrastructure.Persistence.Configurations
                 .HasMaxLength(50);
 
             entity.Property(e => e.Description)
+                .HasMaxLength(250);
+
+            entity.Property(e => e.DetailedDescription)
                 .HasMaxLength(700);
         }
     }

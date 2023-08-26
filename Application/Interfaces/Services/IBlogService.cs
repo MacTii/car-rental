@@ -11,7 +11,8 @@ namespace Application.Interfaces.Services
     public interface IBlogService
     {
         public IEnumerable<BlogDTO> GetBlogs();
-        public BlogDTO GetBlog(int blogID);
+        public BlogDTO GetBlogByID(int blogID);
+        public BlogDTO GetBlogByTitle(string title);
         public void AddBlog(BlogDTO blogDTO);
         public void UpdateBlog(int blogID, BlogDTO blogDTO);
         public void DeleteBlog(int blogID);

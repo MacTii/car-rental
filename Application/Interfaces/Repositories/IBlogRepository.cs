@@ -11,6 +11,7 @@ namespace Application.Interfaces.Repositories
     {
         public IEnumerable<Blog> GetAll();
         public Blog GetByID(int blogID);
+        public Blog GetByTitle(string title);
         public void Insert(Blog blog);
         public void Update(int blogID, Blog blog);
         public void Delete(int blogID);

@@ -61,7 +61,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("comments")]
-        [Authorize]
+        // [Authorize]
         public ActionResult AddComment(CommentDTO commentDTO)
         {
             if (commentDTO == null)

@@ -36,9 +36,15 @@ namespace Application.Services
             return _mapper.Map<IEnumerable<BlogDTO>>(blogs);
         }
 
-        public BlogDTO GetBlog(int blogID)
+        public BlogDTO GetBlogByID(int blogID)
         {
             var blog = _blogRepository.GetByID(blogID);
+            return _mapper.Map<BlogDTO>(blog);
+        }
+
+        public BlogDTO GetBlogByTitle(string title)
+        {
+            var blog = _blogRepository.GetByTitle(title);
             return _mapper.Map<BlogDTO>(blog);
         }
 

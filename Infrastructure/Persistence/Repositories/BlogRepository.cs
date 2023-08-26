@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces.Repositories;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,17 @@ namespace Infrastructure.Persistence.Repositories
                 .Include(b => b.Comments)
                 .FirstOrDefault(b => b.ID == blogID);
             return blog ?? throw new InvalidOperationException($"Blog with ID: {blogID} not found.");
+        }
+
+        public Blog GetByTitle(string title)
+        {
+            if (title.IsNullOrEmpty())
+                throw new ArgumentException($"Invalid blog title: {title}. Blog title can't be empty or null.");
+
+            var blog = _context.Blogs
+                .Include(b => b.Comments)
+                .FirstOrDefault(b => b.Title == title);
+            return blog ?? throw new InvalidOperationException($"Blog with title: {title} not found.");
         }
 
         public void Insert(Blog blog)

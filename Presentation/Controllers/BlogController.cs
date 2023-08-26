@@ -47,11 +47,26 @@ namespace Presentation.Controllers
                 });
         }
 
-        [HttpGet("blogs/{blogID}")]
-        [Authorize]
+        [HttpGet("blogs/id/{blogID}")]
+        // [Authorize]
         public ActionResult GetBlogByID(int blogID)
         {
-            var blogDTO = _blogService.GetBlog(blogID);
+            var blogDTO = _blogService.GetBlogByID(blogID);
+
+            // HTTP 200
+            return Ok(
+                new
+                {
+                    Response = "Blog record retrieved successfully",
+                    Data = blogDTO
+                });
+        }
+
+        [HttpGet("blogs/title/{title}")]
+        // [Authorize]
+        public ActionResult GetBlogByTitle(string title)
+        {
+            var blogDTO = _blogService.GetBlogByTitle(title);
 
             // HTTP 200
             return Ok(

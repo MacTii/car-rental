@@ -384,10 +384,12 @@ namespace Infrastructure.SeedData
             {
                 blogs[0] = new Blog
                 {
-                    BlogName = "The Benefits of Regular Car Maintenance",
+                    Title = "The Benefits of Regular Car Maintenance",
                     AuthorName = "John",
                     AuthorSurname = "Smith",
                     Description = "Proper car maintenance is essential for ensuring the longevity and performance of your vehicle. " +
+                    "In this blog post, we'll discuss the importance of regular maintenance and provide helpful tips for keeping your car in top shape.",
+                    DetailedDescription = "Proper car maintenance is essential for ensuring the longevity and performance of your vehicle. " +
                     "In this blog post, we'll discuss the importance of regular maintenance and provide helpful tips for keeping your " +
                     "car in top shape.\r\n\r\nRegular car maintenance keeps your vehicle healthy, happy, and road-ready." +
                     "\r\nProper car maintenance is essential for ensuring the longevity and performance of your vehicle. " +
@@ -412,10 +414,12 @@ namespace Infrastructure.SeedData
 
                 blogs[1] = new Blog
                 {
-                    BlogName = "Tips for Jumpstarting a Dead Car Battery",
+                    Title = "Tips for Jumpstarting a Dead Car Battery",
                     AuthorName = "Emily",
                     AuthorSurname = "Smith",
-                    Description = "Dealing with a dead car battery can be frustrating, but knowing how to jumpstart your vehicle can save " +
+                    Description = "Dealing with a dead car battery can be frustrating, but knowing how to jumpstart your vehicle can save you from being " +
+                    "stranded. This blog post offers step-by-step instructions and helpful tips for safely jumpstarting a dead car battery.",
+                    DetailedDescription = "Dealing with a dead car battery can be frustrating, but knowing how to jumpstart your vehicle can save " +
                     "you from being stranded. This blog post offers step-by-step instructions and helpful tips for safely jumpstarting " +
                     "a dead car battery.\r\n\r\nGet back on the road quickly with these tips for jumpstarting a dead car battery." +
                     "\r\nDealing with a dead car battery can be frustrating, but knowing how to jumpstart your vehicle can save " +
@@ -440,10 +444,12 @@ namespace Infrastructure.SeedData
 
                 blogs[2] = new Blog
                 {
-                    BlogName = "Road Trip Essentials: Packing for a Long Drive",
+                    Title = "Road Trip Essentials: Packing for a Long Drive",
                     AuthorName = "David",
                     AuthorSurname = "Thompson",
                     Description = "Planning a road trip? Make sure you have all the essentials for a comfortable and enjoyable journey. " +
+                    "This blog post provides a comprehensive checklist of items to pack, including safety equipment, entertainment options, and more.",
+                    DetailedDescription = "Planning a road trip? Make sure you have all the essentials for a comfortable and enjoyable journey. " +
                     "This blog post provides a comprehensive checklist of items to pack, including safety equipment, entertainment options, " +
                     "and more.\r\n\r\nPack your sense of adventure and make every road trip an opportunity for new experiences." +
                     "\r\nPlanning a road trip? Make sure you have all the essentials for a comfortable and enjoyable journey. " +
