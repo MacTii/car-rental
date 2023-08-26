@@ -42,11 +42,6 @@ const BlogDetails = () => {
   const formattedDateString = formattedDate.toDateString();
 
   const handleCommentSubmit = async (event) => {
-    event.preventDefault();
-
-    console.log(event.target.elements);
-    console.log(event.target.elements.value);
-
     const name = event.target.elements.name.value;
     const surname = event.target.elements.surname.value;
     const email = event.target.elements.email.value;
