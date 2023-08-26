@@ -19,6 +19,9 @@ namespace Application
             service.AddScoped<IUserService, UserService>();
             service.AddScoped<IRentalService, RentalService>();
             service.AddScoped<IUserCredentialsService, UserCredentialsService>();
+            service.AddScoped<IBlogService, BlogService>();
+            service.AddScoped<ICommentService, CommentService>();
+
             service.AddScoped<IAuthService, AuthService>();
             service.AddScoped<IAuthenticationHelper, AuthenticationHelper>();
 

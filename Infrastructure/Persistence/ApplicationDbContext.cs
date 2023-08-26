@@ -26,6 +26,8 @@ namespace Infrastructure.Persistence
         public DbSet<User> Users => Set<User>();
         public DbSet<Rental> Rentals => Set<Rental>();
         public DbSet<UserCredentials> UserCredentials => Set<UserCredentials>();
+        public DbSet<Blog> Blogs => Set<Blog>();
+        public DbSet<Comment> Comments => Set<Comment>();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
