@@ -32,6 +32,14 @@ namespace Application.Mapper
 
             CreateMap<UserCredentialsDTO, UserCredentials>();
             CreateMap<UserCredentials, UserCredentialsDTO>();
+
+            CreateMap<Blog, BlogDTO>()
+                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => Convert.ToBase64String(src.Image)));
+            CreateMap<BlogDTO, Blog>()
+                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => Convert.FromBase64String(src.Image)));
+
+            CreateMap<Comment, CommentDTO>();
+            CreateMap<CommentDTO, Comment>();
         }
     }
 }

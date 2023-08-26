@@ -30,13 +30,16 @@ export const addRental = async (data) => {
 export const getRentalByUsername = async (username) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await fetch(`${baseURL}/api/rentals/username/${username}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `${baseURL}/api/rentals/username/${username}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     const result = await response.json();
 
     if (result.data) {

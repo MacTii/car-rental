@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.Interfaces.Repositories;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Repositories;
 using Infrastructure.Repositories;
 using Infrastructure.SeedData;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,8 @@ namespace Infrastructure
             service.AddScoped<ICarRepository, CarRepository>();
             service.AddScoped<IRentalRepository, RentalRepository>();
             service.AddScoped<IUserCredentialsRepository, UserCredentialsRepository>();
+            service.AddScoped<IBlogRepository, BlogRepository>();
+            service.AddScoped<ICommentRepository, CommentRepository>();
 
             return service;
         }

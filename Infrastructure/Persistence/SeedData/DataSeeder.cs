@@ -31,6 +31,9 @@ namespace Infrastructure.SeedData
             var users = SeedUsers(userCredentials);
             var cars = SeedCars();
             SeedRentals(users, cars);
+
+            var blogs = SeedBlogs();
+            SeedComments(blogs);
         }
 
         private UserCredentials[] SeedUserCredentials()
@@ -370,6 +373,153 @@ namespace Infrastructure.SeedData
                     new Rental { RentDate = new DateTime(2023, 5, 6), User = users[0], Car = cars[0] },
                     new Rental { RentDate = new DateTime(2023, 3, 23), ReturnDate = new DateTime(2023, 9, 23), User = users[1], Car = cars[1] }
                 );
+                _context.SaveChanges();
+            }
+        }
+
+        private Blog[] SeedBlogs()
+        {
+            Blog[] blogs = new Blog[3];
+            if (!_context.Blogs.Any())
+            {
+                blogs[0] = new Blog
+                {
+                    Title = "The Benefits of Regular Car Maintenance",
+                    AuthorName = "John",
+                    AuthorSurname = "Smith",
+                    Description = "Proper car maintenance is essential for ensuring the longevity and performance of your vehicle. " +
+                    "In this blog post, we'll discuss the importance of regular maintenance and provide helpful tips for keeping your car in top shape.",
+                    DetailedDescription = "Proper car maintenance is essential for ensuring the longevity and performance of your vehicle. " +
+                    "In this blog post, we'll discuss the importance of regular maintenance and provide helpful tips for keeping your " +
+                    "car in top shape.\r\n\r\nRegular car maintenance keeps your vehicle healthy, happy, and road-ready." +
+                    "\r\nProper car maintenance is essential for ensuring the longevity and performance of your vehicle. " +
+                    "In this blog post, we'll discuss the importance of regular maintenance and provide helpful tips for " +
+                    "keeping your car in top shape.",
+                    Date = new DateTime(2023, 4, 15, 9, 0, 0),
+                    Image = Array.Empty<byte>(),
+                    Comments = new List<Comment>(1)
+                    {
+                        new Comment
+                        {
+                            Name = "Anna",
+                            Surname = "Kowalska",
+                            Date = new DateTime(2022, 7, 14, 11, 31, 00),
+                            Email = "anna.kowalska@gmail.com",
+                            Description = "Thank you for sharing these helpful tips on car maintenance. " +
+                            "I'm really glad to learn more about taking care of my vehicle. " +
+                            "I will definitely use this information to keep my car in the best condition. Thanks again!",
+                        }
+                    }
+                };
+
+                blogs[1] = new Blog
+                {
+                    Title = "Tips for Jumpstarting a Dead Car Battery",
+                    AuthorName = "Emily",
+                    AuthorSurname = "Smith",
+                    Description = "Dealing with a dead car battery can be frustrating, but knowing how to jumpstart your vehicle can save you from being " +
+                    "stranded. This blog post offers step-by-step instructions and helpful tips for safely jumpstarting a dead car battery.",
+                    DetailedDescription = "Dealing with a dead car battery can be frustrating, but knowing how to jumpstart your vehicle can save " +
+                    "you from being stranded. This blog post offers step-by-step instructions and helpful tips for safely jumpstarting " +
+                    "a dead car battery.\r\n\r\nGet back on the road quickly with these tips for jumpstarting a dead car battery." +
+                    "\r\nDealing with a dead car battery can be frustrating, but knowing how to jumpstart your vehicle can save " +
+                    "you from being stranded. This blog post offers step-by-step instructions and helpful tips for safely " +
+                    "jumpstarting a dead car battery.",
+                    Date = new DateTime(2023, 6, 21, 9, 0, 0),
+                    Image = Array.Empty<byte>(),
+                    Comments = new List<Comment>(1)
+                    {
+                        new Comment
+                        {
+                            Name = "Anna",
+                            Surname = "Kowalska",
+                            Date = new DateTime(2022, 7, 15, 11, 31, 00),
+                            Email = "anna.kowalska@gmail.com",
+                            Description = "Thank you for sharing these helpful tips on car maintenance. " +
+                            "I'm really glad to learn more about taking care of my vehicle. I will definitely " +
+                            "use this information to keep my car in the best condition. Thanks again!"
+                        }
+                    }
+                };
+
+                blogs[2] = new Blog
+                {
+                    Title = "Road Trip Essentials: Packing for a Long Drive",
+                    AuthorName = "David",
+                    AuthorSurname = "Thompson",
+                    Description = "Planning a road trip? Make sure you have all the essentials for a comfortable and enjoyable journey. " +
+                    "This blog post provides a comprehensive checklist of items to pack, including safety equipment, entertainment options, and more.",
+                    DetailedDescription = "Planning a road trip? Make sure you have all the essentials for a comfortable and enjoyable journey. " +
+                    "This blog post provides a comprehensive checklist of items to pack, including safety equipment, entertainment options, " +
+                    "and more.\r\n\r\nPack your sense of adventure and make every road trip an opportunity for new experiences." +
+                    "\r\nPlanning a road trip? Make sure you have all the essentials for a comfortable and enjoyable journey. " +
+                    "This blog post provides a comprehensive checklist of items to pack, including safety equipment, entertainment options, and more.",
+                    Date = new DateTime(2023, 6, 28, 9, 0, 0),
+                    Image = Array.Empty<byte>(),
+                    Comments = new List<Comment>(1)
+                    {
+                        new Comment
+                        {
+                            Name = "Anna",
+                            Surname = "Kowalska",
+                            Date = new DateTime(2022, 7, 16, 11, 31, 00),
+                            Email = "anna.kowalska@gmail.com",
+                            Description = "Thank you for sharing these helpful tips on car maintenance. " +
+                            "I'm really glad to learn more about taking care of my vehicle. I will definitely " +
+                            "use this information to keep my car in the best condition. Thanks again!"
+                        }
+                    }
+                };
+
+                _context.Blogs.AddRange(blogs);
+                _context.SaveChanges();
+            }
+
+            return blogs;
+        }
+
+        private void SeedComments(Blog[] blogs)
+        {
+            Comment[] comments = new Comment[3];
+            if (!_context.Comments.Any())
+            {
+                comments[0] = new Comment
+                {
+                    BlogID = blogs[0].ID,
+                    Name = "Anna",
+                    Surname = "Kowalska",
+                    Date = new DateTime(2022, 7, 14, 11, 31, 00),
+                    Email = "anna.kowalska@gmail.com",
+                    Description = "Thank you for sharing these helpful tips on car maintenance. " +
+                            "I'm really glad to learn more about taking care of my vehicle. " +
+                            "I will definitely use this information to keep my car in the best condition. Thanks again!"
+                };
+
+                comments[1] = new Comment
+                {
+                    BlogID = blogs[1].ID,
+                    Name = "Anna",
+                    Surname = "Kowalska",
+                    Date = new DateTime(2022, 7, 15, 11, 31, 00),
+                    Email = "anna.kowalska@gmail.com",
+                    Description = "Thank you for sharing these helpful tips on car maintenance. " +
+                            "I'm really glad to learn more about taking care of my vehicle. I will definitely " +
+                            "use this information to keep my car in the best condition. Thanks again!"
+                };
+
+                comments[2] = new Comment
+                {
+                    BlogID = blogs[2].ID,
+                    Name = "Anna",
+                    Surname = "Kowalska",
+                    Date = new DateTime(2022, 7, 16, 11, 31, 00),
+                    Email = "anna.kowalska@gmail.com",
+                    Description = "Thank you for sharing these helpful tips on car maintenance. " +
+                            "I'm really glad to learn more about taking care of my vehicle. I will definitely " +
+                            "use this information to keep my car in the best condition. Thanks again!"
+                };
+
+                _context.Comments.AddRange(comments);
                 _context.SaveChanges();
             }
         }

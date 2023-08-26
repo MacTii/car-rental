@@ -99,6 +99,8 @@ namespace Presentation.Controllers
         public ActionResult DeleteCar(int carID)
         {
             _carService.DeleteCar(carID);
+
+            // HTTP 200
             return Ok(
                 new
                 {
@@ -111,6 +113,8 @@ namespace Presentation.Controllers
         public ActionResult UploadImage(IFormFile formFile, int carID)
         {
             var carDTO = _carService.UploadImage(formFile, carID);
+
+            // HTTP 200
             return Ok(new
             {
                 Response = "Car image uploaded successfully",
