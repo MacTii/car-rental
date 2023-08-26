@@ -1,22 +1,72 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Form, FormGroup, Input } from "reactstrap";
 
 import { useParams } from "react-router-dom";
-import blogData from "../assets/data/blogData.js";
 import Helmet from "../components/Helmet/Helmet";
 import { Link } from "react-router-dom";
 
-import commentImg from "../assets/all-images/ava-5.jpg";
+import userImg from "../assets/all-images/user-img.png";
 
 import "../styles/blog-details.css";
+import { addComment } from "../services/commentService.js";
+import { getBlogByTitle } from "../services/blogService.js";
+import { getBlogs } from "../services/blogService";
 
 const BlogDetails = () => {
   const { slug } = useParams();
-  const blog = blogData.find((blog) => blog.title === slug);
+  const [blog, setBlog] = useState();
+  const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [blog]);
+    fetchGetBlog();
+    fetchGetBlogs();
+  }, [slug]);
+
+  const fetchGetBlog = async () => {
+    const result = await getBlogByTitle(slug);
+    setBlog(result);
+  };
+
+  const fetchGetBlogs = async () => {
+    const result = await getBlogs();
+    setBlogs(result);
+  };
+
+  if (!blog) {
+    return null; // HOW TO FIX THAT
+  }
+
+  const formattedDate = new Date(blog.date);
+  const formattedTimeString = formattedDate.toLocaleTimeString();
+  const formattedDateString = formattedDate.toDateString();
+
+  const handleCommentSubmit = async (event) => {
+    event.preventDefault();
+
+    console.log(event.target.elements);
+    console.log(event.target.elements.value);
+
+    const name = event.target.elements.name.value;
+    const surname = event.target.elements.surname.value;
+    const email = event.target.elements.email.value;
+    const comment = event.target.elements.comment.value;
+
+    const newComment = {
+      blogID: blog.id,
+      name: name,
+      surname: surname,
+      email: email,
+      date: new Date(),
+      description: comment,
+    };
+
+    console.log(newComment);
+
+    await addComment(newComment); // add comment to db
+
+    fetchGetBlog(); // refresh comments in blog
+  };
 
   return (
     <Helmet title={blog.title}>
@@ -25,61 +75,82 @@ const BlogDetails = () => {
           <Row>
             <Col lg="8" md="8">
               <div className="blog__details">
-                <img src={blog.imgUrl} alt="" className="w-100" />
+                <img
+                  src={`data:image/png;base64,${blog.image}`}
+                  alt=""
+                  className="w-100"
+                />
                 <h2 className="section__title mt-4">{blog.title}</h2>
                 <div className="blog__publisher d-flex align-items-center gap-4 mb-4">
                   <span className="blog__author">
-                    <i className="ri-user-line"></i> {blog.author}
+                    <i className="ri-user-line"></i> {blog.authorName}{" "}
+                    {blog.authorSurname}
                   </span>
 
                   <span className="d-flex align-items-center gap-1 section__description">
-                    <i className="ri-calendar-line"></i> {blog.date}
+                    <i className="ri-calendar-line"></i> {formattedDateString}
                   </span>
 
                   <span className="d-flex align-items-center gap-1 section__description">
-                    <i className="ri-time-line"></i> {blog.time}
+                    <i className="ri-time-line"></i> {formattedTimeString}
                   </span>
                 </div>
 
-                <p className="section__description">{blog.description}</p>
-                <h6 className="ps-5 fw-normal">
-                  <blockquote className="fs-4">{blog.quote}</blockquote>
-                </h6>
+                <p className="section__description">
+                  {blog.detailedDescription}
+                </p>
                 <p className="section__description">{blog.description}</p>
               </div>
 
               <div className="comment__list mt-5">
-                <h4 className="mb-5">1 Comments</h4>
-
-                <div className="single__comment d-flex gap-3">
-                  <img src={commentImg} alt="" />
-                  <div className="comment__content">
-                    <h6 className="fw-bold">Anna Kowalska</h6>
-                    <p className="section__description mb-0">14th July 2022</p>
-                    <p className="section__description">
-                      Thank you for sharing these helpful tips on car
-                      maintenance. I'm really glad to learn more about taking
-                      care of my vehicle. I will definitely use this information
-                      to keep my car in the best condition. Thanks again!
-                    </p>
-
-                    <span className="replay d-flex align-items-center gap-1">
-                      <i className="ri-reply-line"></i> Replay
-                    </span>
+                <h4 className="mb-5">{blog.comments.length} Comments</h4>
+                {blog.comments.map((comment) => (
+                  <div
+                    className="single__comment d-flex gap-3"
+                    key={comment.id}
+                  >
+                    <img src={userImg} alt="" />
+                    <div className="comment__content">
+                      <h6 className="fw-bold">
+                        {comment.name} {comment.surname}
+                      </h6>
+                      <p className="section__description mb-0">
+                        {comment.date}
+                      </p>
+                      <p className="section__description">
+                        {comment.description}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                ))}
 
                 {/* === comment form === */}
                 <div className="leave__comment-form mt-5">
                   <h4>Leave a Comment</h4>
-                  <p className="section__description">
-                    You must sign-in to make or comment a post
-                  </p>
+                  {/* <p className="section__description">
+                    You must sign-in to comment a post
+                  </p> */}
 
-                  <Form>
+                  <Form onSubmit={handleCommentSubmit}>
                     <FormGroup className="d-flex gap-3">
-                      <Input type="text" placeholder="Full name" />
-                      <Input type="email" placeholder="Email" />
+                      <Input
+                        type="text"
+                        name="name"
+                        placeholder="Name"
+                        required
+                      />
+                      <Input
+                        type="text"
+                        name="surname"
+                        placeholder="Surname"
+                        required
+                      />
+                      <Input
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        required
+                      />
                     </FormGroup>
 
                     <FormGroup>
@@ -87,10 +158,12 @@ const BlogDetails = () => {
                         rows="5"
                         className="w-100 py-2 px-3"
                         placeholder="Comment ..."
+                        name="comment"
+                        required
                       ></textarea>
                     </FormGroup>
 
-                    <button className="btn comment__btn mt-3">
+                    <button className="btn comment__btn mt-3" type="submit">
                       Post a Comment
                     </button>
                   </Form>
@@ -102,12 +175,16 @@ const BlogDetails = () => {
               <div className="recent__post mb-4">
                 <h5 className="fw-bold">Recent Posts</h5>
               </div>
-              {blogData.map((item) => (
+              {blogs.map((item) => (
                 <div className="recent__blog-post mb-4" key={item.id}>
                   <div className="recent__blog-item d-flex gap-3">
-                    <img src={item.imgUrl} alt="" className="w-25 rounded-2" />
+                    <img
+                      src={`data:image/png;base64,${item.image}`}
+                      alt=""
+                      className="w-25 rounded-2"
+                    />
                     <h6>
-                      <Link to={`/blogs/${item.title}`}>{blog.title}</Link>
+                      <Link to={`/blogs/${item.title}`}>{item.title}</Link>
                     </h6>
                   </div>
                 </div>
