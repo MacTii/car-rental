@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -59,12 +60,7 @@ namespace Infrastructure.Repositories
             if (existingUserCredentials == null)
                 throw new InvalidOperationException($"Car with ID: {userCredentialsID} not found.");
 
-            existingUserCredentials.Username = userCredentials.Username;
-            existingUserCredentials.PasswordHash = userCredentials.PasswordHash;
-            existingUserCredentials.PasswordSalt = userCredentials.PasswordSalt;
-            existingUserCredentials.RefreshToken = userCredentials.RefreshToken;
-            existingUserCredentials.TokenCreated = userCredentials.TokenCreated;
-            existingUserCredentials.TokenExpires = userCredentials.TokenExpires;
+            CopyProperties(userCredentials, existingUserCredentials);
 
             _context.Entry(existingUserCredentials).State = EntityState.Modified;
         }
@@ -85,6 +81,21 @@ namespace Infrastructure.Repositories
         public void Save()
         {
             _context.SaveChanges();
+        }
+
+        private static void CopyProperties(object source, object destination)
+        {
+            Type type = source.GetType();
+            PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (PropertyInfo property in properties)
+            {
+                if (property.CanRead && property.CanWrite)
+                {
+                    var value = property.GetValue(source);
+                    property.SetValue(destination, value);
+                }
+            }
         }
     }
 }

@@ -22,6 +22,51 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Domain.Entities.Blog", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("AuthorName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("AuthorSurname")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("DetailedDescription")
+                        .IsRequired()
+                        .HasMaxLength(700)
+                        .HasColumnType("nvarchar(700)");
+
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Blogs");
+                });
+
             modelBuilder.Entity("Domain.Entities.Car", b =>
                 {
                     b.Property<int>("ID")
@@ -95,6 +140,47 @@ namespace Infrastructure.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Cars");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Comment", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int>("BlogID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("BlogID");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Domain.Entities.Rental", b =>
@@ -240,6 +326,15 @@ namespace Infrastructure.Migrations
                     b.ToTable("UserCredentials");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Comment", b =>
+                {
+                    b.HasOne("Domain.Entities.Blog", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("BlogID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Domain.Entities.Rental", b =>
                 {
                     b.HasOne("Domain.Entities.Car", "Car")
@@ -268,6 +363,11 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("UserCredentials");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Blog", b =>
+                {
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

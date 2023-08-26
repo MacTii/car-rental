@@ -14,5 +14,8 @@ namespace Application.Interfaces.Common
         public DbSet<User> Users { get; }
         public DbSet<Rental> Rentals { get; }
         public DbSet<UserCredentials> UserCredentials { get; }
+        public DbSet<Blog> Blogs { get; }
+        public DbSet<Comment> Comments { get; }
+
     }
 }

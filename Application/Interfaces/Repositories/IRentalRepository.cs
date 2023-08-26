@@ -11,6 +11,7 @@ namespace Application.Interfaces.Repositories
     {
         public IEnumerable<Rental> GetAll();
         public Rental GetByID(int rentalID);
+        public IEnumerable<Rental> GetByUsername(string username);
         public void Insert(Rental rental);
         public void Update(int rentalID, Rental rental);
         public void Delete(int rentalID);

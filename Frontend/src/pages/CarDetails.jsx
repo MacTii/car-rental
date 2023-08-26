@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Container, Row, Col } from "reactstrap";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import BookingForm from "../components/UI/BookingForm";
 import PaymentMethod from "../components/UI/PaymentMethod";
@@ -10,6 +11,7 @@ import Helmet from "../components/Helmet/Helmet";
 import { getUserByUsername, updateUser } from "../services/userService";
 import { addRental } from "../services/rentalService";
 import { getUsernameFromToken } from "../services/tokenService";
+import { updateCar } from "../services/carService";
 
 const CarDetails = () => {
   const [bookingData, setBookingData] = useState({
@@ -39,11 +41,10 @@ const CarDetails = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if(token) {
+    if (token) {
       fetchGetUser(); // Get User
     }
-    console.log(bookingData);
-  }, [slug]);
+  }, [slug, token]);
 
   const fetchGetUser = async () => {
     // Get username
@@ -67,6 +68,11 @@ const CarDetails = () => {
     // Updating the user
     setUser(updatedUser);
     await updateUser(user.id, updatedUser); // Update user
+  };
+
+  const fetchUpdateCar = async () => {
+    car.isAvailable = false;
+    await updateCar(car.id, car);
   };
 
   const fetchAddRental = async () => {
@@ -93,8 +99,14 @@ const CarDetails = () => {
     // If user change booking information --> update user
     fetchUpdateUser();
 
+    // Update car model in db when reserverd (change IsAvailable to false)
+    fetchUpdateCar();
+
     // Update rental
     fetchAddRental();
+
+    toast.success("Car reserved successfully!");
+    navigate("/home");
   };
 
   return (

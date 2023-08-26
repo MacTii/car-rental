@@ -40,6 +40,17 @@ namespace Infrastructure.Repositories
             return rental ?? throw new InvalidOperationException($"Rental with ID: {rentalID} not found.");
         }
 
+        public IEnumerable<Rental> GetByUsername(string username)
+        {
+            if (username == null) throw new ArgumentNullException(nameof(username));
+
+            var rentals = _context.Rentals
+                .Where(x => x.User.UserCredentials.Username == username)
+                .ToList();
+
+            return rentals ?? throw new InvalidOperationException($"Rentals filtered by username: {username} not found.");
+        }
+
         public void Insert(Rental rental)
         {
             _context.Rentals.Add(rental);
@@ -50,10 +61,7 @@ namespace Infrastructure.Repositories
             if (rentalID < 1)
                 throw new ArgumentException($"Invalid rental ID: {rentalID}. Rental ID must be greater than or equal to 1.");
 
-            var existingRental = _context.Rentals.Find(rentalID);
-            if (existingRental == null)
-                throw new InvalidOperationException($"Rental with ID: {rentalID} not found.");
-
+            var existingRental = _context.Rentals.Find(rentalID) ?? throw new InvalidOperationException($"Rental with ID: {rentalID} not found.");
             CopyProperties(rental, existingRental);
 
             _context.Entry(existingRental).State = EntityState.Modified;
@@ -64,10 +72,7 @@ namespace Infrastructure.Repositories
             if (rentalID < 1)
                 throw new ArgumentException($"Invalid rental ID: {rentalID}. Rental ID must be greater than or equal to 1.");
 
-            var rental = _context.Rentals.Find(rentalID);
-            if (rental == null)
-                throw new InvalidOperationException($"Rental with ID: {rentalID} not found.");
-
+            var rental = _context.Rentals.Find(rentalID) ?? throw new InvalidOperationException($"Rental with ID: {rentalID} not found.");
             _context.Rentals.Remove(rental);
         }
 

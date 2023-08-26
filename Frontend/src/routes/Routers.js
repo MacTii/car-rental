@@ -12,6 +12,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import RentalHistory from "../pages/RentalHistory";
 import Profile from "../pages/Profile";
+import PrivacyPolicy from "../pages/PrivacyPolicy";
 
 const Routers = () => {
   return (
@@ -28,6 +29,7 @@ const Routers = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/rental-history" element={<RentalHistory />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

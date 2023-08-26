@@ -61,10 +61,7 @@ namespace Infrastructure.Repositories
             if (carID < 1)
                 throw new ArgumentException($"Invalid car ID: {carID}. Car ID must be greater than or equal to 1.");
 
-            var car = _context.Cars.Find(carID);
-            if (car == null)
-                throw new InvalidOperationException($"Car with ID: {carID} not found.");
-
+            var car = _context.Cars.Find(carID) ?? throw new InvalidOperationException($"Car with ID: {carID} not found.");
             _context.Cars.Remove(car);
         }
 
