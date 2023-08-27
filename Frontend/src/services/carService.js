@@ -70,3 +70,27 @@ export const updateCar = async (carID, data) => {
     throw new Error("An error occurred: " + error.message);
   }
 };
+
+// --- DELETE CAR ---
+export const deleteCar = async (carID) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${baseURL}/api/cars/${carID}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const result = await response.json();
+
+    if (result.respone) {
+      return result.response;
+    } else {
+      throw new Error(result.detail);
+    }
+  } catch (error) {
+    throw new Error("An error occurred: " + error.message);
+  }
+};
