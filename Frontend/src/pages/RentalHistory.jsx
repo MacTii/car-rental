@@ -68,7 +68,7 @@ const RentalHistory = () => {
           <Row key={index} className="header-row">
             <Col md="2">
               <img
-                src={`data:image/png;base64,${carRental.image}`}
+                src={carRental.image}
                 alt={carRental.make}
                 className="car-image"
               />

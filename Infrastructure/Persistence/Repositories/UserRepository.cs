@@ -27,7 +27,7 @@ namespace Infrastructure.Repositories
 
         public IEnumerable<User> GetAll()
         {
-            var users = _context.Users.ToList();
+            var users = _context.Users.Include(x => x.UserCredentials).ToList();
             return users;
         }
 

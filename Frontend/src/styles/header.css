@@ -4,6 +4,12 @@
     color: #fff
 }
 
+.admin__header__top {
+    padding: 10px 0px;
+    background: #0d8d89d9;
+    color: #fff
+}
+
 .header__top__left {
     display: flex;
     align-items: center;
@@ -112,6 +118,28 @@
     line-height: 1.5rem;
 }
 
+/* === admin logo === */
+
+.admin__logo h1 a span {
+    font-size: 1.5rem;
+}
+
+.admin__logo h1 a i {
+    font-size: 2.2rem;
+}
+
+.admin__logo h1 a {
+    text-decoration: none;
+    color: #0d8d89d9;
+    font-weight: 700;
+}
+
+.admin__logo h1 {
+    line-height: 1.5rem;
+}
+
+/* === */
+
 .header__location span i {
     font-size: 2.2rem;
     color: #000d6b;
@@ -125,6 +153,25 @@
 
 .header__location-content h6 {
     font-weight: 600;
+    color: #000d6b;
+}
+
+/* === admin header location === */
+
+.admin__header__location span i {
+    font-size: 2.2rem;
+    color: #0d8d89d9;
+}
+
+.admin__header__location-content h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0d8d89d9;
+}
+
+.admin__header__location-content h6 {
+    font-weight: 600;
+    color: #0d8d89d9;
 }
 
 .header__btn {
@@ -154,6 +201,11 @@
 .main__navbar {
     padding: 15px 0px;
     background: #000d6b;
+}
+
+.admin__main__navbar {
+    padding: 15px 0px;
+    background: #0d8d89d9;
 }
 
 .mobile__menu i {

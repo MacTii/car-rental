@@ -17,6 +17,6 @@ namespace Application.Mapper.DTOs
         public string DetailedDescription { get; set; } = null!;
         public DateTime Date { get; set; }
         public string Image { get; set; } = null!; // base64 string
-        public List<Comment>? Comments { get; set; }
+        public List<CommentDTO>? Comments { get; set; }
     }
 }

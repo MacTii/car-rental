@@ -116,7 +116,7 @@ const CarDetails = () => {
           <Row>
             <Col lg="6">
               <img
-                src={`data:image/png;base64,${car.image}`}
+                src={car.image}
                 alt={car.make}
                 className="w-100"
               />

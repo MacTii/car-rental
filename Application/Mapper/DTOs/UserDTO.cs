@@ -20,5 +20,6 @@ namespace Application.Mapper.DTOs
         public string Gender { get; set; } = null!;
         public string IdentificationNumber { get; set; } = null!;
         public string DrivingLicenseNumber { get; set; } = null!;
+        public UserCredentialsDTO UserCredentials { get; set; } = null!;
     }
 }

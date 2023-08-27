@@ -84,7 +84,7 @@ const BlogDetails = () => {
             <Col lg="8" md="8">
               <div className="blog__details">
                 <img
-                  src={`data:image/png;base64,${blog.image}`}
+                  src={blog.image}
                   alt=""
                   className="w-100"
                 />
@@ -193,7 +193,7 @@ const BlogDetails = () => {
                 <div className="recent__blog-post mb-4" key={item.id}>
                   <div className="recent__blog-item d-flex gap-3">
                     <img
-                      src={`data:image/png;base64,${item.image}`}
+                      src={item.image}
                       alt=""
                       className="w-25 rounded-2"
                     />
