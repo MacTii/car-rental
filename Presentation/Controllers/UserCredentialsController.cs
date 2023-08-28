@@ -98,7 +98,7 @@ namespace Presentation.Controllers
         }
 
         [HttpDelete("user-credentials/{userCredentialsID}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteUserCredential(int userCredentialsID)
         {
             _userCredentialsService.DeleteUserCredential(userCredentialsID);

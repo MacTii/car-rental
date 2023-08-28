@@ -74,7 +74,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("rentals")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult AddRental(RentalDTO rentalDTO)
         {
             if (rentalDTO == null)
@@ -94,7 +94,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPut("rentals/{rentalID}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult UpdateRental(int rentalID, RentalDTO rentalDTO)
         {
             if (rentalDTO == null)
@@ -114,14 +114,14 @@ namespace Presentation.Controllers
         }
 
         [HttpDelete("rentals/{rentalID}")]
-        [Authorize]
-        public ActionResult DeleteCar(int rentalID)
+        [Authorize(Roles = "Admin")]
+        public ActionResult DeleteRental(int rentalID)
         {
             _rentalService.DeleteRental(rentalID);
             return Ok(
                 new
                 {
-                    Response = "Car record deleted successfully"
+                    Response = "Rental record deleted successfully"
                 });
         }
     }

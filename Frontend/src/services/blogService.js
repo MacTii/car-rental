@@ -13,10 +13,10 @@ export const getBlogs = async () => {
     });
     const result = await response.json();
 
-    if (result.data) {
+    if (response.ok) {
       return result.data;
     } else {
-      throw new Error("List of blogs is empty!");
+      throw new Error(result.detail);
     }
   } catch (error) {
     throw new Error("An error occurred: " + error.message);
@@ -36,7 +36,80 @@ export const getBlogByTitle = async (title) => {
     });
     const result = await response.json();
 
-    if (result.data) {
+    if (response.ok) {
+      return result.data;
+    } else {
+      throw new Error(result.detail);
+    }
+  } catch (error) {
+    throw new Error("An error occurred: " + error.message);
+  }
+};
+
+// --- UPDATE BLOG ---
+export const updateBlog = async (blogID, data) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${baseURL}/api/blogs/${blogID}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      return result.data;
+    } else {
+      throw new Error(result.detail);
+    }
+  } catch (error) {
+    throw new Error("An error occurred: " + error.message);
+  }
+};
+
+// --- DELETE BLOG ---
+export const deleteBlog = async (blogID) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${baseURL}/api/blogs/${blogID}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      return result.response;
+    } else {
+      throw new Error(result.detail);
+    }
+  } catch (error) {
+    throw new Error("An error occurred: " + error.message);
+  }
+};
+
+// --- ADD BLOG ---
+export const addBlog = async (data) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${baseURL}/api/blogs`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+
+    if (response.ok) {
       return result.data;
     } else {
       throw new Error(result.detail);

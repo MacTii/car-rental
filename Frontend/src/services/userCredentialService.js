@@ -2,22 +2,22 @@ import urls from "../config/config";
 
 const baseURL = urls.development;
 
-// --- ADD COMMENT ---
-export const addComment = async (data) => {
+// --- DELETE USER CREDENTIAL ---
+export const deleteUserCredential = async (userCredentialsID) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await fetch(`${baseURL}/api/comments`, {
-      method: "POST",
+    const response = await fetch(`${baseURL}/api/user-credentials/${userCredentialsID}`, {
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(data),
     });
+
     const result = await response.json();
 
     if (response.ok) {
-      return result.data;
+      return result.response;
     } else {
       throw new Error(result.detail);
     }

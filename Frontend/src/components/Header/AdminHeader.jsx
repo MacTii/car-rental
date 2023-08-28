@@ -192,8 +192,6 @@ const AdminHeader = () => {
           </div>
         </Container>
       </div>
-
-      {/* === toast container === */}
     </header>
   );
 };

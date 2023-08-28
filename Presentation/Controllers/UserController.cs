@@ -44,7 +44,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("users/id/{userID}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult GetUserByID(int userID)
         {
             var userDTO = _userService.GetUserByID(userID);
@@ -94,7 +94,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPut("users/{userID}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult UpdateUser(int userID, UserDTO userDTO)
         {
             if (userDTO == null)
@@ -114,7 +114,7 @@ namespace Presentation.Controllers
         }
 
         [HttpDelete("users/{userID}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteUser(int userID)
         {
             _userService.DeleteUser(userID);

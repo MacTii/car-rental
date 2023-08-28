@@ -32,10 +32,16 @@ namespace Application.Mapper
                 .ForMember(dest => dest.Image, opt => opt.MapFrom(src => Base64ImageConverter.AddBase64Prefix(src.Image)));
 
             // RentalDTO -> Rental
-            CreateMap<RentalDTO, Rental>();
+            CreateMap<RentalDTO, Rental>()
+                .ForMember(dest => dest.RentDate, opt => opt.MapFrom(src => DateTime.ParseExact(src.RentDate, "yyyy-MM-dd HH:mm", null)))
+                .ForMember(dest => dest.ReturnDate, opt => opt.MapFrom(src =>
+                    string.IsNullOrEmpty(src.ReturnDate) ? (DateTime?)null : DateTime.ParseExact(src.ReturnDate, "yyyy-MM-dd HH:mm", null)));
 
             // Rental -> RentalDTO
-            CreateMap<Rental, RentalDTO>();
+            CreateMap<Rental, RentalDTO>()
+                .ForMember(dest => dest.RentDate, opt => opt.MapFrom(src => src.RentDate.ToString("yyyy-MM-dd HH:mm")))
+                .ForMember(dest => dest.ReturnDate, opt => opt.MapFrom(src =>
+                    src.ReturnDate.HasValue ? src.ReturnDate.Value.ToString("yyyy-MM-dd HH:mm") : null));
 
             // RegisterDTO -> UserCredentials
             CreateMap<RegisterDTO, UserCredentials>();
@@ -52,11 +58,13 @@ namespace Application.Mapper
 
             // BlogDTO -> Blog
             CreateMap<BlogDTO, Blog>()
-                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => Base64ImageConverter.RemoveBase64Prefix(src.Image)));
+                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => Base64ImageConverter.RemoveBase64Prefix(src.Image)))
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => DateTime.ParseExact(src.Date, "yyyy-MM-dd HH:mm", null)));
 
             // Blog -> BlogDTO
             CreateMap<Blog, BlogDTO>()
-                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => Base64ImageConverter.AddBase64Prefix(src.Image)));
+                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => Base64ImageConverter.AddBase64Prefix(src.Image)))
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date.ToString("yyyy-MM-dd HH:mm")));
 
             // CommentDTO -> Comment
             CreateMap<CommentDTO, Comment>();

@@ -97,7 +97,7 @@ namespace Presentation.Controllers
         }
 
         [HttpDelete("comments/{commentID}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteComment(int commentID)
         {
             _commentService.DeleteComment(commentID);

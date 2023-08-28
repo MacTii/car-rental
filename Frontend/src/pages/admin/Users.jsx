@@ -12,8 +12,9 @@ import {
   Input,
 } from "reactstrap";
 import { deleteUser, getUsers, updateUser } from "../../services/userService";
-import "../../styles/admin-users.css";
+import "../../styles/admin/users.css";
 import { toast } from "react-toastify";
+import { deleteUserCredential } from "../../services/userCredentialService";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -43,8 +44,9 @@ const Users = () => {
     toast.success("User saved successfully");
   };
 
-  const handleDeleteUser = async (userId) => {
-    await deleteUser(userId);
+  const handleDeleteUser = async (user) => {
+    await deleteUser(user.id);
+    await deleteUserCredential(user.userCredentialsID);
     toast.success("User deleted successfully");
   };
 
@@ -54,6 +56,7 @@ const Users = () => {
       <Table className="users-table">
         <thead>
           <tr>
+            <th>Id</th>
             <th>Username</th>
             <th>Name</th>
             <th>Surname</th>
@@ -73,6 +76,7 @@ const Users = () => {
         <tbody>
           {users.map((user) => (
             <tr key={user.id}>
+              <td>{user.id}</td>
               <td>{user.userCredentials.username}</td>
               <td>{user.name}</td>
               <td>{user.surname}</td>
@@ -98,7 +102,7 @@ const Users = () => {
                 <Button
                   color="danger"
                   className="delete-btn"
-                  onClick={() => handleDeleteUser(user.id)}
+                  onClick={() => handleDeleteUser(user)}
                 >
                   Delete
                 </Button>

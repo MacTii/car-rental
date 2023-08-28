@@ -7,7 +7,7 @@ import "../../styles/header.css";
 import { useAuth } from "../../context/AuthContext";
 import { getUsernameFromToken } from "../../services/tokenService";
 
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const navLinks = [
@@ -218,9 +218,6 @@ const Header = () => {
           </div>
         </Container>
       </div>
-
-      {/* === toast container === */}
-      <ToastContainer />
     </header>
   );
 };
