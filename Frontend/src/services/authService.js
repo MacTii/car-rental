@@ -14,7 +14,7 @@ export const login = async (data) => {
     });
     const result = await response.json();
 
-    if (result.data) {
+    if (response.ok) {
       return result.data;
     } else {
       throw new Error(result.detail);
@@ -36,7 +36,7 @@ export const register = async (data) => {
     });
     const result = await response.json();
 
-    if (result.data) {
+    if (response.ok) {
       return result.data;
     } else {
       throw new Error(result.detail);

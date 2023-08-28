@@ -36,7 +36,10 @@ namespace Infrastructure.Repositories
             if (userID < 1)
                 throw new ArgumentException($"Invalid user ID: {userID}. User ID must be greater than or equal to 1.");
 
-            var user = _context.Users.Find(userID);
+            var user = _context.Users
+                .Include(x => x.UserCredentials)
+                .FirstOrDefault(x => x.ID == userID);
+
             return user ?? throw new InvalidOperationException($"User with ID: {userID} not found.");
         }
 
@@ -45,6 +48,7 @@ namespace Infrastructure.Repositories
             if (username == null) throw new ArgumentNullException(nameof(username));
 
             var user = _context.Users
+                .Include(x=> x.UserCredentials)
                 .Where(x => x.UserCredentials.Username == username)
                 .SingleOrDefault();
 

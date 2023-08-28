@@ -52,6 +52,7 @@ const CarDetails = () => {
 
     // Get user data
     const result = await getUserByUsername(username);
+    console.log(result);
 
     setUser(result); // Set user hook
     setBookingData(result); // Set bookingData hook

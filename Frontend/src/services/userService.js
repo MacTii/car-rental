@@ -14,7 +14,11 @@ export const getUsername = async () => {
       },
     });
     const result = await response.text();
-    return result;
+    if (response.ok) {
+      return result;
+    } else {
+      throw new Error(result.detail);
+    }
   } catch (error) {
     throw new Error(`An error occurred: ${error}`);
   }
@@ -33,7 +37,7 @@ export const getUserByUsername = async (username) => {
     });
     const result = await response.json();
 
-    if (result.data) {
+    if (response.ok) {
       return result.data;
     } else {
       throw new Error(result.detail);
@@ -58,8 +62,8 @@ export const updateUser = async (userID, data) => {
 
     const result = await response.json();
 
-    if (result.data) {
-      return result.data;
+    if (response.ok) {
+      return result.data; // Assuming result.data contains updated user information
     } else {
       throw new Error(result.detail);
     }
@@ -81,10 +85,10 @@ export const getUsers = async () => {
     });
     const result = await response.json();
 
-    if (result.data) {
+    if (response.ok) {
       return result.data;
     } else {
-      throw new Error("List of users is empty!");
+      throw new Error(result.detail);
     }
   } catch (error) {
     throw new Error("An error occurred: " + error.message);
@@ -104,8 +108,11 @@ export const deleteUser = async (userID) => {
     });
 
     const result = await response.json();
+    console.log(result);
+    console.log(response);
+    console.log(response.ok);
 
-    if (result.respone) {
+    if (response.ok) {
       return result.response;
     } else {
       throw new Error(result.detail);

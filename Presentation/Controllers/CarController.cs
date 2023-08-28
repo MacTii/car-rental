@@ -59,7 +59,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("cars")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult AddCar(CarDTO carDTO)
         {
             if (carDTO == null)
@@ -77,7 +77,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPut("cars/{carID}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult UpdateCar(int carID, CarDTO carDTO)
         {
             if (carDTO == null)
@@ -95,7 +95,7 @@ namespace Presentation.Controllers
         }
 
         [HttpDelete("cars/{carID}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteCar(int carID)
         {
             _carService.DeleteCar(carID);

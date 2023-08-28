@@ -78,7 +78,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("blogs")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult AddBlog(BlogDTO blogDTO)
         {
             if (blogDTO == null)
@@ -96,7 +96,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPut("blogs/{blogID}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult UpdateBlog(int blogID, BlogDTO blogDTO)
         {
             if (blogDTO == null)
@@ -114,7 +114,7 @@ namespace Presentation.Controllers
         }
 
         [HttpDelete("blogs/{blogID}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteBlog(int blogID)
         {
             _blogService.DeleteBlog(blogID);
