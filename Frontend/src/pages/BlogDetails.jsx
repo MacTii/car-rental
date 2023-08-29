@@ -13,6 +13,7 @@ import { getBlogByTitle } from "../services/blogService.js";
 import { getBlogs } from "../services/blogService";
 import { getUserByUsername } from "../services/userService";
 import { getUsernameFromToken } from "../services/tokenService";
+import { toast } from "react-toastify";
 
 const BlogDetails = () => {
   const { slug } = useParams();
@@ -55,6 +56,8 @@ const BlogDetails = () => {
   const formattedDateString = formattedDate.toDateString();
 
   const handleCommentSubmit = async (event) => {
+    event.preventDefault();
+
     const name = event.target.elements.name.value;
     const surname = event.target.elements.surname.value;
     const email = event.target.elements.email.value;
@@ -73,7 +76,14 @@ const BlogDetails = () => {
 
     await addComment(newComment); // add comment to db
 
+    // Clear fields in form
+    event.target.elements.name.value = "";
+    event.target.elements.surname.value = "";
+    event.target.elements.email.value = "";
+    event.target.elements.comment.value = "";
+
     fetchGetBlog(); // refresh comments in blog
+    toast.success("Comment posted successfully!");
   };
 
   return (
@@ -83,11 +93,7 @@ const BlogDetails = () => {
           <Row>
             <Col lg="8" md="8">
               <div className="blog__details">
-                <img
-                  src={blog.image}
-                  alt=""
-                  className="w-100"
-                />
+                <img src={blog.image} alt="" className="w-100" />
                 <h2 className="section__title mt-4">{blog.title}</h2>
                 <div className="blog__publisher d-flex align-items-center gap-4 mb-4">
                   <span className="blog__author">
@@ -145,32 +151,32 @@ const BlogDetails = () => {
                         type="text"
                         name="name"
                         placeholder="Name"
-                        value={user?.name || ""}
-                        disabled={!!user}
-                        required
+                        value={user?.name}
+                        disabled={user !== undefined}
+                        required={!user}
                       />
                       <Input
                         type="text"
                         name="surname"
                         placeholder="Surname"
-                        value={user?.surname || ""}
-                        disabled={!!user}
-                        required
+                        value={user?.surname}
+                        disabled={user !== undefined}
+                        required={!user}
                       />
                       <Input
                         type="email"
                         name="email"
                         placeholder="Email"
-                        value={user?.email || ""}
-                        disabled={!!user}
-                        required
+                        value={user?.email}
+                        disabled={user !== undefined}
+                        required={!user}
                       />
                     </FormGroup>
 
                     <FormGroup>
                       <textarea
                         rows="5"
-                        className="w-100 py-2 px-3"
+                        className="form-control w-100 py-2 px-3"
                         placeholder="Comment ..."
                         name="comment"
                         required
@@ -192,11 +198,7 @@ const BlogDetails = () => {
               {blogs.map((item) => (
                 <div className="recent__blog-post mb-4" key={item.id}>
                   <div className="recent__blog-item d-flex gap-3">
-                    <img
-                      src={item.image}
-                      alt=""
-                      className="w-25 rounded-2"
-                    />
+                    <img src={item.image} alt="" className="w-25 rounded-2" />
                     <h6>
                       <Link to={`/blogs/${item.title}`}>{item.title}</Link>
                     </h6>
