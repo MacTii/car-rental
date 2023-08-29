@@ -16,7 +16,7 @@ export const addRental = async (data) => {
     });
     const result = await response.json();
 
-    if (result.data) {
+    if (response.ok) {
       return result.data;
     } else {
       throw new Error(result.detail);
@@ -42,7 +42,7 @@ export const getRentalByUsername = async (username) => {
     );
     const result = await response.json();
 
-    if (result.data) {
+    if (response.ok) {
       return result.data;
     } else {
       throw new Error(result.detail);
@@ -65,7 +65,7 @@ export const getRentals = async () => {
     });
     const result = await response.json();
 
-    if (result.data) {
+    if (response.ok) {
       return result.data;
     } else {
       throw new Error("List of cars is empty!");
@@ -90,7 +90,7 @@ export const updateRental = async (rentalID, data) => {
 
     const result = await response.json();
 
-    if (result.data) {
+    if (response.ok) {
       return result.data;
     } else {
       throw new Error(result.detail);
@@ -114,7 +114,7 @@ export const deleteRental = async (rentalID) => {
 
     const result = await response.json();
 
-    if (result.respone) {
+    if (response.ok) {
       return result.response;
     } else {
       throw new Error(result.detail);

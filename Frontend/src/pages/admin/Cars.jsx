@@ -168,6 +168,7 @@ const Cars = () => {
       <Modal
         isOpen={editModalOpen}
         toggle={() => setEditModalOpen(!editModalOpen)}
+        className="edit-modal"
       >
         <ModalHeader toggle={() => setEditModalOpen(!editModalOpen)}>
           Edit Car
@@ -373,6 +374,7 @@ const Cars = () => {
       <Modal
         isOpen={addModalOpen}
         toggle={() => setAddModalOpen(!addModalOpen)}
+        className="add-modal"
       >
         <ModalHeader toggle={() => setAddModalOpen(!addModalOpen)}>
           Add Car

@@ -1,0 +1,32 @@
+.comment-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.comment-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.comment-label {
+    width: 30%;
+    padding: 10px;
+    text-align: right;
+    vertical-align: top;
+}
+
+.comment-content {
+    width: 70%;
+    padding: 10px;
+    vertical-align: top;
+}
+
+.comment-actions {
+    text-align: right;
+}
+
+.comment-action-btn {
+    margin-left: 5px;
+    float: right;
+}

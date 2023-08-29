@@ -19,12 +19,18 @@ import {
   getBlogs,
   updateBlog,
 } from "../../services/blogService";
+import { deleteComment, updateComment } from "../../services/commentService";
+import CommentList from "../../components/UI/CommentList";
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
-  const [editBlog, setEditBlog] = useState(null);
+  const [editBlog, setEditBlog] = useState({
+    comments: [],
+  });
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [addModalOpen, setAddModalOpen] = useState(false);
+  const [editComment, setEditComment] = useState({}); // New state for editing comments
+  const [editCommentModalOpen, setEditCommentModalOpen] = useState(false); // Modal state for editing comments
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -47,6 +53,27 @@ const Blogs = () => {
     setEditModalOpen(true); // Open modal for blog edit
   };
 
+  const handleEditComment = (commentId, blogId) => {
+    const blogToEdit = blogs.find((blog) => blog.id === blogId);
+    const commentToEdit = blogToEdit.comments.find(
+      (comment) => comment.id === commentId
+    );
+
+    // Tutaj ustawiamy stan komentarza do edycji
+    setEditComment({
+      id: commentId,
+      blogId: blogId,
+      name: commentToEdit.name,
+      surname: commentToEdit.surname,
+      email: commentToEdit.email,
+      date: commentToEdit.date,
+      description: commentToEdit.description,
+    });
+
+    // Tutaj otwieramy modal do edycji komentarza
+    setEditCommentModalOpen(true);
+  };
+
   const handleAddCar = async () => {
     await addBlog(editBlog); // Update blog
 
@@ -58,7 +85,15 @@ const Blogs = () => {
     toast.success("Blog added successfully");
   };
 
-  const handleUpdateUser = async () => {
+  const handleEditCommentSubmit = async () => {
+    await updateComment(editComment.id, editComment);
+    setEditCommentModalOpen(false);
+    fetchGetBlogs();
+    setEditComment({});
+    toast.success("Comment updated successfully");
+  };
+
+  const handleUpdateBlog = async () => {
     await updateBlog(editBlog.id, editBlog); // Update blog
     setEditModalOpen(false); // Close modal for blog edit
     fetchGetBlogs(); // Refresh blog list
@@ -67,8 +102,15 @@ const Blogs = () => {
 
   const handleDeleteBlog = async (blogId) => {
     await deleteBlog(blogId);
+    fetchGetBlogs();
     toast.success("Blog deleted successfully");
   };
+
+  const handleDeleteComment = async (commentId) => {
+    await deleteComment(commentId);
+    fetchGetBlogs();
+    toast.success("Comment deleted successfully");
+  }
 
   return (
     <div className="blogs-container">
@@ -114,36 +156,49 @@ const Blogs = () => {
                   .includes(searchTerm.toLowerCase())
             )
             .map((blog) => (
-              <tr key={blog.id}>
-                <td>{blog.id}</td>
-                <td>{blog.title}</td>
-                <td>{blog.authorName}</td>
-                <td>{blog.authorSurname}</td>
-                <td>{blog.description}</td>
-                <td>{blog.date}</td>
-                <td>
-                  <img src={blog.image} alt="" className="w-100" />
-                </td>
-                <td>{blog.detailedDescription}</td>
-                <td>
-                  <Button
-                    color="primary"
-                    className="edit-btn"
-                    onClick={() => handleEditBlog(blog.id)}
-                  >
-                    Edit
-                  </Button>
-                </td>
-                <td>
-                  <Button
-                    color="danger"
-                    className="delete-btn"
-                    onClick={() => handleDeleteBlog(blog.id)}
-                  >
-                    Delete
-                  </Button>
-                </td>
-              </tr>
+              <React.Fragment key={blog.id}>
+                <tr>
+                  <td>{blog.id}</td>
+                  <td>{blog.title}</td>
+                  <td>{blog.authorName}</td>
+                  <td>{blog.authorSurname}</td>
+                  <td>{blog.description}</td>
+                  <td>{blog.date}</td>
+                  <td>
+                    <img src={blog.image} alt="" className="w-100" />
+                  </td>
+                  <td>{blog.detailedDescription}</td>
+                  <td>
+                    <Button
+                      color="primary"
+                      className="edit-btn"
+                      onClick={() => handleEditBlog(blog.id)}
+                    >
+                      Edit
+                    </Button>
+                  </td>
+                  <td>
+                    <Button
+                      color="danger"
+                      className="delete-btn"
+                      onClick={() => handleDeleteBlog(blog.id)}
+                    >
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+                {blog.comments.length > 0 && (
+                  <tr>
+                    <td colSpan="10">
+                      <CommentList
+                        comments={blog.comments}
+                        handleEditComment={handleEditComment}
+                        handleDeleteComment={handleDeleteComment}
+                      />
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
             ))}
         </tbody>
       </Table>
@@ -151,6 +206,7 @@ const Blogs = () => {
       <Modal
         isOpen={editModalOpen}
         toggle={() => setEditModalOpen(!editModalOpen)}
+        className="edit-modal"
       >
         <ModalHeader toggle={() => setEditModalOpen(!editModalOpen)}>
           Edit Blog
@@ -258,9 +314,9 @@ const Blogs = () => {
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={handleUpdateUser}>
+          <Button color="primary" onClick={handleUpdateBlog}>
             Save
-          </Button>{" "}
+          </Button>
           <Button
             color="secondary"
             onClick={() => setEditModalOpen(!editModalOpen)}
@@ -272,6 +328,7 @@ const Blogs = () => {
       <Modal
         isOpen={addModalOpen}
         toggle={() => setAddModalOpen(!addModalOpen)}
+        className="add-modal"
       >
         <ModalHeader toggle={() => setAddModalOpen(!addModalOpen)}>
           Add Blog
@@ -388,6 +445,96 @@ const Blogs = () => {
               setAddModalOpen(!addModalOpen);
               setEditBlog({}); // Clear the form fields on cancel
             }}
+          >
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
+      <Modal
+        isOpen={editCommentModalOpen}
+        toggle={() => setEditCommentModalOpen(!editCommentModalOpen)}
+        className="edit-modal"
+      >
+        <ModalHeader
+          toggle={() => setEditCommentModalOpen(!editCommentModalOpen)}
+        >
+          Edit Comment
+        </ModalHeader>
+        <ModalBody>
+          <Form>
+            <FormGroup>
+              <Label for="name">Name</Label>
+              <Input
+                type="text"
+                name="name"
+                id="name"
+                value={editComment?.name || ""}
+                onChange={(e) =>
+                  setEditComment({ ...editComment, name: e.target.value })
+                }
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="surname">Surname</Label>
+              <Input
+                type="text"
+                name="surname"
+                id="surname"
+                value={editComment?.surname || ""}
+                onChange={(e) =>
+                  setEditComment({ ...editComment, surname: e.target.value })
+                }
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="email">Email</Label>
+              <Input
+                type="text"
+                name="email"
+                id="email"
+                value={editComment?.email || ""}
+                onChange={(e) =>
+                  setEditComment({ ...editComment, email: e.target.value })
+                }
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="date">Date</Label>
+              <Input
+                type="datetime-local"
+                name="date"
+                id="date"
+                value={editComment?.date || ""}
+                onChange={(e) =>
+                  setEditComment({ ...editComment, date: e.target.value })
+                }
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="description">Description</Label>
+              <textarea
+                className="form-control"
+                name="description"
+                id="description"
+                value={editComment?.description || ""}
+                onChange={(e) =>
+                  setEditComment({
+                    ...editComment,
+                    description: e.target.value,
+                  })
+                }
+                rows={4}
+              />
+            </FormGroup>
+          </Form>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={handleEditCommentSubmit}>
+            Save
+          </Button>
+          <Button
+            color="secondary"
+            onClick={() => setEditCommentModalOpen(!editCommentModalOpen)}
           >
             Cancel
           </Button>

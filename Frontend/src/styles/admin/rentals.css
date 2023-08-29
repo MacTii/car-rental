@@ -42,3 +42,13 @@
     border-radius: 4px;
     cursor: pointer;
 }
+
+.edit-modal .modal-header {
+    background-color: #007bff;
+    color: white;
+}
+
+.add-modal .modal-header {
+    background-color: green;
+    color: white;
+}

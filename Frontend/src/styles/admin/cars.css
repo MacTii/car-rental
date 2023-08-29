@@ -59,3 +59,13 @@
     align-items: center;
     border-radius: 5px;
 }
+
+.edit-modal .modal-header {
+    background-color: #007bff;
+    color: white;
+}
+
+.add-modal .modal-header {
+    background-color: green;
+    color: white;
+}
