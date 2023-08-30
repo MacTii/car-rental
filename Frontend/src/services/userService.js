@@ -121,3 +121,27 @@ export const deleteUser = async (userID) => {
     throw new Error("An error occurred: " + error.message);
   }
 };
+
+// --- ADD CAR ---
+export const addUser = async (data) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${baseURL}/api/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+
+    if (response.ok) {
+      return result.data;
+    } else {
+      throw new Error(result.detail);
+    }
+  } catch (error) {
+    throw new Error("An error occurred: " + error.message);
+  }
+};
