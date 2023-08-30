@@ -67,8 +67,14 @@ const Rentals = () => {
 
   const handleReturnRental = async (rentalId) => {
     const rentalToUpdate = rentals.find((rental) => rental.id === rentalId);
-    const now = new Date();
-    const formattedReturnDate = now
+
+    // Convert the comment's date to local time before updating
+    const localDate = new Date();
+    localDate.setMinutes(
+      localDate.getMinutes() - localDate.getTimezoneOffset()
+    );
+
+    const formattedReturnDate = localDate
       .toISOString()
       .slice(0, 16)
       .replace("T", " ");

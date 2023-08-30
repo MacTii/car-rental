@@ -86,7 +86,22 @@ const Blogs = () => {
   };
 
   const handleEditCommentSubmit = async () => {
-    await updateComment(editComment.id, editComment);
+    // Convert the comment's date to local time before updating
+    const localDate = new Date(editComment.date);
+    localDate.setMinutes(
+      localDate.getMinutes() - localDate.getTimezoneOffset()
+    );
+
+    // Format date before updating the comment
+    const formattedDate = localDate
+      .toISOString()
+      .slice(0, 16)
+      .replace("T", " ");
+
+    // Update the comment with the local date
+    const updatedComment = { ...editComment, date: formattedDate };
+    await updateComment(editComment.id, updatedComment);
+
     setEditCommentModalOpen(false);
     fetchGetBlogs();
     setEditComment({});
@@ -110,7 +125,7 @@ const Blogs = () => {
     await deleteComment(commentId);
     fetchGetBlogs();
     toast.success("Comment deleted successfully");
-  }
+  };
 
   return (
     <div className="blogs-container">
