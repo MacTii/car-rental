@@ -11,15 +11,25 @@ import {
   Label,
   Input,
 } from "reactstrap";
-import { deleteUser, getUsers, updateUser } from "../../services/userService";
+import {
+  addUser,
+  deleteUser,
+  getUsers,
+  updateUser,
+} from "../../services/userService";
 import "../../styles/admin/users.css";
 import { toast } from "react-toastify";
-import { deleteUserCredential } from "../../services/userCredentialService";
+import {
+  addUserCredential,
+  deleteUserCredential,
+} from "../../services/userCredentialService";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [editUser, setEditUser] = useState(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchGetUsers();
@@ -29,6 +39,10 @@ const Users = () => {
     const result = await getUsers(); // Get all users
     setUsers(result);
     console.log(result);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
   };
 
   const handleEditUser = (userId) => {
@@ -50,9 +64,36 @@ const Users = () => {
     toast.success("User deleted successfully");
   };
 
+  const handleAddUser = async () => {
+    console.log(editUser);
+    console.log(editUser?.userCredentials);
+    await addUserCredential(editUser.userCredentials); // Add user credentials
+    await addUser(editUser); // Add user
+
+    setEditUser({}); // Clear the form fields
+
+    setAddModalOpen(false);
+
+    fetchGetUsers(); // Refresh car list
+    toast.success("User added successfully");
+  };
+
   return (
     <div className="users-container">
       <h2>Users</h2>
+      <div className="search-container">
+        <Button color="success" onClick={() => setAddModalOpen(true)}>
+          Add User
+        </Button>
+        <div className="search-box">
+          <Input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+        </div>
+      </div>
       <Table className="users-table">
         <thead>
           <tr>
@@ -74,41 +115,51 @@ const Users = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
-              <td>{user.userCredentials.username}</td>
-              <td>{user.name}</td>
-              <td>{user.surname}</td>
-              <td>{user.email}</td>
-              <td>{user.phoneNumber}</td>
-              <td>{user.address}</td>
-              <td>{user.dateOfBirth}</td>
-              <td>{user.gender}</td>
-              <td>{user.identificationNumber}</td>
-              <td>{user.drivingLicenseNumber}</td>
-              <td>{user.userCredentials.userRole}</td>
-              <td>{user.userCredentials.isActive ? "Yes" : "No"}</td>
-              <td>
-                <Button
-                  color="primary"
-                  className="edit-btn"
-                  onClick={() => handleEditUser(user.id)}
-                >
-                  Edit
-                </Button>
-              </td>
-              <td>
-                <Button
-                  color="danger"
-                  className="delete-btn"
-                  onClick={() => handleDeleteUser(user)}
-                >
-                  Delete
-                </Button>
-              </td>
-            </tr>
-          ))}
+          {users
+            .filter(
+              (user) =>
+                user.userCredentials.username
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase()) ||
+                user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                user.surname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                user.email?.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .map((user) => (
+              <tr key={user.id}>
+                <td>{user.id}</td>
+                <td>{user.userCredentials.username}</td>
+                <td>{user.name}</td>
+                <td>{user.surname}</td>
+                <td>{user.email}</td>
+                <td>{user.phoneNumber}</td>
+                <td>{user.address}</td>
+                <td>{user.dateOfBirth}</td>
+                <td>{user.gender}</td>
+                <td>{user.identificationNumber}</td>
+                <td>{user.drivingLicenseNumber}</td>
+                <td>{user.userCredentials.userRole}</td>
+                <td>{user.userCredentials.isActive ? "Yes" : "No"}</td>
+                <td>
+                  <Button
+                    color="primary"
+                    className="edit-btn"
+                    onClick={() => handleEditUser(user.id)}
+                  >
+                    Edit
+                  </Button>
+                </td>
+                <td>
+                  <Button
+                    color="danger"
+                    className="delete-btn"
+                    onClick={() => handleDeleteUser(user)}
+                  >
+                    Delete
+                  </Button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </Table>
 
@@ -127,12 +178,12 @@ const Users = () => {
                 type="text"
                 name="username"
                 id="username"
-                value={editUser?.userCredentials.username || ""}
+                value={editUser?.userCredentials?.username || ""}
                 onChange={(e) =>
                   setEditUser({
                     ...editUser,
                     userCredentials: {
-                      ...editUser.userCredentials,
+                      ...editUser?.userCredentials,
                       username: e.target.value,
                     },
                   })
@@ -266,12 +317,12 @@ const Users = () => {
                 className="form-select"
                 name="userRole"
                 id="userRole"
-                value={editUser?.userCredentials.userRole || ""}
+                value={editUser?.userCredentials?.userRole || ""}
                 onChange={(e) =>
                   setEditUser({
                     ...editUser,
                     userCredentials: {
-                      ...editUser.userCredentials,
+                      ...editUser?.userCredentials,
                       userRole: e.target.value,
                     },
                   })
@@ -287,12 +338,12 @@ const Users = () => {
                 type="checkbox"
                 name="isActive"
                 id="isActive"
-                checked={editUser?.userCredentials.isActive || false}
+                checked={editUser?.userCredentials?.isActive || false}
                 onChange={(e) =>
                   setEditUser({
                     ...editUser,
                     userCredentials: {
-                      ...editUser.userCredentials,
+                      ...editUser?.userCredentials,
                       isActive: e.target.checked,
                     },
                   })
@@ -304,10 +355,223 @@ const Users = () => {
         <ModalFooter>
           <Button color="primary" onClick={handleUpdateUser}>
             Save
-          </Button>{" "}
+          </Button>
           <Button
             color="secondary"
             onClick={() => setEditModalOpen(!editModalOpen)}
+          >
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
+      <Modal
+        isOpen={addModalOpen}
+        toggle={() => setAddModalOpen(!addModalOpen)}
+        className="add-modal"
+      >
+        <ModalHeader toggle={() => setAddModalOpen(!addModalOpen)}>
+          Add User
+        </ModalHeader>
+        <ModalBody>
+          <Form id="add-user-form" onSubmit={handleAddUser}>
+            <FormGroup>
+              <Label for="username">Username</Label>
+              <Input
+                type="text"
+                name="username"
+                id="username"
+                value={editUser?.userCredentials?.username || ""}
+                onChange={(e) =>
+                  setEditUser({
+                    ...editUser,
+                    userCredentials: {
+                      ...editUser?.userCredentials,
+                      username: e.target.value,
+                    },
+                  })
+                }
+                required
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="name">Name</Label>
+              <Input
+                type="text"
+                name="name"
+                id="name"
+                value={editUser?.name || ""}
+                onChange={(e) =>
+                  setEditUser({ ...editUser, name: e.target.value })
+                }
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="surname">Surname</Label>
+              <Input
+                type="text"
+                name="surname"
+                id="surname"
+                value={editUser?.surname || ""}
+                onChange={(e) =>
+                  setEditUser({ ...editUser, surname: e.target.value })
+                }
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="email">Email</Label>
+              <Input
+                type="text"
+                name="email"
+                id="email"
+                value={editUser?.email || ""}
+                onChange={(e) =>
+                  setEditUser({ ...editUser, email: e.target.value })
+                }
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="phoneNumber">Phone Number</Label>
+              <Input
+                type="text"
+                name="phoneNumber"
+                id="phoneNumber"
+                value={editUser?.phoneNumber || ""}
+                onChange={(e) =>
+                  setEditUser({ ...editUser, phoneNumber: e.target.value })
+                }
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="address">Address</Label>
+              <Input
+                type="text"
+                name="address"
+                id="address"
+                value={editUser?.address || ""}
+                onChange={(e) =>
+                  setEditUser({ ...editUser, address: e.target.value })
+                }
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="dateOfBirth">Date Of Birth</Label>
+              <Input
+                type="date"
+                name="dateOfBirth"
+                id="dateOfBirth"
+                value={editUser?.dateOfBirth || ""}
+                onChange={(e) =>
+                  setEditUser({ ...editUser, dateOfBirth: e.target.value })
+                }
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="gender">Gender</Label>
+              <select
+                className="form-select"
+                name="gender"
+                id="gender"
+                value={editUser?.gender || ""}
+                onChange={(e) =>
+                  setEditUser({
+                    ...editUser,
+                    gender: e.target.value,
+                  })
+                }
+                required
+              >
+                <option selected="selected" disabled value="">
+                  Select Gender...
+                </option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </FormGroup>
+            <FormGroup>
+              <Label for="identificationNumber">Identification Number</Label>
+              <Input
+                type="text"
+                name="identificationNumber"
+                id="identificationNumber"
+                value={editUser?.identificationNumber || ""}
+                onChange={(e) =>
+                  setEditUser({
+                    ...editUser,
+                    identificationNumber: e.target.value,
+                  })
+                }
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="drivingLicenseNumber">Driving License Number</Label>
+              <Input
+                type="text"
+                name="drivingLicenseNumber"
+                id="drivingLicenseNumber"
+                value={editUser?.drivingLicenseNumber || ""}
+                onChange={(e) =>
+                  setEditUser({
+                    ...editUser,
+                    drivingLicenseNumber: e.target.value,
+                  })
+                }
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="userRole">User Role</Label>
+              <select
+                className="form-select"
+                name="userRole"
+                id="userRole"
+                value={editUser?.userCredentials?.userRole || ""}
+                onChange={(e) =>
+                  setEditUser({
+                    ...editUser,
+                    userCredentials: {
+                      ...editUser?.userCredentials,
+                      userRole: e.target.value,
+                    },
+                  })
+                }
+              >
+                <option selected="selected" disabled value="">
+                  Select Role...
+                </option>
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </FormGroup>
+            <FormGroup>
+              <Label for="isActive">Is Active</Label>
+              <Input
+                type="checkbox"
+                name="isActive"
+                id="isActive"
+                checked={editUser?.userCredentials?.isActive || false}
+                onChange={(e) =>
+                  setEditUser({
+                    ...editUser,
+                    userCredentials: {
+                      ...editUser?.userCredentials,
+                      isActive: e.target.checked,
+                    },
+                  })
+                }
+              />
+            </FormGroup>
+          </Form>
+        </ModalBody>
+        <ModalFooter>
+          <Button form="add-user-form" type="submit" color="primary">
+            Add
+          </Button>
+          <Button
+            color="secondary"
+            onClick={() => {
+              setAddModalOpen(!addModalOpen);
+              setEditUser({}); // Clear the form fields on cancel
+            }}
           >
             Cancel
           </Button>

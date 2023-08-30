@@ -67,10 +67,12 @@ namespace Application.Mapper
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date.ToString("yyyy-MM-dd HH:mm")));
 
             // CommentDTO -> Comment
-            CreateMap<CommentDTO, Comment>();
+            CreateMap<CommentDTO, Comment>()
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => DateTime.ParseExact(src.Date, "yyyy-MM-dd HH:mm", null)));
 
             // Comment -> CommentDTO
-            CreateMap<Comment, CommentDTO>();
+            CreateMap<Comment, CommentDTO>()
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date.ToString("yyyy-MM-dd HH:mm")));
         }
     }
 }

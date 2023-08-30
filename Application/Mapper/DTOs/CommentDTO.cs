@@ -13,7 +13,7 @@ namespace Application.Mapper.DTOs
         public string Name { get; set; } = null!;
         public string Surname { get; set; } = null!;
         public string Email { get; set; } = null!;
-        public DateTime Date { get; set; }
+        public string Date { get; set; } = null!;
         public string Description { get; set; } = null!;
     }
 }

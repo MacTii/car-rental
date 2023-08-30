@@ -55,6 +55,14 @@ const Rentals = () => {
     console.log(result);
   };
 
+  const getUserById = (userId) => {
+    return users.find((user) => user.id === userId) || {};
+  };
+
+  const getCarById = (carId) => {
+    return cars.find((car) => car.id === carId) || {};
+  };
+
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -67,8 +75,14 @@ const Rentals = () => {
 
   const handleReturnRental = async (rentalId) => {
     const rentalToUpdate = rentals.find((rental) => rental.id === rentalId);
-    const now = new Date();
-    const formattedReturnDate = now
+
+    // Convert the comment's date to local time before updating
+    const localDate = new Date();
+    localDate.setMinutes(
+      localDate.getMinutes() - localDate.getTimezoneOffset()
+    );
+
+    const formattedReturnDate = localDate
       .toISOString()
       .slice(0, 16)
       .replace("T", " ");
@@ -96,7 +110,8 @@ const Rentals = () => {
     toast.success("Rental deleted successfully");
   };
 
-  const handleAddCar = async () => {
+  const handleAddRental = async () => {
+    console.log(editRental);
     await addRental(editRental); // Update car
 
     setEditRental({}); // Clear the form fields
@@ -127,8 +142,8 @@ const Rentals = () => {
         <thead>
           <tr>
             <th>Id</th>
-            <th>Car Id</th>
-            <th>User Id</th>
+            <th>Car</th>
+            <th>User</th>
             <th>Rent Date</th>
             <th>Return Date</th>
             <th>Comment</th>
@@ -142,51 +157,69 @@ const Rentals = () => {
           {rentals
             .filter(
               (rental) =>
-                searchTerm === "" ||
-                rental.carID === parseInt(searchTerm) ||
-                rental.userID === parseInt(searchTerm)
+                getUserById(rental.userID)
+                  .name.toLowerCase()
+                  .includes(searchTerm.toLowerCase()) ||
+                getUserById(rental.userID)
+                  .surname.toLowerCase()
+                  .includes(searchTerm.toLowerCase()) ||
+                getCarById(rental.carID)
+                  .make.toLowerCase()
+                  .includes(searchTerm.toLowerCase()) ||
+                getCarById(rental.carID)
+                  .model.toLowerCase()
+                  .includes(searchTerm.toLowerCase())
             )
-            .map((rental) => (
-              <tr key={rental.id}>
-                <td>{rental.id}</td>
-                <td>{rental.carID}</td>
-                <td>{rental.userID}</td>
-                <td>{rental.rentDate}</td>
-                <td>{rental.returnDate}</td>
-                <td>{rental.comment}</td>
-                <td>{rental.paymentMethod}</td>
-                <td>
-                  {!rental.returnDate ? (
+            .map((rental) => {
+              const user = getUserById(rental.userID);
+              const car = getCarById(rental.carID);
+
+              return (
+                <tr key={rental.id}>
+                  <td>{rental.id}</td>
+                  <td>
+                    {car.make} {car.model}
+                  </td>
+                  <td>
+                    {user.name} {user.surname} ({user.email})
+                  </td>
+                  <td>{rental.rentDate}</td>
+                  <td>{rental.returnDate}</td>
+                  <td>{rental.comment}</td>
+                  <td>{rental.paymentMethod}</td>
+                  <td>
+                    {!rental.returnDate ? (
+                      <Button
+                        color="info"
+                        onClick={() => handleReturnRental(rental.id)}
+                      >
+                        Return
+                      </Button>
+                    ) : (
+                      "Returned"
+                    )}
+                  </td>
+                  <td>
                     <Button
-                      color="info"
-                      onClick={() => handleReturnRental(rental.id)}
+                      color="primary"
+                      className="edit-btn"
+                      onClick={() => handleEditRental(rental.id)}
                     >
-                      Return
+                      Edit
                     </Button>
-                  ) : (
-                    "Returned"
-                  )}
-                </td>
-                <td>
-                  <Button
-                    color="primary"
-                    className="edit-btn"
-                    onClick={() => handleEditRental(rental.id)}
-                  >
-                    Edit
-                  </Button>
-                </td>
-                <td>
-                  <Button
-                    color="danger"
-                    className="delete-btn"
-                    onClick={() => handleDeleteRental(rental.id)}
-                  >
-                    Delete
-                  </Button>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td>
+                    <Button
+                      color="danger"
+                      className="delete-btn"
+                      onClick={() => handleDeleteRental(rental.id)}
+                    >
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </Table>
 
@@ -424,7 +457,7 @@ const Rentals = () => {
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={handleAddCar}>
+          <Button color="primary" onClick={handleAddRental}>
             Add
           </Button>{" "}
           <Button
