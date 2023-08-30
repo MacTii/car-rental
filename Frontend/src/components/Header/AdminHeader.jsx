@@ -16,24 +16,24 @@ const navLinks = [
     display: "Home",
   },
   {
-    path: "/about",
-    display: "About",
-  },
-  {
     path: "/cars",
     display: "Cars",
   },
   {
-    path: "/blogs",
-    display: "Blog",
+    path: "/users",
+    display: "Users",
   },
   {
-    path: "/contact",
-    display: "Contact",
+    path: "/rentals",
+    display: "Rentals",
+  },
+  {
+    path: "/blogs",
+    display: "Blogs",
   },
 ];
 
-const Header = () => {
+const AdminHeader = () => {
   const [username, setUsername] = useState(null);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
@@ -55,17 +55,10 @@ const Header = () => {
   return (
     <header className="header">
       {/* === header top === */}
-      <div className="header__top">
+      <div className="admin__header__top">
         <Container>
           <Row>
-            <Col lg="6" md="6" sm="6">
-              <div className="header__top__left">
-                <span>Need Help?</span>
-                <span className="header__top__help">
-                  <i className="ri-phone-fill"></i> +48 200-300-400
-                </span>
-              </div>
-            </Col>
+            <Col lg="6" md="6" sm="6"></Col>
             {isAuthenticated ? (
               <Col lg="6" md="6" sm="6">
                 <div
@@ -78,22 +71,6 @@ const Header = () => {
                 {isUserMenuOpen && (
                   <div className="flex flex-col user__menu__list">
                     <ul className="flex flex-col gap-4">
-                      <li>
-                        <Link
-                          to="/profile"
-                          style={{ textDecoration: "none", color: "black" }}
-                        >
-                          Profile
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/rental-history"
-                          style={{ textDecoration: "none", color: "black" }}
-                        >
-                          Rental History
-                        </Link>
-                      </li>
                       <li
                         onClick={() => {
                           // clear data from local storage and session storage
@@ -135,11 +112,18 @@ const Header = () => {
       <div className="header__middle">
         <Container>
           <Row>
-            <Col lg="4" md="3" sm="4">
-              <div className="logo">
+            <Col
+              lg="4"
+              md="4"
+              sm="4"
+              className="d-flex justify-content-center align-items-center"
+            >
+              <div className="admin__logo text-center">
                 <h1>
-                  <Link to="/home" className="d-flex align-items-center gap-3">
-                    <i className="ri-car-line"></i>
+                  <Link to="/home" className="align-items-center gap-3">
+                    <div>
+                      <i className="ri-car-line"></i>
+                    </div>
                     <span>
                       Rent Car <br /> Service
                     </span>
@@ -147,46 +131,44 @@ const Header = () => {
                 </h1>
               </div>
             </Col>
-            <Col lg="3" md="3" sm="4">
-              <div className="header__location d-flex align-items-center gap-2">
+            <Col
+              lg="4"
+              md="4"
+              sm="4"
+              className="d-flex justify-content-center align-items-center"
+            >
+              <div className="admin__header__location text-center">
                 <span>
                   <i className="ri-earth-line"></i>
                 </span>
-                <div className="header__location-content">
+                <div className="admin__header__location-content">
                   <h4>Poland</h4>
                   <h6>Lodz City, Poland</h6>
                 </div>
               </div>
             </Col>
-            <Col lg="3" md="3" sm="4">
-              <div className="header__location d-flex align-items-center gap-2">
+            <Col
+              lg="4"
+              md="4"
+              sm="4"
+              className="d-flex justify-content-center align-items-center"
+            >
+              <div className="admin__header__location text-center">
                 <span>
                   <i className="ri-time-line"></i>
                 </span>
-                <div className="header__location-content">
+                <div className="admin__header__location-content">
                   <h4>Monday to Friday</h4>
                   <h6>9am - 6pm</h6>
                 </div>
               </div>
-            </Col>
-            <Col
-              lg="2"
-              md="3"
-              sm="0"
-              className="d-flex align-items-center justify-content-end"
-            >
-              <button className="header__btn btn">
-                <Link to="/contact">
-                  <i className="ri-phone-line"></i> Request a call
-                </Link>
-              </button>
             </Col>
           </Row>
         </Container>
       </div>
 
       {/* === main navigation === */}
-      <div className="main__navbar">
+      <div className="admin__main__navbar">
         <Container>
           <div className="navigation__wrapper d-flex align-items-center justify-content-between">
             <span className="mobile__menu">
@@ -207,14 +189,6 @@ const Header = () => {
                 ))}
               </div>
             </div>
-            <div className="nav__right">
-              <div className="search__box">
-                <input type="text" placeholder="Search" />
-                <span>
-                  <i className="ri-search-line"></i>
-                </span>
-              </div>
-            </div>
           </div>
         </Container>
       </div>
@@ -222,4 +196,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default AdminHeader;

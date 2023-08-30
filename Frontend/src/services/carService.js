@@ -13,7 +13,7 @@ export const getCars = async () => {
     });
     const result = await response.json();
 
-    if (result.data) {
+    if (response.ok) {
       return result.data;
     } else {
       throw new Error("List of cars is empty!");
@@ -36,7 +36,7 @@ export const getCarByID = async (carID) => {
     });
     const result = await response.json();
 
-    if (result.data) {
+    if (response.ok) {
       return result.data;
     } else {
       throw new Error(result.detail);
@@ -61,7 +61,55 @@ export const updateCar = async (carID, data) => {
 
     const result = await response.json();
 
-    if (result.data) {
+    if (response.ok) {
+      return result.data;
+    } else {
+      throw new Error(result.detail);
+    }
+  } catch (error) {
+    throw new Error("An error occurred: " + error.message);
+  }
+};
+
+// --- DELETE CAR ---
+export const deleteCar = async (carID) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${baseURL}/api/cars/${carID}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      return result.response;
+    } else {
+      throw new Error(result.detail);
+    }
+  } catch (error) {
+    throw new Error("An error occurred: " + error.message);
+  }
+};
+
+// --- ADD CAR ---
+export const addCar = async (data) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${baseURL}/api/cars`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+
+    if (response.ok) {
       return result.data;
     } else {
       throw new Error(result.detail);

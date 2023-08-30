@@ -55,7 +55,10 @@ namespace Application.Helpers
             user.TokenCreated = newRefreshToken.Created;
             user.TokenExpires = newRefreshToken.Expires;
 
-            _userCredentialsRepository.Update(user.ID, user);
+            if(user.ID == 0)
+                _userCredentialsRepository.Insert(user);
+            else
+                _userCredentialsRepository.Update(user.ID, user);
             _userCredentialsRepository.Save();
         }
 

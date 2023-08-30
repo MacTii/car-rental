@@ -52,6 +52,7 @@ const CarDetails = () => {
 
     // Get user data
     const result = await getUserByUsername(username);
+    console.log(result);
 
     setUser(result); // Set user hook
     setBookingData(result); // Set bookingData hook
@@ -116,7 +117,7 @@ const CarDetails = () => {
           <Row>
             <Col lg="6">
               <img
-                src={`data:image/png;base64,${car.image}`}
+                src={car.image}
                 alt={car.make}
                 className="w-100"
               />

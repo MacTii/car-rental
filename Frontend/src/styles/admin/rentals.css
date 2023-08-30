@@ -1,0 +1,54 @@
+.rentals-container {
+    padding: 20px;
+}
+
+.rentals-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.rentals-table th,
+.rentals-table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.rentals-table th {
+    background-color: #f5f5f5;
+}
+
+.rentals-table img {
+    max-width: 100px;
+    height: auto;
+}
+
+.edit-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-modal .modal-header {
+    background-color: #007bff;
+    color: white;
+}
+
+.add-modal .modal-header {
+    background-color: green;
+    color: white;
+}

@@ -15,3 +15,11 @@ export const getUsernameFromToken = () => {
     decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
   return username;
 };
+
+// --- GET ROLE FROM DECODED TOKEN ---
+export const getRoleFromToken = () => {
+  const decoded = decodeToken();
+  const role =
+    decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+  return role;
+};

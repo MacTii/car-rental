@@ -20,7 +20,7 @@ const CarItem = (props) => {
       <div className="car__item">
         <div className="car__img">
           <img
-            src={`data:image/png;base64,${image}`}
+            src={image}
             alt={make}
             className="w-100"
           />

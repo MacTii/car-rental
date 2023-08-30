@@ -63,6 +63,12 @@ ul {
   line-height: 30px;
 }
 
+.admin__section__description {
+  color: #ffffffc6;
+  font-size: .9rem;
+  line-height: 30px;
+}
+
 section {
   padding: 50px 0px;
 }

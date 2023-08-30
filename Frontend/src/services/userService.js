@@ -14,7 +14,11 @@ export const getUsername = async () => {
       },
     });
     const result = await response.text();
-    return result;
+    if (response.ok) {
+      return result;
+    } else {
+      throw new Error(result.detail);
+    }
   } catch (error) {
     throw new Error(`An error occurred: ${error}`);
   }
@@ -33,7 +37,7 @@ export const getUserByUsername = async (username) => {
     });
     const result = await response.json();
 
-    if (result.data) {
+    if (response.ok) {
       return result.data;
     } else {
       throw new Error(result.detail);
@@ -58,8 +62,58 @@ export const updateUser = async (userID, data) => {
 
     const result = await response.json();
 
-    if (result.data) {
+    if (response.ok) {
+      return result.data; // Assuming result.data contains updated user information
+    } else {
+      throw new Error(result.detail);
+    }
+  } catch (error) {
+    throw new Error("An error occurred: " + error.message);
+  }
+};
+
+// --- GET ALL USERS ---
+export const getUsers = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${baseURL}/api/users`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const result = await response.json();
+
+    if (response.ok) {
       return result.data;
+    } else {
+      throw new Error(result.detail);
+    }
+  } catch (error) {
+    throw new Error("An error occurred: " + error.message);
+  }
+};
+
+// --- DELETE USER ---
+export const deleteUser = async (userID) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${baseURL}/api/users/${userID}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const result = await response.json();
+    console.log(result);
+    console.log(response);
+    console.log(response.ok);
+
+    if (response.ok) {
+      return result.response;
     } else {
       throw new Error(result.detail);
     }

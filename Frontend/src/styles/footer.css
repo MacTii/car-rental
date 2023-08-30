@@ -4,6 +4,12 @@
     padding-bottom: 15px;
 }
 
+.admin__footer {
+    background: #0d8d89d9;
+    padding-top: 50px;
+    padding-bottom: 15px;
+}
+
 .footer__logo i {
     color: #fff;
     font-weight: 400;
@@ -72,6 +78,10 @@
 
 .footer__bottom {
     border-top: 1px solid #7c8a972f;
+}
+
+.admin__footer__bottom {
+    border-top: 1px solid #aecae42f;
 }
 
 
