@@ -23,6 +23,7 @@ import {
   addUserCredential,
   deleteUserCredential,
 } from "../../services/userCredentialService";
+import { generatePasswordCredentials } from "../../services/authService";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -32,9 +33,11 @@ const Users = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [passwordCredentials, setPasswordCredentials] = useState();
 
   useEffect(() => {
     fetchGetUsers();
+    console.log()
   }, []);
 
   const fetchGetUsers = async () => {
@@ -68,21 +71,54 @@ const Users = () => {
   const handleDeleteUser = async (user) => {
     await deleteUser(user.id);
     await deleteUserCredential(user.userCredentialsID);
+    fetchGetUsers();
     toast.success("User deleted successfully");
+  };
+
+  const handleGeneratePasswordCredentials = async () => {
+    const result = await generatePasswordCredentials();
+    setPasswordCredentials(result);
+    console.log(result);
   };
 
   const handleAddUser = async (e) => {
     e.preventDefault();
-    console.log(editUser);
-    console.log(editUser?.userCredentials);
-    await addUserCredential(editUser.userCredentials); // Add user credentials
-    await addUser(editUser); // Add user
 
-    setEditUser({}); // Clear the form fields
+    const userCredentials = {
+      username: editUser.userCredentials.username,
+      passwordHash: passwordCredentials.passwordHash,
+      passwordSalt: passwordCredentials.passwordSalt,
+      refreshToken: passwordCredentials.refreshToken,
+      tokenCreated: passwordCredentials.tokenCreated,
+      tokenExpires: passwordCredentials.tokenExpires,
+      isActive: editUser.userCredentials.isActive,
+      userRole: editUser.userCredentials.userRole,
+    };
+
+    const user = {
+      name: editUser.name,
+      surname: editUser.surname,
+      email: editUser.email,
+      phoneNumber: editUser.phoneNumber,
+      address: editUser.address,
+      dateOfBirth: editUser.dateOfBirth,
+      gender: editUser.gender,
+      identificationNumber: editUser.identificationNumber,
+      drivingLicenseNumber: editUser.drivingLicenseNumber,
+      userCredentials: userCredentials,
+    };
+
+    console.log(editUser);
+    console.log(user);
+
+    await addUserCredential(userCredentials); // Dodanie danych użytkownika
+    await addUser(user); // Dodanie użytkownika
+
+    setEditUser({}); // Wyczyszczenie pól formularza
 
     setAddModalOpen(false);
 
-    fetchGetUsers(); // Refresh car list
+    fetchGetUsers(); // Odświeżenie listy użytkowników
     toast.success("User added successfully");
   };
 
@@ -423,6 +459,20 @@ const Users = () => {
                 }
                 required
               />
+            </FormGroup>
+            <FormGroup>
+              <Label for="password">Password</Label>
+              <Input
+                type="password"
+                name="password"
+                id="password"
+                value={"1234567890"}
+                required
+                readOnly
+              />
+              <Button onClick={handleGeneratePasswordCredentials}>
+                Generate
+              </Button>
             </FormGroup>
             <FormGroup>
               <Label for="name">Name</Label>

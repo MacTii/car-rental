@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Application.Mapper.DTOs;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
@@ -8,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Application.Interfaces.Services;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.Helpers;
+using Domain.Models;
+using Azure.Core;
 
 namespace Application.Services
 {
@@ -15,10 +16,12 @@ namespace Application.Services
     {
         #region Injection
 
-        private readonly IMapper _mapper;
-        private readonly IAuthenticationHelper _authenticationHelper;
         private readonly IUserCredentialsRepository _userCredentialsRepository;
         private readonly IUserRepository _userRepository;
+
+        private readonly IAuthenticationHelper _authenticationHelper;
+
+        private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public AuthService(IMapper mapper, IUserCredentialsRepository userCredentialsRepository,
@@ -60,12 +63,17 @@ namespace Application.Services
             userCredentials.PasswordHash = passwordHash;
             userCredentials.PasswordSalt = passwordSalt;
 
-            string token = GetToken(userCredentials);
+            string token = _authenticationHelper.GetToken(userCredentials);
+
+            // Create UserCredentials with new RefreshToken
+            _userCredentialsRepository.Insert(userCredentials);
+            _userCredentialsRepository.Save();
 
             // mapping RegisterDTO -> User
             var user = _mapper.Map<User>(request);
             user.UserCredentials = userCredentials;
 
+            // Create new User
             _userRepository.Insert(user);
             _userRepository.Save();
 
@@ -81,7 +89,11 @@ namespace Application.Services
             if (!_authenticationHelper.VerifyPasswordHash(request.Password, userCredentials.PasswordHash, userCredentials.PasswordSalt))
                 throw new UnauthorizedAccessException("Wrong password!");
 
-            string token = GetToken(userCredentials);
+            string token = _authenticationHelper.GetToken(userCredentials);
+
+            // Update UserCredentials with RefreshToken
+            _userCredentialsRepository.Update(userCredentials.ID, userCredentials);
+            _userCredentialsRepository.Save();
 
             return token;
         }
@@ -104,19 +116,26 @@ namespace Application.Services
                 throw new SecurityTokenExpiredException("Token expired!"); // Unauthorized, TokenExpiredException();
             }
 
-            string token = GetToken(userCredentials);
+            string token = _authenticationHelper.GetToken(userCredentials);
+
+            // Update UserCredentials with new RefreshToken
+            _userCredentialsRepository.Update(userCredentials.ID, userCredentials);
+            _userCredentialsRepository.Save();
 
             return token;
         }
 
-        private string GetToken(UserCredentials userCredentials)
+        public AuthenticationDataDTO GetPasswordCredentials()
         {
-            string token = _authenticationHelper.CreateToken(userCredentials);
+            // Returns model PasswordCredential => (PasswordHash, PasswordSalt)
+            var passwordCredential = _authenticationHelper.GenerateRandomPasswordCredential();
 
+            // Returns model RefreshToken => (RefreshToken, TokenCreated, TokenExpires)
             var refreshToken = _authenticationHelper.GenerateRefreshToken();
-            _authenticationHelper.SetRefreshToken(refreshToken, userCredentials);
 
-            return token;
+            var authenticationDataDTO = _mapper.Map<AuthenticationDataDTO>((passwordCredential, refreshToken));
+
+            return authenticationDataDTO;
         }
     }
 }
