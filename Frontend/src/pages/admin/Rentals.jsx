@@ -43,6 +43,10 @@ const Rentals = () => {
     console.log(result);
   };
 
+  const clearEditRental = () => {
+    setEditRental({});
+  };
+
   const fetchGetUsers = async () => {
     const result = await getUsers(); // Get all rental
     setUsers(result);
@@ -224,10 +228,13 @@ const Rentals = () => {
             })}
         </tbody>
       </Table>
-
       <Modal
         isOpen={editModalOpen}
-        toggle={() => setEditModalOpen(!editModalOpen)}
+        toggle={() => {
+          setEditModalOpen(!editModalOpen);
+          clearEditRental();
+        }}
+        onClosed={() => clearEditRental()}
         className="edit-modal"
       >
         <ModalHeader toggle={() => setEditModalOpen(!editModalOpen)}>
@@ -359,7 +366,7 @@ const Rentals = () => {
             color="secondary"
             onClick={() => {
               setEditModalOpen(!editModalOpen);
-              setEditRental({}); // Clear rental from form
+              clearEditRental();
             }}
           >
             Cancel
@@ -368,7 +375,11 @@ const Rentals = () => {
       </Modal>
       <Modal
         isOpen={addModalOpen}
-        toggle={() => setAddModalOpen(!addModalOpen)}
+        toggle={() => {
+          setAddModalOpen(!addModalOpen);
+          clearEditRental();
+        }}
+        onClosed={() => clearEditRental()}
         className="add-modal"
       >
         <ModalHeader toggle={() => setAddModalOpen(!addModalOpen)}>
@@ -478,8 +489,8 @@ const Rentals = () => {
               required
             >
               <option selected="selected" disabled value="">
-                  Select Payment Method...
-                </option>
+                Select Payment Method...
+              </option>
               <option value="Direct Bank Transfer">Direct Bank Transfer</option>
               <option value="Cheque Payment">Cheque Payment</option>
               <option value="Master Card">Master Card</option>
@@ -495,7 +506,7 @@ const Rentals = () => {
             color="secondary"
             onClick={() => {
               setAddModalOpen(!addModalOpen);
-              setEditRental({}); // Clear the form fields on cancel
+              clearEditRental();
             }}
           >
             Cancel

@@ -47,6 +47,10 @@ const Blogs = () => {
     setSearchTerm(e.target.value);
   };
 
+  const clearEditBlog = () => {
+    setEditBlog({});
+  };
+
   const handleEditBlog = (blogId) => {
     const blogToEdit = blogs.find((blog) => blog.id === blogId);
     setEditBlog(blogToEdit);
@@ -220,7 +224,11 @@ const Blogs = () => {
 
       <Modal
         isOpen={editModalOpen}
-        toggle={() => setEditModalOpen(!editModalOpen)}
+        toggle={() => {
+          setEditModalOpen(!editModalOpen);
+          clearEditBlog();
+        }}
+        onClosed={() => clearEditBlog()}
         className="edit-modal"
       >
         <ModalHeader toggle={() => setEditModalOpen(!editModalOpen)}>
@@ -343,7 +351,7 @@ const Blogs = () => {
             color="secondary"
             onClick={() => {
               setEditModalOpen(!editModalOpen);
-              setEditBlog({}); // Clear the form fields on cancel
+              clearEditBlog();
             }}
           >
             Cancel
@@ -352,7 +360,10 @@ const Blogs = () => {
       </Modal>
       <Modal
         isOpen={addModalOpen}
-        toggle={() => setAddModalOpen(!addModalOpen)}
+        toggle={() => {
+          setAddModalOpen(!addModalOpen);
+          clearEditBlog();
+        }}
         className="add-modal"
       >
         <ModalHeader toggle={() => setAddModalOpen(!addModalOpen)}>
@@ -475,7 +486,7 @@ const Blogs = () => {
             color="secondary"
             onClick={() => {
               setAddModalOpen(!addModalOpen);
-              setEditBlog({}); // Clear the form fields on cancel
+              clearEditBlog();
             }}
           >
             Cancel

@@ -51,6 +51,10 @@ const Cars = () => {
     setEditModalOpen(true); // Open modal for car edit
   };
 
+  const clearEditCar = () => {
+    setEditCar({});
+  };
+
   const handleUpdateCar = async (e) => {
     e.preventDefault();
     await updateCar(editCar.id, editCar); // Update car
@@ -172,7 +176,11 @@ const Cars = () => {
       </Table>
       <Modal
         isOpen={editModalOpen}
-        toggle={() => setEditModalOpen(!editModalOpen)}
+        toggle={() => {
+          setEditModalOpen(!editModalOpen);
+          clearEditCar();
+        }}
+        onClosed={() => clearEditCar()}
         className="edit-modal"
       >
         <ModalHeader toggle={() => setEditModalOpen(!editModalOpen)}>
@@ -385,7 +393,7 @@ const Cars = () => {
             color="secondary"
             onClick={() => {
               setEditModalOpen(!editModalOpen);
-              setEditCar({}); // Clear the form fields on cancel
+              clearEditCar();
             }}
           >
             Cancel
@@ -394,7 +402,11 @@ const Cars = () => {
       </Modal>
       <Modal
         isOpen={addModalOpen}
-        toggle={() => setAddModalOpen(!addModalOpen)}
+        toggle={() => {
+          setAddModalOpen(!addModalOpen);
+          clearEditCar();
+        }}
+        onClosed={() => clearEditCar()}
         className="add-modal"
       >
         <ModalHeader toggle={() => setAddModalOpen(!addModalOpen)}>
@@ -606,7 +618,7 @@ const Cars = () => {
             color="secondary"
             onClick={() => {
               setAddModalOpen(!addModalOpen);
-              setEditCar({}); // Clear the form fields on cancel
+              clearEditCar();
             }}
           >
             Cancel

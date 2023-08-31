@@ -43,6 +43,10 @@ const Users = () => {
     console.log(result);
   };
 
+  const clearEditUser = () => {
+    setEditUser({});
+  };
+
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -169,7 +173,12 @@ const Users = () => {
 
       <Modal
         isOpen={editModalOpen}
-        toggle={() => setEditModalOpen(!editModalOpen)}
+        toggle={() => {
+          setEditModalOpen(!editModalOpen);
+          clearEditUser();
+        }}
+        onClosed={() => clearEditUser()}
+        className="edit-modal"
       >
         <ModalHeader toggle={() => setEditModalOpen(!editModalOpen)}>
           Edit User
@@ -384,7 +393,11 @@ const Users = () => {
       </Modal>
       <Modal
         isOpen={addModalOpen}
-        toggle={() => setAddModalOpen(!addModalOpen)}
+        toggle={() => {
+          setAddModalOpen(!addModalOpen);
+          clearEditUser();
+        }}
+        onClosed={() => clearEditUser()}
         className="add-modal"
       >
         <ModalHeader toggle={() => setAddModalOpen(!addModalOpen)}>
