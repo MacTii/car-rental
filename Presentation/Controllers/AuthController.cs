@@ -73,5 +73,18 @@ namespace Presentation.Controllers
                     Data = token
                 });
         }
+
+        [HttpGet("generate-password-credentials")]
+        [Authorize(Roles = "Admin")]
+        public ActionResult GeneratePasswordCredentials()
+        {
+            var passwordCredentials = _authService.GetPasswordCredentials();
+            return Ok(
+                new
+                {
+                    Response = "Password credentials generated successfully",
+                    Data = passwordCredentials
+                });
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Application.Mapper.DTOs;
 using Domain.Entities;
+using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace Application.Interfaces.Services
         public string Register(RegisterDTO request);
         public string Login(LoginDTO request);
         public string RefreshToken();
+        public AuthenticationDataDTO GetPasswordCredentials();
     }
 }

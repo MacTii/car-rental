@@ -43,6 +43,10 @@ const Rentals = () => {
     console.log(result);
   };
 
+  const clearEditRental = () => {
+    setEditRental({});
+  };
+
   const fetchGetUsers = async () => {
     const result = await getUsers(); // Get all rental
     setUsers(result);
@@ -97,7 +101,8 @@ const Rentals = () => {
     toast.success("Rental returned successfully");
   };
 
-  const handleUpdateRental = async () => {
+  const handleUpdateRental = async (e) => {
+    e.preventDefault();
     await updateRental(editRental.id, editRental); // Update rental
     setEditModalOpen(false); // Close modal for rental edit
     fetchGetRentals(); // Refresh rental list
@@ -110,7 +115,8 @@ const Rentals = () => {
     toast.success("Rental deleted successfully");
   };
 
-  const handleAddRental = async () => {
+  const handleAddRental = async (e) => {
+    e.preventDefault();
     console.log(editRental);
     await addRental(editRental); // Update car
 
@@ -222,17 +228,20 @@ const Rentals = () => {
             })}
         </tbody>
       </Table>
-
       <Modal
         isOpen={editModalOpen}
-        toggle={() => setEditModalOpen(!editModalOpen)}
+        toggle={() => {
+          setEditModalOpen(!editModalOpen);
+          clearEditRental();
+        }}
+        onClosed={() => clearEditRental()}
         className="edit-modal"
       >
         <ModalHeader toggle={() => setEditModalOpen(!editModalOpen)}>
           Edit Rental
         </ModalHeader>
         <ModalBody>
-          <Form>
+          <Form id="edit-rental-form" onSubmit={handleUpdateRental}>
             <FormGroup>
               <Label for="carID">Car</Label>
               <select
@@ -246,7 +255,11 @@ const Rentals = () => {
                     carID: parseInt(e.target.value),
                   })
                 }
+                required
               >
+                <option selected="selected" disabled value="">
+                  Select Car...
+                </option>
                 {cars.map((car) => (
                   <option key={car.id} value={car.id}>
                     {car.make} - {car.model}
@@ -267,7 +280,11 @@ const Rentals = () => {
                     userID: parseInt(e.target.value),
                   })
                 }
+                required
               >
+                <option selected="selected" disabled value="">
+                  Select User...
+                </option>
                 {users.map((user) => (
                   <option key={user.id} value={user.id}>
                     {user.name} - {user.surname} - {user.email}
@@ -285,6 +302,7 @@ const Rentals = () => {
                 onChange={(e) =>
                   setEditRental({ ...editRental, rentDate: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -325,7 +343,11 @@ const Rentals = () => {
                     paymentMethod: e.target.value,
                   })
                 }
+                required
               >
+                <option selected="selected" disabled value="">
+                  Select Payment Method...
+                </option>
                 <option value="Direct Bank Transfer">
                   Direct Bank Transfer
                 </option>
@@ -337,12 +359,15 @@ const Rentals = () => {
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={handleUpdateRental}>
+          <Button form="edit-rental-form" type="submit" color="primary">
             Save
-          </Button>{" "}
+          </Button>
           <Button
             color="secondary"
-            onClick={() => setEditModalOpen(!editModalOpen)}
+            onClick={() => {
+              setEditModalOpen(!editModalOpen);
+              clearEditRental();
+            }}
           >
             Cancel
           </Button>
@@ -350,14 +375,18 @@ const Rentals = () => {
       </Modal>
       <Modal
         isOpen={addModalOpen}
-        toggle={() => setAddModalOpen(!addModalOpen)}
+        toggle={() => {
+          setAddModalOpen(!addModalOpen);
+          clearEditRental();
+        }}
+        onClosed={() => clearEditRental()}
         className="add-modal"
       >
         <ModalHeader toggle={() => setAddModalOpen(!addModalOpen)}>
           Add Rental
         </ModalHeader>
         <ModalBody>
-          <Form>
+          <Form id="add-rental-form" onSubmit={handleAddRental}>
             <FormGroup>
               <Label for="carID">Car</Label>
               <select
@@ -371,7 +400,11 @@ const Rentals = () => {
                     carID: parseInt(e.target.value),
                   })
                 }
+                required
               >
+                <option selected="selected" disabled value="">
+                  Select Car...
+                </option>
                 {cars.map((car) => (
                   <option key={car.id} value={car.id}>
                     {car.make} - {car.model}
@@ -392,7 +425,11 @@ const Rentals = () => {
                     userID: parseInt(e.target.value),
                   })
                 }
+                required
               >
+                <option selected="selected" disabled value="">
+                  Select User...
+                </option>
                 {users.map((user) => (
                   <option key={user.id} value={user.id}>
                     {user.name} - {user.surname} - {user.email}
@@ -410,6 +447,7 @@ const Rentals = () => {
                 onChange={(e) =>
                   setEditRental({ ...editRental, rentDate: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -448,7 +486,11 @@ const Rentals = () => {
                   userID: parseInt(e.target.value),
                 })
               }
+              required
             >
+              <option selected="selected" disabled value="">
+                Select Payment Method...
+              </option>
               <option value="Direct Bank Transfer">Direct Bank Transfer</option>
               <option value="Cheque Payment">Cheque Payment</option>
               <option value="Master Card">Master Card</option>
@@ -457,14 +499,14 @@ const Rentals = () => {
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={handleAddRental}>
+          <Button form="add-rental-form" type="submit" color="primary">
             Add
-          </Button>{" "}
+          </Button>
           <Button
             color="secondary"
             onClick={() => {
               setAddModalOpen(!addModalOpen);
-              setEditRental({}); // Clear the form fields on cancel
+              clearEditRental();
             }}
           >
             Cancel

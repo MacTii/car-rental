@@ -2,6 +2,28 @@ import urls from "../config/config";
 
 const baseURL = urls.development;
 
+// --- GET USER (USING TOKEN) ---
+export const getUsername = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${baseURL}/api/username`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const result = await response.text();
+    if (response.ok) {
+      return result;
+    } else {
+      throw new Error(result.detail);
+    }
+  } catch (error) {
+    throw new Error(`An error occurred: ${error}`);
+  }
+};
+
 // --- LOGIN SERVICE ---
 export const login = async (data) => {
   try {
@@ -43,5 +65,27 @@ export const register = async (data) => {
     }
   } catch (error) {
     throw new Error("An error occurred: " + error.message);
+  }
+};
+
+// --- GENERATE PASSWORD CREDENTIALS ---
+export const generatePasswordCredentials = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${baseURL}/api/generate-password-credentials`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const result = await response.json();
+    if (response.ok) {
+      return result.data;
+    } else {
+      throw new Error(result.detail);
+    }
+  } catch (error) {
+    throw new Error(`An error occurred: ${error}`);
   }
 };
