@@ -46,6 +46,7 @@ namespace Application.Helpers
             var randomPassword = GenerateRandomPassword(10);
 
             // Save password to LOG (only testing purpose - no email functionality)
+            // There should mail service which send mail to user with password
             _logger.LogInformation(randomPassword);
 
             CreatePasswordHash(randomPassword, out byte[] passwordHash, out byte[] passwordSalt);
