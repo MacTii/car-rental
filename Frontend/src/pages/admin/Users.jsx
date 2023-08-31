@@ -26,7 +26,9 @@ import {
 
 const Users = () => {
   const [users, setUsers] = useState([]);
-  const [editUser, setEditUser] = useState(null);
+  const [editUser, setEditUser] = useState({
+    isActive: false,
+  });
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -51,7 +53,8 @@ const Users = () => {
     setEditModalOpen(true); // Open modal for user edit
   };
 
-  const handleUpdateUser = async () => {
+  const handleUpdateUser = async (e) => {
+    e.preventDefault();
     await updateUser(editUser.id, editUser); // Update user
     setEditModalOpen(false); // Close modal for user edit
     fetchGetUsers(); // Refresh user list
@@ -64,7 +67,8 @@ const Users = () => {
     toast.success("User deleted successfully");
   };
 
-  const handleAddUser = async () => {
+  const handleAddUser = async (e) => {
+    e.preventDefault();
     console.log(editUser);
     console.log(editUser?.userCredentials);
     await addUserCredential(editUser.userCredentials); // Add user credentials
@@ -171,7 +175,7 @@ const Users = () => {
           Edit User
         </ModalHeader>
         <ModalBody>
-          <Form>
+          <Form id="edit-user-form" onSubmit={handleUpdateUser}>
             <FormGroup>
               <Label for="username">Username</Label>
               <Input
@@ -188,6 +192,7 @@ const Users = () => {
                     },
                   })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -200,6 +205,7 @@ const Users = () => {
                 onChange={(e) =>
                   setEditUser({ ...editUser, name: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -212,18 +218,20 @@ const Users = () => {
                 onChange={(e) =>
                   setEditUser({ ...editUser, surname: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
               <Label for="email">Email</Label>
               <Input
-                type="text"
-                name="email"
                 id="email"
+                type="email"
+                name="email"
                 value={editUser?.email || ""}
                 onChange={(e) =>
                   setEditUser({ ...editUser, email: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -236,6 +244,7 @@ const Users = () => {
                 onChange={(e) =>
                   setEditUser({ ...editUser, phoneNumber: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -248,6 +257,7 @@ const Users = () => {
                 onChange={(e) =>
                   setEditUser({ ...editUser, address: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -260,6 +270,7 @@ const Users = () => {
                 onChange={(e) =>
                   setEditUser({ ...editUser, dateOfBirth: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -275,6 +286,7 @@ const Users = () => {
                     gender: e.target.value,
                   })
                 }
+                required
               >
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
@@ -294,6 +306,7 @@ const Users = () => {
                     identificationNumber: e.target.value,
                   })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -309,6 +322,7 @@ const Users = () => {
                     drivingLicenseNumber: e.target.value,
                   })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -327,6 +341,7 @@ const Users = () => {
                     },
                   })
                 }
+                required
               >
                 <option value="User">User</option>
                 <option value="Admin">Admin</option>
@@ -353,12 +368,15 @@ const Users = () => {
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={handleUpdateUser}>
+          <Button color="primary" form="edit-user-form" type="submit">
             Save
           </Button>
           <Button
             color="secondary"
-            onClick={() => setEditModalOpen(!editModalOpen)}
+            onClick={() => {
+              setEditModalOpen(!editModalOpen);
+              setEditUser({}); // Clear the form fields on cancel
+            }}
           >
             Cancel
           </Button>
@@ -403,6 +421,7 @@ const Users = () => {
                 onChange={(e) =>
                   setEditUser({ ...editUser, name: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -415,6 +434,7 @@ const Users = () => {
                 onChange={(e) =>
                   setEditUser({ ...editUser, surname: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -427,6 +447,7 @@ const Users = () => {
                 onChange={(e) =>
                   setEditUser({ ...editUser, email: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -439,6 +460,7 @@ const Users = () => {
                 onChange={(e) =>
                   setEditUser({ ...editUser, phoneNumber: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -451,6 +473,7 @@ const Users = () => {
                 onChange={(e) =>
                   setEditUser({ ...editUser, address: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -463,6 +486,7 @@ const Users = () => {
                 onChange={(e) =>
                   setEditUser({ ...editUser, dateOfBirth: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -501,6 +525,7 @@ const Users = () => {
                     identificationNumber: e.target.value,
                   })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -516,6 +541,7 @@ const Users = () => {
                     drivingLicenseNumber: e.target.value,
                   })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -534,6 +560,7 @@ const Users = () => {
                     },
                   })
                 }
+                required
               >
                 <option selected="selected" disabled value="">
                   Select Role...

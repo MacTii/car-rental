@@ -227,7 +227,7 @@ const Blogs = () => {
           Edit Blog
         </ModalHeader>
         <ModalBody>
-          <Form>
+          <Form id="edit-blog-form" onSubmit={handleUpdateBlog}>
             <FormGroup>
               <Label for="title">Title</Label>
               <Input
@@ -238,6 +238,7 @@ const Blogs = () => {
                 onChange={(e) =>
                   setEditBlog({ ...editBlog, title: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -250,6 +251,7 @@ const Blogs = () => {
                 onChange={(e) =>
                   setEditBlog({ ...editBlog, authorName: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -262,6 +264,7 @@ const Blogs = () => {
                 onChange={(e) =>
                   setEditBlog({ ...editBlog, authorSurname: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -275,6 +278,7 @@ const Blogs = () => {
                   setEditBlog({ ...editBlog, description: e.target.value })
                 }
                 rows={4}
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -287,6 +291,7 @@ const Blogs = () => {
                 onChange={(e) =>
                   setEditBlog({ ...editBlog, date: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -308,6 +313,7 @@ const Blogs = () => {
                     reader.readAsDataURL(file);
                   }
                 }}
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -324,17 +330,21 @@ const Blogs = () => {
                   })
                 }
                 rows={5} // How many rows
+                required
               />
             </FormGroup>
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={handleUpdateBlog}>
+          <Button id="edit-blog-form" color="primary" type="submit">
             Save
           </Button>
           <Button
             color="secondary"
-            onClick={() => setEditModalOpen(!editModalOpen)}
+            onClick={() => {
+              setEditModalOpen(!editModalOpen);
+              setEditBlog({}); // Clear the form fields on cancel
+            }}
           >
             Cancel
           </Button>
@@ -349,7 +359,7 @@ const Blogs = () => {
           Add Blog
         </ModalHeader>
         <ModalBody>
-          <Form>
+          <Form id="add-blog-form" onSubmit={handleAddCar}>
             <FormGroup>
               <Label for="title">Title</Label>
               <Input
@@ -360,6 +370,7 @@ const Blogs = () => {
                 onChange={(e) =>
                   setEditBlog({ ...editBlog, title: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -372,6 +383,7 @@ const Blogs = () => {
                 onChange={(e) =>
                   setEditBlog({ ...editBlog, authorName: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -384,6 +396,7 @@ const Blogs = () => {
                 onChange={(e) =>
                   setEditBlog({ ...editBlog, authorSurname: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -397,6 +410,7 @@ const Blogs = () => {
                   setEditBlog({ ...editBlog, description: e.target.value })
                 }
                 rows={4}
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -409,6 +423,7 @@ const Blogs = () => {
                 onChange={(e) =>
                   setEditBlog({ ...editBlog, date: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -430,6 +445,7 @@ const Blogs = () => {
                     reader.readAsDataURL(file);
                   }
                 }}
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -446,14 +462,15 @@ const Blogs = () => {
                   })
                 }
                 rows={5} // How many rows
+                required
               />
             </FormGroup>
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={handleAddCar}>
+          <Button form="add-blog-form" color="primary" type="submit">
             Add
-          </Button>{" "}
+          </Button>
           <Button
             color="secondary"
             onClick={() => {

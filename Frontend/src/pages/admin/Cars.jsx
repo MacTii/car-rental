@@ -22,7 +22,9 @@ import { toast } from "react-toastify";
 
 const Cars = () => {
   const [cars, setCars] = useState([]);
-  const [editCar, setEditCar] = useState(null);
+  const [editCar, setEditCar] = useState({
+    isAvailable: false,
+  });
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -49,7 +51,8 @@ const Cars = () => {
     setEditModalOpen(true); // Open modal for car edit
   };
 
-  const handleUpdateCar = async () => {
+  const handleUpdateCar = async (e) => {
+    e.preventDefault();
     await updateCar(editCar.id, editCar); // Update car
 
     setEditModalOpen(false); // Close modal for car edit
@@ -65,7 +68,9 @@ const Cars = () => {
     toast.success("Car deleted successfully");
   };
 
-  const handleAddCar = async () => {
+  const handleAddCar = async (e) => {
+    e.preventDefault();
+    console.log(editCar);
     await addCar(editCar); // Update car
 
     setEditCar({}); // Clear the form fields
@@ -174,7 +179,7 @@ const Cars = () => {
           Edit Car
         </ModalHeader>
         <ModalBody>
-          <Form>
+          <Form id="edit-car-form" onSubmit={handleUpdateCar}>
             <FormGroup>
               <Label for="make">Make</Label>
               <Input
@@ -185,6 +190,7 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, make: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -197,6 +203,7 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, model: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -209,6 +216,7 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, registrationNumber: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -221,6 +229,7 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, color: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -249,6 +258,7 @@ const Cars = () => {
                     pricePerDay: parseFloat(e.target.value),
                   })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -261,6 +271,7 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, year: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -273,6 +284,7 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, engine: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -285,6 +297,7 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, speed: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -306,6 +319,7 @@ const Cars = () => {
                     reader.readAsDataURL(file);
                   }
                 }}
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -319,6 +333,7 @@ const Cars = () => {
                   setEditCar({ ...editCar, description: e.target.value })
                 }
                 rows={5}
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -331,6 +346,7 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, gps: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -343,6 +359,7 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, ratings: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -355,17 +372,21 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, seatType: e.target.value })
                 }
+                required
               />
             </FormGroup>
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={handleUpdateCar}>
+          <Button form="edit-car-form" type="submit" color="primary">
             Save
-          </Button>{" "}
+          </Button>
           <Button
             color="secondary"
-            onClick={() => setEditModalOpen(!editModalOpen)}
+            onClick={() => {
+              setEditModalOpen(!editModalOpen);
+              setEditCar({}); // Clear the form fields on cancel
+            }}
           >
             Cancel
           </Button>
@@ -380,7 +401,7 @@ const Cars = () => {
           Add Car
         </ModalHeader>
         <ModalBody>
-          <Form>
+          <Form id="add-car-form" onSubmit={handleAddCar}>
             <FormGroup>
               <Label for="make">Make</Label>
               <Input
@@ -391,6 +412,7 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, make: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -403,6 +425,7 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, model: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -415,6 +438,7 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, registrationNumber: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -427,6 +451,7 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, color: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -455,6 +480,7 @@ const Cars = () => {
                     pricePerDay: parseFloat(e.target.value),
                   })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -467,6 +493,7 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, year: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -479,6 +506,7 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, engine: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -491,6 +519,7 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, speed: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -512,6 +541,7 @@ const Cars = () => {
                     reader.readAsDataURL(file);
                   }
                 }}
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -524,6 +554,7 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, description: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -536,6 +567,7 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, gps: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -548,6 +580,7 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, ratings: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -560,14 +593,15 @@ const Cars = () => {
                 onChange={(e) =>
                   setEditCar({ ...editCar, seatType: e.target.value })
                 }
+                required
               />
             </FormGroup>
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={handleAddCar}>
+          <Button form="add-car-form" type="submit" color="primary">
             Add
-          </Button>{" "}
+          </Button>
           <Button
             color="secondary"
             onClick={() => {
