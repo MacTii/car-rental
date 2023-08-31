@@ -101,7 +101,7 @@ namespace Infrastructure.SeedData
                 {
                     Name = "Agathe",
                     Surname = "McMaster",
-                    Email = null,
+                    Email = "agathemcmaster@gmail.com",
                     PhoneNumber = "687-453-8992",
                     Address = "6295 Barnett Trail",
                     DateOfBirth = new DateTime(1989, 3, 23),
@@ -129,7 +129,7 @@ namespace Infrastructure.SeedData
                 {
                     Name = "Denise",
                     Surname = "O'Gorman",
-                    Email = null,
+                    Email = "deniseogorman@gmail.com",
                     PhoneNumber = "297-176-0374",
                     Address = "5 Arizona Center",
                     DateOfBirth = new DateTime(1999, 2, 18),
