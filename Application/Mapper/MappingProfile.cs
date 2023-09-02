@@ -75,13 +75,8 @@ namespace Application.Mapper
             CreateMap<Comment, CommentDTO>()
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date.ToString("yyyy-MM-dd HH:mm")));
 
-            // (PasswordCredential, RefreshToken) -> AuthenticationDataDTO
-            CreateMap<(PasswordCredential, RefreshToken), AuthenticationDataDTO>()
-                .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.Item1.PasswordHash))
-                .ForMember(dest => dest.PasswordSalt, opt => opt.MapFrom(src => src.Item1.PasswordSalt))
-                .ForMember(dest => dest.RefreshToken, opt => opt.MapFrom(src => src.Item2.Token))
-                .ForMember(dest => dest.TokenCreated, opt => opt.MapFrom(src => src.Item2.Created))
-                .ForMember(dest => dest.TokenExpires, opt => opt.MapFrom(src => src.Item2.Expires));
+            // PasswordCredential -> PasswordCredentialDTO
+            CreateMap<PasswordCredential, PasswordCredentialDTO>();
 
         }
     }

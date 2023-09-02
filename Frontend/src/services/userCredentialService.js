@@ -1,4 +1,5 @@
 import urls from "../config/config";
+import { toast } from "react-toastify";
 
 const baseURL = urls.development;
 
@@ -22,6 +23,7 @@ export const deleteUserCredential = async (userCredentialsID) => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };
@@ -46,6 +48,7 @@ export const addUserCredential = async (data) => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };

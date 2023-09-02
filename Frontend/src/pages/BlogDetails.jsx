@@ -63,12 +63,24 @@ const BlogDetails = () => {
     const email = event.target.elements.email.value;
     const comment = event.target.elements.comment.value;
 
+    // Convert the comment's date to local time before updating
+    const localDate = new Date();
+    localDate.setMinutes(
+      localDate.getMinutes() - localDate.getTimezoneOffset()
+    );
+
+    // Format date before updating the comment
+    const formattedDate = localDate
+      .toISOString()
+      .slice(0, 16)
+      .replace("T", " ");
+
     const newComment = {
       blogID: blog.id,
       name: name,
       surname: surname,
       email: email,
-      date: new Date(),
+      date: formattedDate,
       description: comment,
     };
 

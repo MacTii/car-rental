@@ -103,6 +103,32 @@ const Rentals = () => {
 
   const handleUpdateRental = async (e) => {
     e.preventDefault();
+
+    // Ustal rentDate na bieżący czas
+    const rentDate = new Date(editRental.rentDate);
+    rentDate.setMinutes(rentDate.getMinutes() - rentDate.getTimezoneOffset());
+    const formattedRentDate = rentDate
+      .toISOString()
+      .slice(0, 16)
+      .replace("T", " ");
+
+    // Ustal returnDate na bieżący czas, jeśli jest dostępny
+    let formattedReturnDate = null;
+    if (editRental.returnDate) {
+      const localReturnDate = new Date(editRental.returnDate);
+      localReturnDate.setMinutes(
+        localReturnDate.getMinutes() - localReturnDate.getTimezoneOffset()
+      );
+      formattedReturnDate = localReturnDate
+        .toISOString()
+        .slice(0, 16)
+        .replace("T", " ");
+    }
+
+    // Update the rentDate field in the editRental object
+    editRental.rentDate = formattedRentDate;
+    editRental.returnDate = formattedReturnDate;
+
     await updateRental(editRental.id, editRental); // Update rental
     setEditModalOpen(false); // Close modal for rental edit
     fetchGetRentals(); // Refresh rental list
@@ -208,7 +234,6 @@ const Rentals = () => {
                   <td>
                     <Button
                       color="primary"
-                      className="edit-btn"
                       onClick={() => handleEditRental(rental.id)}
                     >
                       Edit
@@ -217,7 +242,6 @@ const Rentals = () => {
                   <td>
                     <Button
                       color="danger"
-                      className="delete-btn"
                       onClick={() => handleDeleteRental(rental.id)}
                     >
                       Delete

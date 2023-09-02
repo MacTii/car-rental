@@ -1,4 +1,5 @@
 import urls from "../config/config";
+import { toast } from "react-toastify";
 
 const baseURL = urls.development;
 
@@ -22,6 +23,7 @@ export const addRental = async (data) => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };
@@ -48,6 +50,7 @@ export const getRentalByUsername = async (username) => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };
@@ -71,6 +74,7 @@ export const getRentals = async () => {
       throw new Error("List of cars is empty!");
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };
@@ -96,6 +100,7 @@ export const updateRental = async (rentalID, data) => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };
@@ -120,6 +125,7 @@ export const deleteRental = async (rentalID) => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };

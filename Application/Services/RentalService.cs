@@ -37,7 +37,13 @@ namespace Application.Services
 
         public RentalDTO GetRentalByID(int rentalID)
         {
+            if (rentalID < 1)
+                throw new ArgumentException($"Invalid rental ID: {rentalID}. Rental ID must be greater than or equal to 1.");
+
             var rental = _rentalRepository.GetByID(rentalID);
+            if(rental == null)
+                throw new InvalidOperationException($"Rental with ID: {rentalID} not found.");
+
             return _mapper.Map<RentalDTO>(rental);
         }
 
@@ -55,12 +61,26 @@ namespace Application.Services
 
         public void UpdateRental(int rentalID, RentalDTO rentalDTO)
         {
+            if (rentalID < 1)
+                throw new ArgumentException($"Invalid rental ID: {rentalID}. Rental ID must be greater than or equal to 1.");
+
+            var rental = _rentalRepository.GetByID(rentalID);
+            if (rental == null)
+                throw new InvalidOperationException($"Rental with ID: {rentalID} not found.");
+
             _rentalRepository.Update(rentalID, _mapper.Map<Rental>(rentalDTO));
             _rentalRepository.Save();
         }
 
         public void DeleteRental(int rentalID)
         {
+            if (rentalID < 1)
+                throw new ArgumentException($"Invalid rental ID: {rentalID}. Rental ID must be greater than or equal to 1.");
+
+            var rental = _rentalRepository.GetByID(rentalID);
+            if (rental == null)
+                throw new InvalidOperationException($"Rental with ID: {rentalID} not found.");
+
             _rentalRepository.Delete(rentalID);
             _rentalRepository.Save();
         }

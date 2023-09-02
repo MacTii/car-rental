@@ -2,6 +2,7 @@
 using Application.Interfaces.Services;
 using Application.Mapper.DTOs;
 using AutoMapper;
+using Azure.Core;
 using Domain.Entities;
 using Microsoft.Extensions.Logging;
 using System;
@@ -37,30 +38,61 @@ namespace Application.Services
 
         public UserDTO GetUserByID(int userID)
         {
+            if (userID < 1)
+                throw new ArgumentException($"Invalid user ID: {userID}. User ID must be greater than or equal to 1.");
+
             var user = _userRepository.GetByID(userID);
+            if (user == null)
+                throw new InvalidOperationException($"User with ID: {userID} not found.");
+
             return _mapper.Map<UserDTO>(user);
         }
 
         public UserDTO GetUserByUsername(string username)
         {
             var user = _userRepository.GetByUsername(username);
+            if (user == null)
+                throw new InvalidOperationException($"User with username: {username} not found.");
+
             return _mapper.Map<UserDTO>(user);
         }
 
         public void AddUser(UserDTO userDTO)
         {
+            var existingUserByUsernam = _userRepository.GetByUsername(userDTO.UserCredentials.Username);
+            if (existingUserByUsernam != null)
+                throw new InvalidOperationException($"This username: {userDTO.UserCredentials.Username} is taken!");
+
+            var existingUserByEmail = _userRepository.GetByEmail(userDTO.Email);
+            if (existingUserByEmail != null)
+                throw new InvalidOperationException($"This email address: {userDTO.Email} is already in use!");
+
             _userRepository.Insert(_mapper.Map<User>(userDTO));
             _userRepository.Save();
         }
 
         public void UpdateUser(int userID, UserDTO userDTO)
         {
+            if (userID < 1)
+                throw new ArgumentException($"Invalid user ID: {userID}. User ID must be greater than or equal to 1.");
+
+            var user = _userRepository.GetByID(userID);
+            if (user == null)
+                throw new InvalidOperationException($"User with ID: {userID} not found.");
+
             _userRepository.Update(userID, _mapper.Map<User>(userDTO));
             _userRepository.Save();
         }
 
         public void DeleteUser(int userID)
         {
+            if (userID < 1)
+                throw new ArgumentException($"Invalid user ID: {userID}. User ID must be greater than or equal to 1.");
+
+            var user = _userRepository.GetByID(userID);
+            if (user == null)
+                throw new InvalidOperationException($"User with ID: {userID} not found.");
+
             _userRepository.Delete(userID);
             _userRepository.Save();
         }

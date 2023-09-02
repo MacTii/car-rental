@@ -77,7 +77,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPut("cars/{carID}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public ActionResult UpdateCar(int carID, CarDTO carDTO)
         {
             if (carDTO == null)

@@ -37,7 +37,13 @@ namespace Application.Services
 
         public CommentDTO GetComment(int commentID)
         {
+            if (commentID < 1)
+                throw new ArgumentException($"Invalid comment ID: {commentID}. Comment ID must be greater than or equal to 1.");
+
             var comment = _commentRepository.GetByID(commentID);
+            if(comment == null)
+                throw new InvalidOperationException($"Comment with ID: {commentID} not found.");
+
             return _mapper.Map<CommentDTO>(comment);
         }
 
@@ -49,12 +55,26 @@ namespace Application.Services
 
         public void UpdateComment(int commentID, CommentDTO commentDTO)
         {
+            if (commentID < 1)
+                throw new ArgumentException($"Invalid comment ID: {commentID}. Comment ID must be greater than or equal to 1.");
+
+            var comment = _commentRepository.GetByID(commentID);
+            if (comment == null)
+                throw new InvalidOperationException($"Comment with ID: {commentID} not found.");
+
             _commentRepository.Update(commentID, _mapper.Map<Comment>(commentDTO));
             _commentRepository.Save();
         }
 
         public void DeleteComment(int commentID)
         {
+            if (commentID < 1)
+                throw new ArgumentException($"Invalid comment ID: {commentID}. Comment ID must be greater than or equal to 1.");
+
+            var comment = _commentRepository.GetByID(commentID);
+            if (comment == null)
+                throw new InvalidOperationException($"Comment with ID: {commentID} not found.");
+
             _commentRepository.Delete(commentID);
             _commentRepository.Save();
         }

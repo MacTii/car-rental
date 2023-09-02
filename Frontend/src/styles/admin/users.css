@@ -25,22 +25,9 @@
     height: auto;
 }
 
-.edit-btn {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.delete-btn {
-    background-color: #dc3545;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
+.reset-btn {
+    background-color: #dcb035 !important;
+    border: none !important;
 }
 
 .edit-modal .modal-header {

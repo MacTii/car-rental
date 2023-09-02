@@ -155,7 +155,6 @@ const Cars = () => {
                 <td>
                   <Button
                     color="primary"
-                    className="edit-btn"
                     onClick={() => handleEditCar(car.id)}
                   >
                     Edit
@@ -164,7 +163,6 @@ const Cars = () => {
                 <td>
                   <Button
                     color="danger"
-                    className="delete-btn"
                     onClick={() => handleDeleteCar(car.id)}
                   >
                     Delete

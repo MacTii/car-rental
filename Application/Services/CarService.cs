@@ -38,7 +38,13 @@ namespace Application.Services
 
         public CarDTO GetCar(int carID)
         {
+            if (carID < 1)
+                throw new ArgumentException($"Invalid car ID: {carID}. Car ID must be greater than or equal to 1.");
+
             var car = _carRepository.GetByID(carID);
+            if (car == null)
+                throw new InvalidOperationException($"Car with ID: {carID} not found.");
+
             return _mapper.Map<CarDTO>(car);
         }
 
@@ -50,19 +56,39 @@ namespace Application.Services
 
         public void UpdateCar(int carID, CarDTO carDTO)
         {
+            if (carID < 1)
+                throw new ArgumentException($"Invalid car ID: {carID}. Car ID must be greater than or equal to 1.");
+
+            var car = _carRepository.GetByID(carID);
+            if (car == null)
+                throw new InvalidOperationException($"Car with ID: {carID} not found.");
+
             _carRepository.Update(carID, _mapper.Map<Car>(carDTO));
             _carRepository.Save();
         }
 
         public void DeleteCar(int carID)
         {
+            if (carID < 1)
+                throw new ArgumentException($"Invalid car ID: {carID}. Car ID must be greater than or equal to 1.");
+
+            var car = _carRepository.GetByID(carID);
+            if (car == null)
+                throw new InvalidOperationException($"Car with ID: {carID} not found.");
+
             _carRepository.Delete(carID);
             _carRepository.Save();
         }
 
         public CarDTO UploadImage(IFormFile formFile, int carID)
         {
+            if (carID < 1)
+                throw new ArgumentException($"Invalid car ID: {carID}. Car ID must be greater than or equal to 1.");
+
             var car = _carRepository.GetByID(carID);
+            if (car == null)
+                throw new InvalidOperationException($"Car with ID: {carID} not found.");
+
             using (MemoryStream memoryStream = new())
             {
                 formFile.CopyTo(memoryStream);

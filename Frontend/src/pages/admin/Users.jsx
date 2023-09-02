@@ -23,7 +23,11 @@ import {
   addUserCredential,
   deleteUserCredential,
 } from "../../services/userCredentialService";
-import { generatePasswordCredentials } from "../../services/authService";
+import {
+  generatePasswordCredentials,
+  resetPasswordCredentials,
+} from "../../services/authService";
+import "../../styles/admin/users.css";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -34,10 +38,11 @@ const Users = () => {
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [passwordCredentials, setPasswordCredentials] = useState();
+  const [isGenerated, setIsGenerated] = useState(false);
 
   useEffect(() => {
     fetchGetUsers();
-    console.log()
+    console.log();
   }, []);
 
   const fetchGetUsers = async () => {
@@ -52,6 +57,11 @@ const Users = () => {
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+  const handleResetPasswordCredentials = async (userId) => {
+    await resetPasswordCredentials(userId);
+    toast.success("Password reset successful");
   };
 
   const handleEditUser = (userId) => {
@@ -78,6 +88,7 @@ const Users = () => {
   const handleGeneratePasswordCredentials = async () => {
     const result = await generatePasswordCredentials();
     setPasswordCredentials(result);
+    setIsGenerated(true);
     console.log(result);
   };
 
@@ -88,9 +99,9 @@ const Users = () => {
       username: editUser.userCredentials.username,
       passwordHash: passwordCredentials.passwordHash,
       passwordSalt: passwordCredentials.passwordSalt,
-      refreshToken: passwordCredentials.refreshToken,
-      tokenCreated: passwordCredentials.tokenCreated,
-      tokenExpires: passwordCredentials.tokenExpires,
+      refreshToken: null,
+      tokenCreated: null,
+      tokenExpires: null,
       isActive: editUser.userCredentials.isActive,
       userRole: editUser.userCredentials.userRole,
     };
@@ -154,6 +165,7 @@ const Users = () => {
             <th>Driving License Number</th>
             <th>User Role</th>
             <th>Is Active</th>
+            <th>Reset Password</th>
             <th>Edit</th>
             <th>Delete</th>
           </tr>
@@ -186,19 +198,22 @@ const Users = () => {
                 <td>{user.userCredentials.isActive ? "Yes" : "No"}</td>
                 <td>
                   <Button
+                    className="reset-btn"
+                    onClick={() => handleResetPasswordCredentials(user.id)}
+                  >
+                    Reset
+                  </Button>
+                </td>
+                <td>
+                  <Button
                     color="primary"
-                    className="edit-btn"
                     onClick={() => handleEditUser(user.id)}
                   >
                     Edit
                   </Button>
                 </td>
                 <td>
-                  <Button
-                    color="danger"
-                    className="delete-btn"
-                    onClick={() => handleDeleteUser(user)}
-                  >
+                  <Button color="danger" onClick={() => handleDeleteUser(user)}>
                     Delete
                   </Button>
                 </td>
@@ -432,8 +447,12 @@ const Users = () => {
         toggle={() => {
           setAddModalOpen(!addModalOpen);
           clearEditUser();
+          setIsGenerated(false);
         }}
-        onClosed={() => clearEditUser()}
+        onClosed={() => {
+          clearEditUser();
+          setIsGenerated(false);
+        }}
         className="add-modal"
       >
         <ModalHeader toggle={() => setAddModalOpen(!addModalOpen)}>
@@ -466,11 +485,15 @@ const Users = () => {
                 type="password"
                 name="password"
                 id="password"
-                value={"1234567890"}
+                value={isGenerated ? "PASSWORD" : ""}
                 required
                 readOnly
               />
-              <Button onClick={handleGeneratePasswordCredentials}>
+              <Button
+                color="primary"
+                disabled={isGenerated}
+                onClick={handleGeneratePasswordCredentials}
+              >
                 Generate
               </Button>
             </FormGroup>
@@ -661,6 +684,7 @@ const Users = () => {
             onClick={() => {
               setAddModalOpen(!addModalOpen);
               setEditUser({}); // Clear the form fields on cancel
+              setIsGenerated(false);
             }}
           >
             Cancel

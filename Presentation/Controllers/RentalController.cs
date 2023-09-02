@@ -30,9 +30,7 @@ namespace Presentation.Controllers
         {
             var rentalDTOs = _rentalService.GetRentals();
             if (!rentalDTOs.Any())
-            {
                 return NoContent(); // Returns HTTP 204 if there are no records
-            }
 
             // HTTP 200
             return Ok(
@@ -74,13 +72,11 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("rentals")]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public ActionResult AddRental(RentalDTO rentalDTO)
         {
             if (rentalDTO == null)
-            {
                 return BadRequest("Invalid input data"); // return 400 Bad Request
-            }
 
             _rentalService.AddRental(rentalDTO);
 
@@ -98,9 +94,7 @@ namespace Presentation.Controllers
         public ActionResult UpdateRental(int rentalID, RentalDTO rentalDTO)
         {
             if (rentalDTO == null)
-            {
                 return BadRequest("Invalid input data"); // return 400 Bad Request
-            }
 
             _rentalService.UpdateRental(rentalID, rentalDTO);
 

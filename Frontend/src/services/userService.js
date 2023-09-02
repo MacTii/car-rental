@@ -1,4 +1,5 @@
 import urls from "../config/config";
+import { toast } from "react-toastify";
 
 const baseURL = urls.development;
 
@@ -21,6 +22,7 @@ export const getUserByUsername = async (username) => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };
@@ -46,6 +48,7 @@ export const updateUser = async (userID, data) => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };
@@ -69,6 +72,7 @@ export const getUsers = async () => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };
@@ -93,6 +97,7 @@ export const deleteUser = async (userID) => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };
@@ -117,6 +122,7 @@ export const addUser = async (data) => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };

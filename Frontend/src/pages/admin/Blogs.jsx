@@ -78,7 +78,22 @@ const Blogs = () => {
     setEditCommentModalOpen(true);
   };
 
-  const handleAddCar = async () => {
+  const handleAddBlog = async (e) => {
+    e.preventDefault();
+
+    // Convert the comment's date to local time before updating
+    const localDate = new Date(editBlog.date);
+    localDate.setMinutes(
+      localDate.getMinutes() - localDate.getTimezoneOffset()
+    );
+
+    const formattedDate = localDate
+      .toISOString()
+      .slice(0, 16)
+      .replace("T", " ");
+
+    editBlog.date = formattedDate;
+
     await addBlog(editBlog); // Update blog
 
     setEditBlog({}); // Clear the form fields
@@ -190,7 +205,6 @@ const Blogs = () => {
                   <td>
                     <Button
                       color="primary"
-                      className="edit-btn"
                       onClick={() => handleEditBlog(blog.id)}
                     >
                       Edit
@@ -199,7 +213,6 @@ const Blogs = () => {
                   <td>
                     <Button
                       color="danger"
-                      className="delete-btn"
                       onClick={() => handleDeleteBlog(blog.id)}
                     >
                       Delete
@@ -370,7 +383,7 @@ const Blogs = () => {
           Add Blog
         </ModalHeader>
         <ModalBody>
-          <Form id="add-blog-form" onSubmit={handleAddCar}>
+          <Form id="add-blog-form" onSubmit={handleAddBlog}>
             <FormGroup>
               <Label for="title">Title</Label>
               <Input

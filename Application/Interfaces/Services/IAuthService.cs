@@ -15,6 +15,7 @@ namespace Application.Interfaces.Services
         public string Register(RegisterDTO request);
         public string Login(LoginDTO request);
         public string RefreshToken();
-        public AuthenticationDataDTO GetPasswordCredentials();
+        public PasswordCredentialDTO GetPasswordCredentials();
+        public void ResetPassword(int userID);
     }
 }

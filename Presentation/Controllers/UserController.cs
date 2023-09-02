@@ -94,7 +94,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPut("users/{userID}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public ActionResult UpdateUser(int userID, UserDTO userDTO)
         {
             if (userDTO == null)

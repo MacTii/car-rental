@@ -10,8 +10,9 @@ namespace Application.Interfaces.Repositories
     public interface IUserRepository
     {
         public IEnumerable<User> GetAll();
-        public User GetByID(int userID);
-        public User GetByUsername(string username);
+        public User? GetByID(int userID);
+        public User? GetByUsername(string username);
+        public User? GetByEmail(string email);
         public void Insert(User user);
         public void Update(int userID, User user);
         public void Delete(int userID);
