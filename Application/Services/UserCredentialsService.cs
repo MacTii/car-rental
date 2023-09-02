@@ -10,6 +10,8 @@ using Application.Mapper.DTOs;
 using Domain.Entities;
 using Application.Interfaces.Services;
 using Application.Interfaces.Repositories;
+using Application.Validators;
+using FluentValidation;
 
 namespace Application.Services
 {
@@ -20,12 +22,14 @@ namespace Application.Services
         private readonly ILogger<UserCredentialsService> _logger;
         private readonly IMapper _mapper;
         private readonly IUserCredentialsRepository _userCredentialsRepository;
+        private readonly UserCredentialValidator _validator;
 
         public UserCredentialsService(ILogger<UserCredentialsService> logger, IMapper mapper, IUserCredentialsRepository userCredentialsRepository)
         {
             _logger = logger;
             _mapper = mapper;
             _userCredentialsRepository = userCredentialsRepository;
+            _validator = new UserCredentialValidator();
         }
 
         #endregion Injection
@@ -51,6 +55,14 @@ namespace Application.Services
 
         public void AddUserCredential(UserCredentialsDTO userCredentialsDTO)
         {
+            // Check if the input data is valid
+            var validationResult = _validator.Validate(userCredentialsDTO);
+
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
             _userCredentialsRepository.Insert(_mapper.Map<UserCredentials>(userCredentialsDTO));
             _userCredentialsRepository.Save();
         }
@@ -64,6 +76,14 @@ namespace Application.Services
             var userCredentials = _userCredentialsRepository.GetByID(userCredentialsID);
             if (userCredentials == null)
                 throw new InvalidOperationException($"User credentials with ID: {userCredentialsID} not found.");
+
+            // Check if the input data is valid
+            var validationResult = _validator.Validate(userCredentialsDTO);
+
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
 
             _userCredentialsRepository.Update(userCredentialsID, _mapper.Map<UserCredentials>(userCredentialsDTO));
             _userCredentialsRepository.Save();

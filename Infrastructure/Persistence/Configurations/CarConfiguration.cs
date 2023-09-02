@@ -18,7 +18,7 @@ namespace Infrastructure.Persistence.Configurations
                     .HasMaxLength(50);
 
             entity.Property(e => e.Model)
-                .HasMaxLength(100);
+                .HasMaxLength(50);
 
             entity.Property(e => e.RegistrationNumber)
                 .HasMaxLength(15);

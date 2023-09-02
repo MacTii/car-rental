@@ -1,8 +1,10 @@
 ﻿using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Application.Mapper.DTOs;
+using Application.Validators;
 using AutoMapper;
 using Domain.Entities;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -19,12 +21,14 @@ namespace Application.Services
         private readonly ILogger<RentalService> _logger;
         private readonly IMapper _mapper;
         private readonly IRentalRepository _rentalRepository;
+        private readonly RentalValidator _validator;
 
         public RentalService(ILogger<RentalService> logger, IMapper mapper, IRentalRepository rentalRepository)
         {
             _logger = logger;
             _mapper = mapper;
             _rentalRepository = rentalRepository;
+            _validator = new RentalValidator();
         }
 
         #endregion Injection
@@ -55,6 +59,14 @@ namespace Application.Services
 
         public void AddRental(RentalDTO rentalDTO)
         {
+            // Check if the input data is valid
+            var validationResult = _validator.Validate(rentalDTO);
+
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
             _rentalRepository.Insert(_mapper.Map<Rental>(rentalDTO));
             _rentalRepository.Save();
         }
@@ -67,6 +79,14 @@ namespace Application.Services
             var rental = _rentalRepository.GetByID(rentalID);
             if (rental == null)
                 throw new InvalidOperationException($"Rental with ID: {rentalID} not found.");
+
+            // Check if the input data is valid
+            var validationResult = _validator.Validate(rentalDTO);
+
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
 
             _rentalRepository.Update(rentalID, _mapper.Map<Rental>(rentalDTO));
             _rentalRepository.Save();

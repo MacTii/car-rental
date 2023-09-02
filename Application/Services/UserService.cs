@@ -1,9 +1,11 @@
 ﻿using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Application.Mapper.DTOs;
+using Application.Validators;
 using AutoMapper;
 using Azure.Core;
 using Domain.Entities;
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -20,12 +22,14 @@ namespace Application.Services
         private readonly ILogger<UserService> _logger;
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
+        private readonly UserValidator _validator;
 
         public UserService(ILogger<UserService> logger, IMapper mapper, IUserRepository userRepository)
         {
             _logger = logger;
             _mapper = mapper;
             _userRepository = userRepository;
+            _validator = new UserValidator();
         }
 
         #endregion Injection
@@ -67,6 +71,14 @@ namespace Application.Services
             if (existingUserByEmail != null)
                 throw new InvalidOperationException($"This email address: {userDTO.Email} is already in use!");
 
+            // Check if the input data is valid
+            var validationResult = _validator.Validate(userDTO);
+
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
             _userRepository.Insert(_mapper.Map<User>(userDTO));
             _userRepository.Save();
         }
@@ -79,6 +91,14 @@ namespace Application.Services
             var user = _userRepository.GetByID(userID);
             if (user == null)
                 throw new InvalidOperationException($"User with ID: {userID} not found.");
+
+            // Check if the input data is valid
+            var validationResult = _validator.Validate(userDTO);
+
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
 
             _userRepository.Update(userID, _mapper.Map<User>(userDTO));
             _userRepository.Save();

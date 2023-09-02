@@ -15,16 +15,16 @@ namespace Infrastructure.Persistence.Configurations
         public void Configure(EntityTypeBuilder<User> entity)
         {
             entity.Property(e => e.Name)
-                .HasMaxLength(50);
+                .HasMaxLength(20);
 
             entity.Property(e => e.Surname)
-                .HasMaxLength(50);
+                .HasMaxLength(20);
 
             entity.Property(e => e.Email)
-                .HasMaxLength(100);
+                .HasMaxLength(30);
 
             entity.Property(e => e.PhoneNumber)
-                .HasMaxLength(50);
+                .HasMaxLength(20);
 
             entity.Property(e => e.DateOfBirth)
                 .HasColumnType("date");

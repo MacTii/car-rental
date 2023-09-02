@@ -82,7 +82,7 @@ const Blogs = () => {
     e.preventDefault();
 
     // Convert the comment's date to local time before updating
-    const localDate = new Date(editBlog.date);
+    const localDate = new Date();
     localDate.setMinutes(
       localDate.getMinutes() - localDate.getTimezoneOffset()
     );
@@ -127,7 +127,22 @@ const Blogs = () => {
     toast.success("Comment updated successfully");
   };
 
-  const handleUpdateBlog = async () => {
+  const handleUpdateBlog = async (e) => {
+    e.preventDefault();
+
+    // Convert the comment's date to local time before updating
+    const localDate = new Date(editBlog.date);
+    localDate.setMinutes(
+      localDate.getMinutes() - localDate.getTimezoneOffset()
+    );
+
+    const formattedDate = localDate
+      .toISOString()
+      .slice(0, 16)
+      .replace("T", " ");
+
+    editBlog.date = formattedDate;
+
     await updateBlog(editBlog.id, editBlog); // Update blog
     setEditModalOpen(false); // Close modal for blog edit
     fetchGetBlogs(); // Refresh blog list
@@ -334,7 +349,7 @@ const Blogs = () => {
                     reader.readAsDataURL(file);
                   }
                 }}
-                required
+                required={!editBlog?.image}
               />
             </FormGroup>
             <FormGroup>
@@ -357,7 +372,7 @@ const Blogs = () => {
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button id="edit-blog-form" color="primary" type="submit">
+          <Button form="edit-blog-form" color="primary" type="submit">
             Save
           </Button>
           <Button
@@ -434,19 +449,6 @@ const Blogs = () => {
                   setEditBlog({ ...editBlog, description: e.target.value })
                 }
                 rows={4}
-                required
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for="date">Date</Label>
-              <Input
-                type="datetime-local"
-                name="date"
-                id="date"
-                value={editBlog?.date || ""}
-                onChange={(e) =>
-                  setEditBlog({ ...editBlog, date: e.target.value })
-                }
                 required
               />
             </FormGroup>
