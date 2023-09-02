@@ -190,7 +190,6 @@ const Blogs = () => {
                   <td>
                     <Button
                       color="primary"
-                      className="edit-btn"
                       onClick={() => handleEditBlog(blog.id)}
                     >
                       Edit
@@ -199,7 +198,6 @@ const Blogs = () => {
                   <td>
                     <Button
                       color="danger"
-                      className="delete-btn"
                       onClick={() => handleDeleteBlog(blog.id)}
                     >
                       Delete
