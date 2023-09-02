@@ -14,13 +14,13 @@ namespace Infrastructure.Persistence.Configurations
         public void Configure(EntityTypeBuilder<Comment> entity)
         {
             entity.Property(e => e.Name)
-                .HasMaxLength(50);
+                .HasMaxLength(20);
 
             entity.Property(e => e.Surname)
-                .HasMaxLength(50);
+                .HasMaxLength(20);
 
             entity.Property(e => e.Email)
-                .HasMaxLength(100);
+                .HasMaxLength(30);
 
             entity.Property(e => e.Description)
                 .HasMaxLength(300);

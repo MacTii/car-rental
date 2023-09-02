@@ -17,10 +17,10 @@ namespace Infrastructure.Persistence.Configurations
                 .HasMaxLength(50);
 
             entity.Property(e => e.AuthorName)
-                .HasMaxLength(50);
+                .HasMaxLength(20);
 
             entity.Property(e => e.AuthorSurname)
-                .HasMaxLength(50);
+                .HasMaxLength(20);
 
             entity.Property(e => e.Description)
                 .HasMaxLength(250);

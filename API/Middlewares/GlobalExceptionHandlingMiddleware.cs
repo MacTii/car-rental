@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text.Json;
 
@@ -21,13 +22,18 @@ namespace API.Middlewares
             {
                 await HandleExceptionAsync(context, e, HttpStatusCode.BadRequest, "Bad request", e.Message); // 400
             }
-            catch(UnauthorizedAccessException e)
+            catch (UnauthorizedAccessException e)
             {
                 await HandleExceptionAsync(context, e, HttpStatusCode.Unauthorized, "Unauthorized", e.Message); // 401
             }
             catch (InvalidOperationException e)
             {
                 await HandleExceptionAsync(context, e, HttpStatusCode.NotFound, "Not found", e.Message); // 404
+            }
+            catch (ValidationException e)
+            {
+                await HandleExceptionAsync(context, e, HttpStatusCode.UnprocessableEntity, 
+                    "Unprocessable Entity: The request was well-formed but contains semantic errors or validation issues", e.Message); // 422
             }
             catch (Exception e)
             {

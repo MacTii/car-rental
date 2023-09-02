@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Application.Mapper.DTOs;
+using Application.Validators;
 using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation;
 
 namespace Application.Services
 {
@@ -21,12 +23,14 @@ namespace Application.Services
         private readonly ILogger<BlogService> _logger;
         private readonly IMapper _mapper;
         private readonly IBlogRepository _blogRepository;
+        private readonly BlogValidator _validator;
 
         public BlogService(ILogger<BlogService> logger, IMapper mapper, IBlogRepository blogRepository)
         {
             _logger = logger;
             _mapper = mapper;
             _blogRepository = blogRepository;
+            _validator = new BlogValidator(); // Create an instance of the validator
         }
 
         #endregion Injection
@@ -60,6 +64,14 @@ namespace Application.Services
 
         public void AddBlog(BlogDTO blogDTO)
         {
+            // Check if the input data is valid
+            var validationResult = _validator.Validate(blogDTO);
+
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
             _blogRepository.Insert(_mapper.Map<Blog>(blogDTO));
             _blogRepository.Save();
         }
@@ -72,6 +84,14 @@ namespace Application.Services
             var blog = _blogRepository.GetByID(blogID);
             if (blog == null)
                 throw new InvalidOperationException($"Blog with ID: {blogID} not found.");
+
+            // Check if the input data is valid
+            var validationResult = _validator.Validate(blogDTO);
+
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
 
             _blogRepository.Update(blogID, _mapper.Map<Blog>(blogDTO));
             _blogRepository.Save();
