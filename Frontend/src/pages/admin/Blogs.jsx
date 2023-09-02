@@ -47,6 +47,10 @@ const Blogs = () => {
     setSearchTerm(e.target.value);
   };
 
+  const clearEditBlog = () => {
+    setEditBlog({});
+  };
+
   const handleEditBlog = (blogId) => {
     const blogToEdit = blogs.find((blog) => blog.id === blogId);
     setEditBlog(blogToEdit);
@@ -74,7 +78,22 @@ const Blogs = () => {
     setEditCommentModalOpen(true);
   };
 
-  const handleAddCar = async () => {
+  const handleAddBlog = async (e) => {
+    e.preventDefault();
+
+    // Convert the comment's date to local time before updating
+    const localDate = new Date(editBlog.date);
+    localDate.setMinutes(
+      localDate.getMinutes() - localDate.getTimezoneOffset()
+    );
+
+    const formattedDate = localDate
+      .toISOString()
+      .slice(0, 16)
+      .replace("T", " ");
+
+    editBlog.date = formattedDate;
+
     await addBlog(editBlog); // Update blog
 
     setEditBlog({}); // Clear the form fields
@@ -86,7 +105,22 @@ const Blogs = () => {
   };
 
   const handleEditCommentSubmit = async () => {
-    await updateComment(editComment.id, editComment);
+    // Convert the comment's date to local time before updating
+    const localDate = new Date(editComment.date);
+    localDate.setMinutes(
+      localDate.getMinutes() - localDate.getTimezoneOffset()
+    );
+
+    // Format date before updating the comment
+    const formattedDate = localDate
+      .toISOString()
+      .slice(0, 16)
+      .replace("T", " ");
+
+    // Update the comment with the local date
+    const updatedComment = { ...editComment, date: formattedDate };
+    await updateComment(editComment.id, updatedComment);
+
     setEditCommentModalOpen(false);
     fetchGetBlogs();
     setEditComment({});
@@ -110,7 +144,7 @@ const Blogs = () => {
     await deleteComment(commentId);
     fetchGetBlogs();
     toast.success("Comment deleted successfully");
-  }
+  };
 
   return (
     <div className="blogs-container">
@@ -171,7 +205,6 @@ const Blogs = () => {
                   <td>
                     <Button
                       color="primary"
-                      className="edit-btn"
                       onClick={() => handleEditBlog(blog.id)}
                     >
                       Edit
@@ -180,7 +213,6 @@ const Blogs = () => {
                   <td>
                     <Button
                       color="danger"
-                      className="delete-btn"
                       onClick={() => handleDeleteBlog(blog.id)}
                     >
                       Delete
@@ -205,14 +237,18 @@ const Blogs = () => {
 
       <Modal
         isOpen={editModalOpen}
-        toggle={() => setEditModalOpen(!editModalOpen)}
+        toggle={() => {
+          setEditModalOpen(!editModalOpen);
+          clearEditBlog();
+        }}
+        onClosed={() => clearEditBlog()}
         className="edit-modal"
       >
         <ModalHeader toggle={() => setEditModalOpen(!editModalOpen)}>
           Edit Blog
         </ModalHeader>
         <ModalBody>
-          <Form>
+          <Form id="edit-blog-form" onSubmit={handleUpdateBlog}>
             <FormGroup>
               <Label for="title">Title</Label>
               <Input
@@ -223,6 +259,7 @@ const Blogs = () => {
                 onChange={(e) =>
                   setEditBlog({ ...editBlog, title: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -235,6 +272,7 @@ const Blogs = () => {
                 onChange={(e) =>
                   setEditBlog({ ...editBlog, authorName: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -247,6 +285,7 @@ const Blogs = () => {
                 onChange={(e) =>
                   setEditBlog({ ...editBlog, authorSurname: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -260,6 +299,7 @@ const Blogs = () => {
                   setEditBlog({ ...editBlog, description: e.target.value })
                 }
                 rows={4}
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -272,6 +312,7 @@ const Blogs = () => {
                 onChange={(e) =>
                   setEditBlog({ ...editBlog, date: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -293,6 +334,7 @@ const Blogs = () => {
                     reader.readAsDataURL(file);
                   }
                 }}
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -309,17 +351,21 @@ const Blogs = () => {
                   })
                 }
                 rows={5} // How many rows
+                required
               />
             </FormGroup>
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={handleUpdateBlog}>
+          <Button id="edit-blog-form" color="primary" type="submit">
             Save
           </Button>
           <Button
             color="secondary"
-            onClick={() => setEditModalOpen(!editModalOpen)}
+            onClick={() => {
+              setEditModalOpen(!editModalOpen);
+              clearEditBlog();
+            }}
           >
             Cancel
           </Button>
@@ -327,14 +373,17 @@ const Blogs = () => {
       </Modal>
       <Modal
         isOpen={addModalOpen}
-        toggle={() => setAddModalOpen(!addModalOpen)}
+        toggle={() => {
+          setAddModalOpen(!addModalOpen);
+          clearEditBlog();
+        }}
         className="add-modal"
       >
         <ModalHeader toggle={() => setAddModalOpen(!addModalOpen)}>
           Add Blog
         </ModalHeader>
         <ModalBody>
-          <Form>
+          <Form id="add-blog-form" onSubmit={handleAddBlog}>
             <FormGroup>
               <Label for="title">Title</Label>
               <Input
@@ -345,6 +394,7 @@ const Blogs = () => {
                 onChange={(e) =>
                   setEditBlog({ ...editBlog, title: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -357,6 +407,7 @@ const Blogs = () => {
                 onChange={(e) =>
                   setEditBlog({ ...editBlog, authorName: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -369,6 +420,7 @@ const Blogs = () => {
                 onChange={(e) =>
                   setEditBlog({ ...editBlog, authorSurname: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -382,6 +434,7 @@ const Blogs = () => {
                   setEditBlog({ ...editBlog, description: e.target.value })
                 }
                 rows={4}
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -394,6 +447,7 @@ const Blogs = () => {
                 onChange={(e) =>
                   setEditBlog({ ...editBlog, date: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -415,6 +469,7 @@ const Blogs = () => {
                     reader.readAsDataURL(file);
                   }
                 }}
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -431,19 +486,20 @@ const Blogs = () => {
                   })
                 }
                 rows={5} // How many rows
+                required
               />
             </FormGroup>
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={handleAddCar}>
+          <Button form="add-blog-form" color="primary" type="submit">
             Add
-          </Button>{" "}
+          </Button>
           <Button
             color="secondary"
             onClick={() => {
               setAddModalOpen(!addModalOpen);
-              setEditBlog({}); // Clear the form fields on cancel
+              clearEditBlog();
             }}
           >
             Cancel

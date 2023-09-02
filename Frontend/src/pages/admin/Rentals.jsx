@@ -43,6 +43,10 @@ const Rentals = () => {
     console.log(result);
   };
 
+  const clearEditRental = () => {
+    setEditRental({});
+  };
+
   const fetchGetUsers = async () => {
     const result = await getUsers(); // Get all rental
     setUsers(result);
@@ -53,6 +57,14 @@ const Rentals = () => {
     const result = await getCars(); // Get all rental
     setCars(result);
     console.log(result);
+  };
+
+  const getUserById = (userId) => {
+    return users.find((user) => user.id === userId) || {};
+  };
+
+  const getCarById = (carId) => {
+    return cars.find((car) => car.id === carId) || {};
   };
 
   const handleSearchChange = (e) => {
@@ -67,8 +79,14 @@ const Rentals = () => {
 
   const handleReturnRental = async (rentalId) => {
     const rentalToUpdate = rentals.find((rental) => rental.id === rentalId);
-    const now = new Date();
-    const formattedReturnDate = now
+
+    // Convert the comment's date to local time before updating
+    const localDate = new Date();
+    localDate.setMinutes(
+      localDate.getMinutes() - localDate.getTimezoneOffset()
+    );
+
+    const formattedReturnDate = localDate
       .toISOString()
       .slice(0, 16)
       .replace("T", " ");
@@ -83,7 +101,34 @@ const Rentals = () => {
     toast.success("Rental returned successfully");
   };
 
-  const handleUpdateRental = async () => {
+  const handleUpdateRental = async (e) => {
+    e.preventDefault();
+
+    // Ustal rentDate na bieżący czas
+    const rentDate = new Date(editRental.rentDate);
+    rentDate.setMinutes(rentDate.getMinutes() - rentDate.getTimezoneOffset());
+    const formattedRentDate = rentDate
+      .toISOString()
+      .slice(0, 16)
+      .replace("T", " ");
+
+    // Ustal returnDate na bieżący czas, jeśli jest dostępny
+    let formattedReturnDate = null;
+    if (editRental.returnDate) {
+      const localReturnDate = new Date(editRental.returnDate);
+      localReturnDate.setMinutes(
+        localReturnDate.getMinutes() - localReturnDate.getTimezoneOffset()
+      );
+      formattedReturnDate = localReturnDate
+        .toISOString()
+        .slice(0, 16)
+        .replace("T", " ");
+    }
+
+    // Update the rentDate field in the editRental object
+    editRental.rentDate = formattedRentDate;
+    editRental.returnDate = formattedReturnDate;
+
     await updateRental(editRental.id, editRental); // Update rental
     setEditModalOpen(false); // Close modal for rental edit
     fetchGetRentals(); // Refresh rental list
@@ -96,7 +141,9 @@ const Rentals = () => {
     toast.success("Rental deleted successfully");
   };
 
-  const handleAddCar = async () => {
+  const handleAddRental = async (e) => {
+    e.preventDefault();
+    console.log(editRental);
     await addRental(editRental); // Update car
 
     setEditRental({}); // Clear the form fields
@@ -127,8 +174,8 @@ const Rentals = () => {
         <thead>
           <tr>
             <th>Id</th>
-            <th>Car Id</th>
-            <th>User Id</th>
+            <th>Car</th>
+            <th>User</th>
             <th>Rent Date</th>
             <th>Return Date</th>
             <th>Comment</th>
@@ -142,64 +189,83 @@ const Rentals = () => {
           {rentals
             .filter(
               (rental) =>
-                searchTerm === "" ||
-                rental.carID === parseInt(searchTerm) ||
-                rental.userID === parseInt(searchTerm)
+                getUserById(rental.userID)
+                  .name.toLowerCase()
+                  .includes(searchTerm.toLowerCase()) ||
+                getUserById(rental.userID)
+                  .surname.toLowerCase()
+                  .includes(searchTerm.toLowerCase()) ||
+                getCarById(rental.carID)
+                  .make.toLowerCase()
+                  .includes(searchTerm.toLowerCase()) ||
+                getCarById(rental.carID)
+                  .model.toLowerCase()
+                  .includes(searchTerm.toLowerCase())
             )
-            .map((rental) => (
-              <tr key={rental.id}>
-                <td>{rental.id}</td>
-                <td>{rental.carID}</td>
-                <td>{rental.userID}</td>
-                <td>{rental.rentDate}</td>
-                <td>{rental.returnDate}</td>
-                <td>{rental.comment}</td>
-                <td>{rental.paymentMethod}</td>
-                <td>
-                  {!rental.returnDate ? (
+            .map((rental) => {
+              const user = getUserById(rental.userID);
+              const car = getCarById(rental.carID);
+
+              return (
+                <tr key={rental.id}>
+                  <td>{rental.id}</td>
+                  <td>
+                    {car.make} {car.model}
+                  </td>
+                  <td>
+                    {user.name} {user.surname} ({user.email})
+                  </td>
+                  <td>{rental.rentDate}</td>
+                  <td>{rental.returnDate}</td>
+                  <td>{rental.comment}</td>
+                  <td>{rental.paymentMethod}</td>
+                  <td>
+                    {!rental.returnDate ? (
+                      <Button
+                        color="info"
+                        onClick={() => handleReturnRental(rental.id)}
+                      >
+                        Return
+                      </Button>
+                    ) : (
+                      "Returned"
+                    )}
+                  </td>
+                  <td>
                     <Button
-                      color="info"
-                      onClick={() => handleReturnRental(rental.id)}
+                      color="primary"
+                      onClick={() => handleEditRental(rental.id)}
                     >
-                      Return
+                      Edit
                     </Button>
-                  ) : (
-                    "Returned"
-                  )}
-                </td>
-                <td>
-                  <Button
-                    color="primary"
-                    className="edit-btn"
-                    onClick={() => handleEditRental(rental.id)}
-                  >
-                    Edit
-                  </Button>
-                </td>
-                <td>
-                  <Button
-                    color="danger"
-                    className="delete-btn"
-                    onClick={() => handleDeleteRental(rental.id)}
-                  >
-                    Delete
-                  </Button>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td>
+                    <Button
+                      color="danger"
+                      onClick={() => handleDeleteRental(rental.id)}
+                    >
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </Table>
-
       <Modal
         isOpen={editModalOpen}
-        toggle={() => setEditModalOpen(!editModalOpen)}
+        toggle={() => {
+          setEditModalOpen(!editModalOpen);
+          clearEditRental();
+        }}
+        onClosed={() => clearEditRental()}
         className="edit-modal"
       >
         <ModalHeader toggle={() => setEditModalOpen(!editModalOpen)}>
           Edit Rental
         </ModalHeader>
         <ModalBody>
-          <Form>
+          <Form id="edit-rental-form" onSubmit={handleUpdateRental}>
             <FormGroup>
               <Label for="carID">Car</Label>
               <select
@@ -213,7 +279,11 @@ const Rentals = () => {
                     carID: parseInt(e.target.value),
                   })
                 }
+                required
               >
+                <option selected="selected" disabled value="">
+                  Select Car...
+                </option>
                 {cars.map((car) => (
                   <option key={car.id} value={car.id}>
                     {car.make} - {car.model}
@@ -234,7 +304,11 @@ const Rentals = () => {
                     userID: parseInt(e.target.value),
                   })
                 }
+                required
               >
+                <option selected="selected" disabled value="">
+                  Select User...
+                </option>
                 {users.map((user) => (
                   <option key={user.id} value={user.id}>
                     {user.name} - {user.surname} - {user.email}
@@ -252,6 +326,7 @@ const Rentals = () => {
                 onChange={(e) =>
                   setEditRental({ ...editRental, rentDate: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -292,7 +367,11 @@ const Rentals = () => {
                     paymentMethod: e.target.value,
                   })
                 }
+                required
               >
+                <option selected="selected" disabled value="">
+                  Select Payment Method...
+                </option>
                 <option value="Direct Bank Transfer">
                   Direct Bank Transfer
                 </option>
@@ -304,12 +383,15 @@ const Rentals = () => {
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={handleUpdateRental}>
+          <Button form="edit-rental-form" type="submit" color="primary">
             Save
-          </Button>{" "}
+          </Button>
           <Button
             color="secondary"
-            onClick={() => setEditModalOpen(!editModalOpen)}
+            onClick={() => {
+              setEditModalOpen(!editModalOpen);
+              clearEditRental();
+            }}
           >
             Cancel
           </Button>
@@ -317,14 +399,18 @@ const Rentals = () => {
       </Modal>
       <Modal
         isOpen={addModalOpen}
-        toggle={() => setAddModalOpen(!addModalOpen)}
+        toggle={() => {
+          setAddModalOpen(!addModalOpen);
+          clearEditRental();
+        }}
+        onClosed={() => clearEditRental()}
         className="add-modal"
       >
         <ModalHeader toggle={() => setAddModalOpen(!addModalOpen)}>
           Add Rental
         </ModalHeader>
         <ModalBody>
-          <Form>
+          <Form id="add-rental-form" onSubmit={handleAddRental}>
             <FormGroup>
               <Label for="carID">Car</Label>
               <select
@@ -338,7 +424,11 @@ const Rentals = () => {
                     carID: parseInt(e.target.value),
                   })
                 }
+                required
               >
+                <option selected="selected" disabled value="">
+                  Select Car...
+                </option>
                 {cars.map((car) => (
                   <option key={car.id} value={car.id}>
                     {car.make} - {car.model}
@@ -359,7 +449,11 @@ const Rentals = () => {
                     userID: parseInt(e.target.value),
                   })
                 }
+                required
               >
+                <option selected="selected" disabled value="">
+                  Select User...
+                </option>
                 {users.map((user) => (
                   <option key={user.id} value={user.id}>
                     {user.name} - {user.surname} - {user.email}
@@ -377,6 +471,7 @@ const Rentals = () => {
                 onChange={(e) =>
                   setEditRental({ ...editRental, rentDate: e.target.value })
                 }
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -415,7 +510,11 @@ const Rentals = () => {
                   userID: parseInt(e.target.value),
                 })
               }
+              required
             >
+              <option selected="selected" disabled value="">
+                Select Payment Method...
+              </option>
               <option value="Direct Bank Transfer">Direct Bank Transfer</option>
               <option value="Cheque Payment">Cheque Payment</option>
               <option value="Master Card">Master Card</option>
@@ -424,14 +523,14 @@ const Rentals = () => {
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={handleAddCar}>
+          <Button form="add-rental-form" type="submit" color="primary">
             Add
-          </Button>{" "}
+          </Button>
           <Button
             color="secondary"
             onClick={() => {
               setAddModalOpen(!addModalOpen);
-              setEditRental({}); // Clear the form fields on cancel
+              clearEditRental();
             }}
           >
             Cancel

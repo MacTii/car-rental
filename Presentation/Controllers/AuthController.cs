@@ -73,5 +73,30 @@ namespace Presentation.Controllers
                     Data = token
                 });
         }
+
+        [HttpGet("generate-password-credentials")]
+        [Authorize(Roles = "Admin")]
+        public ActionResult GeneratePasswordCredentials()
+        {
+            var passwordCredentials = _authService.GetPasswordCredentials();
+            return Ok(
+                new
+                {
+                    Response = "Password credentials generated successfully",
+                    Data = passwordCredentials
+                });
+        }
+
+        [HttpGet("reset-password-credentials/{userID}")]
+        [Authorize(Roles ="Admin")]
+        public ActionResult ResetPassword(int userID)
+        {
+            _authService.ResetPassword(userID);
+            return Ok(
+                new
+                {
+                    Response = "Password reset successful",
+                });
+        }
     }
 }

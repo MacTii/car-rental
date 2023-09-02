@@ -10,7 +10,7 @@ namespace Application.Interfaces.Repositories
     public interface IUserCredentialsRepository
     {
         public IEnumerable<UserCredentials> GetAll();
-        public UserCredentials GetByID(int userCredentialsID);
+        public UserCredentials? GetByID(int userCredentialsID);
         public UserCredentials? GetByUsername(string username);
         public void Insert(UserCredentials userCredentials);
         public void Update(int userCredentialsID, UserCredentials userCredentials);

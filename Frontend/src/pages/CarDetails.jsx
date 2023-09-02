@@ -52,7 +52,6 @@ const CarDetails = () => {
 
     // Get user data
     const result = await getUserByUsername(username);
-    console.log(result);
 
     setUser(result); // Set user hook
     setBookingData(result); // Set bookingData hook
@@ -73,21 +72,47 @@ const CarDetails = () => {
 
   const fetchUpdateCar = async () => {
     car.isAvailable = false;
+    console.log(car);
     await updateCar(car.id, car);
   };
 
   const fetchAddRental = async () => {
-    // Set rental data
+    const { returnDate, comment } = bookingData;
+
+    // Ustal rentDate na bieżący czas
+    const rentDate = new Date();
+    rentDate.setMinutes(rentDate.getMinutes() - rentDate.getTimezoneOffset());
+    const formattedRentDate = rentDate
+      .toISOString()
+      .slice(0, 16)
+      .replace("T", " ");
+
+    // Ustal returnDate na bieżący czas, jeśli jest dostępny
+    let formattedReturnDate = null;
+    if (returnDate) {
+      const localReturnDate = new Date(returnDate);
+      localReturnDate.setMinutes(
+        localReturnDate.getMinutes() - localReturnDate.getTimezoneOffset()
+      );
+      formattedReturnDate = localReturnDate
+        .toISOString()
+        .slice(0, 16)
+        .replace("T", " ");
+    }
+
+    // Utwórz obiekt rental
     const rental = {
-      carID: car.id, // Car ID
-      userID: user.id, // User ID --> WHAT HAPPEN WHEN USER NULL
-      rentDate: new Date(), // Rent date
-      returnDate: bookingData.returnDate, // Return date (optional)
-      comment: bookingData.comment, // Comment (optional)
+      carID: car.id,
+      userID: user ? user.id : null,
+      rentDate: formattedRentDate,
+      returnDate: formattedReturnDate,
+      comment: comment || null,
       paymentMethod: selectedPayment,
     };
 
-    // Add rental to db
+    console.log(rental);
+
+    // Dodaj wynajem do bazy danych
     await addRental(rental);
   };
 
@@ -116,11 +141,7 @@ const CarDetails = () => {
         <Container>
           <Row>
             <Col lg="6">
-              <img
-                src={car.image}
-                alt={car.make}
-                className="w-100"
-              />
+              <img src={car.image} alt={car.make} className="w-100" />
             </Col>
             <Col lg="6">
               <div className="car__info">

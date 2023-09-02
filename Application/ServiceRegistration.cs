@@ -25,6 +25,9 @@ namespace Application
             service.AddScoped<IAuthService, AuthService>();
             service.AddScoped<IAuthenticationHelper, AuthenticationHelper>();
 
+            service.AddScoped<IPasswordHelper, PasswordHelper>();
+            service.AddScoped<ITokenHelper, TokenHelper>();
+
             return service;
         }
     }

@@ -1,4 +1,5 @@
 import urls from "../config/config";
+import { toast } from "react-toastify";
 
 const baseURL = urls.development;
 
@@ -19,6 +20,7 @@ export const getBlogs = async () => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };
@@ -42,6 +44,7 @@ export const getBlogByTitle = async (title) => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };
@@ -67,6 +70,7 @@ export const updateBlog = async (blogID, data) => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };
@@ -91,6 +95,7 @@ export const deleteBlog = async (blogID) => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };
@@ -115,6 +120,7 @@ export const addBlog = async (data) => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };

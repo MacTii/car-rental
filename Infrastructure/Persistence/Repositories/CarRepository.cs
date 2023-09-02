@@ -30,13 +30,10 @@ namespace Infrastructure.Repositories
             return cars;
         }
 
-        public Car GetByID(int carID)
+        public Car? GetByID(int carID)
         {
-            if (carID < 1)
-                throw new ArgumentException($"Invalid car ID: {carID}. Car ID must be greater than or equal to 1.");
-
             var car = _context.Cars.Find(carID);
-            return car ?? throw new InvalidOperationException($"Car with ID: {carID} not found.");
+            return car;
         }
 
         public void Insert(Car car)
@@ -46,11 +43,7 @@ namespace Infrastructure.Repositories
 
         public void Update(int carID, Car car)
         {
-            if (carID < 1)
-                throw new ArgumentException($"Invalid car ID: {carID}. Car ID must be greater than or equal to 1.");
-
-            var existingCar = _context.Cars.Find(carID) ?? throw new InvalidOperationException($"Car with ID: {carID} not found.");
-
+            var existingCar = _context.Cars.Single(x => x.ID == carID);
             CopyProperties(car, existingCar);
 
             _context.Entry(existingCar).State = EntityState.Modified;
@@ -58,10 +51,7 @@ namespace Infrastructure.Repositories
 
         public void Delete(int carID)
         {
-            if (carID < 1)
-                throw new ArgumentException($"Invalid car ID: {carID}. Car ID must be greater than or equal to 1.");
-
-            var car = _context.Cars.Find(carID) ?? throw new InvalidOperationException($"Car with ID: {carID} not found.");
+            var car = _context.Cars.Single(x=> x.ID == carID);
             _context.Cars.Remove(car);
         }
 

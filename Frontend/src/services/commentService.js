@@ -1,4 +1,5 @@
 import urls from "../config/config";
+import { toast } from "react-toastify";
 
 const baseURL = urls.development;
 
@@ -22,6 +23,7 @@ export const addComment = async (data) => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };
@@ -47,6 +49,7 @@ export const updateComment = async (commentID, data) => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };
@@ -70,6 +73,7 @@ export const getCommentById = async (commentID) => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };
@@ -94,6 +98,7 @@ export const deleteComment = async (commentID) => {
       throw new Error(result.detail);
     }
   } catch (error) {
+    toast.error(error.message);
     throw new Error("An error occurred: " + error.message);
   }
 };

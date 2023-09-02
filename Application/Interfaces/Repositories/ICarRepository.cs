@@ -10,7 +10,7 @@ namespace Application.Interfaces.Repositories
     public interface ICarRepository
     {
         public IEnumerable<Car> GetAll();
-        public Car GetByID(int carID);
+        public Car? GetByID(int carID);
         public void Insert(Car user);
         public void Update(int carID, Car car);
         public void Delete(int carID);

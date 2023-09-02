@@ -5,6 +5,7 @@ using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,13 +39,22 @@ namespace Application.Services
 
         public BlogDTO GetBlogByID(int blogID)
         {
+            if (blogID < 1)
+                throw new ArgumentException($"Invalid blog ID: {blogID}. Blog ID must be greater than or equal to 1.");
+
             var blog = _blogRepository.GetByID(blogID);
+            if (blog == null)
+                throw new InvalidOperationException($"Blog with ID: {blogID} not found.");
+
             return _mapper.Map<BlogDTO>(blog);
         }
 
         public BlogDTO GetBlogByTitle(string title)
         {
             var blog = _blogRepository.GetByTitle(title);
+            if (blog == null)
+                throw new InvalidOperationException($"Blog with title: {title} not found.");
+
             return _mapper.Map<BlogDTO>(blog);
         }
 
@@ -56,19 +66,39 @@ namespace Application.Services
 
         public void UpdateBlog(int blogID, BlogDTO blogDTO)
         {
+            if (blogID < 1)
+                throw new ArgumentException($"Invalid blog ID: {blogID}. Blog ID must be greater than or equal to 1.");
+
+            var blog = _blogRepository.GetByID(blogID);
+            if (blog == null)
+                throw new InvalidOperationException($"Blog with ID: {blogID} not found.");
+
             _blogRepository.Update(blogID, _mapper.Map<Blog>(blogDTO));
             _blogRepository.Save();
         }
 
         public void DeleteBlog(int blogID)
         {
+            if (blogID < 1)
+                throw new ArgumentException($"Invalid blog ID: {blogID}. Blog ID must be greater than or equal to 1.");
+
+            var blog = _blogRepository.GetByID(blogID);
+            if (blog == null)
+                throw new InvalidOperationException($"Blog with ID: {blogID} not found.");
+
             _blogRepository.Delete(blogID);
             _blogRepository.Save();
         }
 
         public BlogDTO UploadImage(IFormFile formFile, int blogID)
         {
+            if (blogID < 1)
+                throw new ArgumentException($"Invalid blog ID: {blogID}. Blog ID must be greater than or equal to 1.");
+
             var blog = _blogRepository.GetByID(blogID);
+            if (blog == null)
+                throw new InvalidOperationException($"Blog with ID: {blogID} not found.");
+
             using (MemoryStream memoryStream = new())
             {
                 formFile.CopyTo(memoryStream);
