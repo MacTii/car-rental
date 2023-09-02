@@ -86,5 +86,17 @@ namespace Presentation.Controllers
                     Data = passwordCredentials
                 });
         }
+
+        [HttpGet("reset-password-credentials/{userID}")]
+        [Authorize(Roles ="Admin")]
+        public ActionResult ResetPassword(int userID)
+        {
+            _authService.ResetPassword(userID);
+            return Ok(
+                new
+                {
+                    Response = "Password reset successful",
+                });
+        }
     }
 }

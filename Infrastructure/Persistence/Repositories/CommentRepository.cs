@@ -30,13 +30,10 @@ namespace Infrastructure.Persistence.Repositories
             return comments;
         }
 
-        public Comment GetByID(int commentID)
+        public Comment? GetByID(int commentID)
         {
-            if (commentID < 1)
-                throw new ArgumentException($"Invalid comment ID: {commentID}. Comment ID must be greater than or equal to 1.");
-
             var comment = _context.Comments.Find(commentID);
-            return comment ?? throw new InvalidOperationException($"Comment with ID: {commentID} not found.");
+            return comment;
         }
 
         public void Insert(Comment comment)
@@ -46,11 +43,7 @@ namespace Infrastructure.Persistence.Repositories
 
         public void Update(int commentID, Comment comment)
         {
-            if (commentID < 1)
-                throw new ArgumentException($"Invalid comment ID: {commentID}. Comment ID must be greater than or equal to 1.");
-
-            var existingComment = _context.Comments.Find(commentID) ?? throw new InvalidOperationException($"Comment with ID: {commentID} not found.");
-
+            var existingComment = _context.Comments.Single(x => x.ID == commentID);
             CopyProperties(comment, existingComment);
 
             _context.Entry(existingComment).State = EntityState.Modified;
@@ -58,10 +51,7 @@ namespace Infrastructure.Persistence.Repositories
 
         public void Delete(int commentID)
         {
-            if (commentID < 1)
-                throw new ArgumentException($"Invalid comment ID: {commentID}. Comment ID must be greater than or equal to 1.");
-
-            var comment = _context.Comments.Find(commentID) ?? throw new InvalidOperationException($"Comment with ID: {commentID} not found.");
+            var comment = _context.Comments.Single(x => x.ID == commentID);
             _context.Comments.Remove(comment);
         }
 

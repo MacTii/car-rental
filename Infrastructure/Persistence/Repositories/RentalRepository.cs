@@ -31,24 +31,19 @@ namespace Infrastructure.Repositories
             return rentals;
         }
 
-        public Rental GetByID(int rentalID)
+        public Rental? GetByID(int rentalID)
         {
-            if (rentalID < 1)
-                throw new ArgumentException($"Invalid rental ID: {rentalID}. Rental ID must be greater than or equal to 1.");
-
             var rental = _context.Rentals.Find(rentalID);
-            return rental ?? throw new InvalidOperationException($"Rental with ID: {rentalID} not found.");
+            return rental;
         }
 
         public IEnumerable<Rental> GetByUsername(string username)
         {
-            if (username == null) throw new ArgumentNullException(nameof(username));
-
             var rentals = _context.Rentals
                 .Where(x => x.User.UserCredentials.Username == username)
                 .ToList();
 
-            return rentals ?? throw new InvalidOperationException($"Rentals filtered by username: {username} not found.");
+            return rentals;
         }
 
         public void Insert(Rental rental)

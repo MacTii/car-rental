@@ -31,28 +31,31 @@ namespace Infrastructure.Repositories
             return users;
         }
 
-        public User GetByID(int userID)
+        public User? GetByID(int userID)
         {
-            if (userID < 1)
-                throw new ArgumentException($"Invalid user ID: {userID}. User ID must be greater than or equal to 1.");
-
             var user = _context.Users
                 .Include(x => x.UserCredentials)
-                .FirstOrDefault(x => x.ID == userID);
+                .SingleOrDefault(x => x.ID == userID);
 
-            return user ?? throw new InvalidOperationException($"User with ID: {userID} not found.");
+            return user;
         }
 
-        public User GetByUsername(string username)
+        public User? GetByUsername(string username)
         {
-            if (username == null) throw new ArgumentNullException(nameof(username));
-
             var user = _context.Users
-                .Include(x=> x.UserCredentials)
-                .Where(x => x.UserCredentials.Username == username)
-                .SingleOrDefault();
+                .Include(x => x.UserCredentials)
+                .SingleOrDefault(x => x.UserCredentials.Username == username);
 
-            return user ?? throw new InvalidOperationException($"User with username: {username} not found.");
+            return user;
+        }
+
+        public User? GetByEmail(string email)
+        {
+            var user = _context.Users
+                .Include(x => x.UserCredentials)
+                .SingleOrDefault(x => x.Email == email);
+
+            return user;
         }
 
         public void Insert(User user)
@@ -62,11 +65,7 @@ namespace Infrastructure.Repositories
 
         public void Update(int userID, User user)
         {
-            if (userID < 1)
-                throw new ArgumentException($"Invalid user ID: {userID}. User ID must be greater than or equal to 1.");
-
-            var existingUser = _context.Users.Find(userID) ?? throw new InvalidOperationException($"User with ID: {userID} not found.");
-
+            var existingUser = _context.Users.Single(x => x.ID == userID);
             CopyProperties(user, existingUser);
 
             _context.Entry(existingUser).State = EntityState.Modified;
@@ -74,13 +73,7 @@ namespace Infrastructure.Repositories
 
         public void Delete(int userID)
         {
-            if (userID < 1)
-                throw new ArgumentException($"Invalid user ID: {userID}. User ID must be greater than or equal to 1.");
-
-            var user = _context.Users.Find(userID);
-            if (user == null)
-                throw new InvalidOperationException($"User with ID: {userID} not found.");
-
+            var user = _context.Users.Single(x => x.ID == userID);
             _context.Users.Remove(user);
         }
 

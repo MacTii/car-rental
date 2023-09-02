@@ -49,9 +49,13 @@ namespace Application.Services
 
         public string Register(RegisterDTO request)
         {
-            var existingUser = _userCredentialsRepository.GetByUsername(request.Username);
-            if (existingUser != null)
+            var existingUserByUsername = _userCredentialsRepository.GetByUsername(request.Username);
+            if (existingUserByUsername != null)
                 throw new InvalidOperationException("This username is taken!");
+
+            var existingUserByEmail = _userRepository.GetByEmail(request.Email);
+            if (existingUserByEmail != null)
+                throw new InvalidOperationException("This email address is already in use!");
 
             if (request.FirstPassword != request.SecondPassword)
                 throw new ArgumentException("The passwords provided are not identical!");
@@ -125,17 +129,36 @@ namespace Application.Services
             return token;
         }
 
-        public AuthenticationDataDTO GetPasswordCredentials()
+        public PasswordCredentialDTO GetPasswordCredentials()
         {
             // Returns model PasswordCredential => (PasswordHash, PasswordSalt)
             var passwordCredential = _authenticationHelper.GenerateRandomPasswordCredential();
 
-            // Returns model RefreshToken => (RefreshToken, TokenCreated, TokenExpires)
-            var refreshToken = _authenticationHelper.GenerateRefreshToken();
-
-            var authenticationDataDTO = _mapper.Map<AuthenticationDataDTO>((passwordCredential, refreshToken));
+            var authenticationDataDTO = _mapper.Map<PasswordCredentialDTO>(passwordCredential);
 
             return authenticationDataDTO;
+        }
+
+        public void ResetPassword(int userID)
+        {
+            if (userID < 1)
+                throw new ArgumentException($"Invalid user ID: {userID}. User ID must be greater than or equal to 1.");
+
+            var user = _userRepository.GetByID(userID);
+            if(user == null)
+                throw new InvalidOperationException($"User with ID: {userID} not found.");
+
+            // Returns model PasswordCredential => (PasswordHash, PasswordSalt)
+            var passwordCredential = _authenticationHelper.GenerateRandomPasswordCredential();
+
+            user.UserCredentials.PasswordHash = passwordCredential.PasswordHash;
+            user.UserCredentials.PasswordSalt = passwordCredential.PasswordSalt;
+            user.UserCredentials.RefreshToken = null;
+            user.UserCredentials.TokenCreated = null;
+            user.UserCredentials.TokenExpires = null;
+
+            _userRepository.Update(userID, user);
+            _userRepository.Save();
         }
     }
 }

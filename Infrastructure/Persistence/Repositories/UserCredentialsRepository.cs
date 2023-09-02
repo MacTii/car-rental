@@ -30,19 +30,15 @@ namespace Infrastructure.Repositories
             return userCredentials;
         }
 
-        public UserCredentials GetByID(int userCredentialsID)
+        public UserCredentials? GetByID(int userCredentialsID)
         {
-            if (userCredentialsID < 1)
-                throw new ArgumentException($"Invalid user credentials ID: {userCredentialsID}. User credentials ID must be greater " +
-                    $"than or equal to 1.");
-
             var userCredentials = _context.UserCredentials.Find(userCredentialsID);
-            return userCredentials ?? throw new InvalidOperationException($"User credentials with ID: {userCredentialsID} not found.");
+            return userCredentials;
         }
 
         public UserCredentials? GetByUsername(string username)
         {
-            var userCredentials = _context.UserCredentials.FirstOrDefault(e => e.Username == username);
+            var userCredentials = _context.UserCredentials.SingleOrDefault(e => e.Username == username);
             return userCredentials;
         }
 
@@ -53,13 +49,7 @@ namespace Infrastructure.Repositories
 
         public void Update(int userCredentialsID, UserCredentials userCredentials)
         {
-            if (userCredentialsID < 1)
-                throw new ArgumentException($"Invalid user credentials ID: {userCredentialsID}. Car ID must be greater than or equal to 1.");
-
-            var existingUserCredentials = _context.UserCredentials.Find(userCredentialsID);
-            if (existingUserCredentials == null)
-                throw new InvalidOperationException($"Car with ID: {userCredentialsID} not found.");
-
+            var existingUserCredentials = _context.UserCredentials.Single(x => x.ID == userCredentialsID);
             CopyProperties(userCredentials, existingUserCredentials);
 
             _context.Entry(existingUserCredentials).State = EntityState.Modified;
@@ -67,14 +57,7 @@ namespace Infrastructure.Repositories
 
         public void Delete(int userCredentialsID)
         {
-            if (userCredentialsID < 1)
-                throw new ArgumentException($"Invalid user credentials ID: {userCredentialsID}. User credentials ID must " +
-                    $"be greater than or equal to 1.");
-
-            var userCredentials = _context.UserCredentials.Find(userCredentialsID);
-            if (userCredentials == null)
-                throw new InvalidOperationException($"User credentials with ID: {userCredentialsID} not found.");
-
+            var userCredentials = _context.UserCredentials.Single(x=> x.ID == userCredentialsID);
             _context.UserCredentials.Remove(userCredentials);
         }
 

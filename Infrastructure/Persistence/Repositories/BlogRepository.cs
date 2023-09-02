@@ -30,26 +30,22 @@ namespace Infrastructure.Persistence.Repositories
             return blogs;
         }
 
-        public Blog GetByID(int blogID)
+        public Blog? GetByID(int blogID)
         {
-            if (blogID < 1)
-                throw new ArgumentException($"Invalid blog ID: {blogID}. Blog ID must be greater than or equal to 1.");
-
             var blog = _context.Blogs
                 .Include(b => b.Comments)
-                .FirstOrDefault(b => b.ID == blogID);
-            return blog ?? throw new InvalidOperationException($"Blog with ID: {blogID} not found.");
+                .SingleOrDefault(b => b.ID == blogID);
+
+            return blog;
         }
 
-        public Blog GetByTitle(string title)
+        public Blog? GetByTitle(string title)
         {
-            if (title.IsNullOrEmpty())
-                throw new ArgumentException($"Invalid blog title: {title}. Blog title can't be empty or null.");
-
             var blog = _context.Blogs
                 .Include(b => b.Comments)
-                .FirstOrDefault(b => b.Title == title);
-            return blog ?? throw new InvalidOperationException($"Blog with title: {title} not found.");
+                .SingleOrDefault(b => b.Title == title);
+
+            return blog;
         }
 
         public void Insert(Blog blog)
@@ -59,11 +55,7 @@ namespace Infrastructure.Persistence.Repositories
 
         public void Update(int blogID, Blog blog)
         {
-            if (blogID < 1)
-                throw new ArgumentException($"Invalid blog ID: {blogID}. Blog ID must be greater than or equal to 1.");
-
-            var existingBlog = _context.Blogs.Find(blogID) ?? throw new InvalidOperationException($"Blog with ID: {blogID} not found.");
-
+            var existingBlog = _context.Blogs.Single(x => x.ID == blogID);
             CopyProperties(blog, existingBlog);
 
             _context.Entry(existingBlog).State = EntityState.Modified;
@@ -71,10 +63,7 @@ namespace Infrastructure.Persistence.Repositories
 
         public void Delete(int blogID)
         {
-            if (blogID < 1)
-                throw new ArgumentException($"Invalid blog ID: {blogID}. Blog ID must be greater than or equal to 1.");
-
-            var blog = _context.Blogs.Find(blogID) ?? throw new InvalidOperationException($"Blog with ID: {blogID} not found.");
+            var blog = _context.Blogs.Single(x=> x.ID == blogID);
             _context.Blogs.Remove(blog);
         }
 

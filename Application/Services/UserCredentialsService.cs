@@ -38,7 +38,14 @@ namespace Application.Services
 
         public UserCredentialsDTO GetUserCredential(int userCredentialsID)
         {
+            if (userCredentialsID < 1)
+                throw new ArgumentException($"Invalid user credentials ID: {userCredentialsID}. User credentials ID must be greater " +
+                    $"than or equal to 1.");
+
             var userCredentials = _userCredentialsRepository.GetByID(userCredentialsID);
+            if(userCredentials == null)
+                throw new InvalidOperationException($"User credentials with ID: {userCredentialsID} not found.");
+
             return _mapper.Map<UserCredentialsDTO>(userCredentials);
         }
 
@@ -50,12 +57,28 @@ namespace Application.Services
 
         public void UpdateUserCredential(int userCredentialsID, UserCredentialsDTO userCredentialsDTO)
         {
+            if (userCredentialsID < 1)
+                throw new ArgumentException($"Invalid user credentials ID: {userCredentialsID}. User credentials ID must be greater " +
+                    $"than or equal to 1.");
+
+            var userCredentials = _userCredentialsRepository.GetByID(userCredentialsID);
+            if (userCredentials == null)
+                throw new InvalidOperationException($"User credentials with ID: {userCredentialsID} not found.");
+
             _userCredentialsRepository.Update(userCredentialsID, _mapper.Map<UserCredentials>(userCredentialsDTO));
             _userCredentialsRepository.Save();
         }
 
         public void DeleteUserCredential(int userCredentialsID)
         {
+            if (userCredentialsID < 1)
+                throw new ArgumentException($"Invalid user credentials ID: {userCredentialsID}. User credentials ID must be greater " +
+                    $"than or equal to 1.");
+
+            var userCredentials = _userCredentialsRepository.GetByID(userCredentialsID);
+            if (userCredentials == null)
+                throw new InvalidOperationException($"User credentials with ID: {userCredentialsID} not found.");
+
             _userCredentialsRepository.Delete(userCredentialsID);
             _userCredentialsRepository.Save();
         }
