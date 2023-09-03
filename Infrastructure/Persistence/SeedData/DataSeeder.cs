@@ -15,12 +15,12 @@ namespace Infrastructure.SeedData
         #region Injection
 
         private readonly ApplicationDbContext _context;
-        private readonly IAuthenticationHelper _authenticationHelper;
+        private readonly IPasswordHelper _passwordHelper;
 
-        public DataSeeder(ApplicationDbContext context, IAuthenticationHelper authenticationHelper)
+        public DataSeeder(ApplicationDbContext context, IPasswordHelper passwordHelper)
         {
             _context = context;
-            _authenticationHelper = authenticationHelper;
+            _passwordHelper = passwordHelper;
         }
 
         #endregion Injection
@@ -53,7 +53,7 @@ namespace Infrastructure.SeedData
                 for (int i = 0; i < credentials.Length; i++)
                 {
                     var credential = credentials[i];
-                    _authenticationHelper.CreatePasswordHash(credential.Password, out byte[] passwordHash, out byte[] passwordSalt);
+                    _passwordHelper.CreatePasswordHash(credential.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
                     var userCredential = new UserCredentials
                     {
@@ -172,7 +172,7 @@ namespace Infrastructure.SeedData
                     Model = "Esprit",
                     RegistrationNumber = "1FTEX1C87A",
                     Year = 1999,
-                    Color = ColorEnum.Black,
+                    Color = ColorEnum.White,
                     PricePerDay = 400.5m,
                     IsAvailable = true,
                     Engine = "Automatic",
@@ -191,7 +191,7 @@ namespace Infrastructure.SeedData
                     Model = "LHS",
                     RegistrationNumber = "WAUSH78E67",
                     Year = 2001,
-                    Color = ColorEnum.Black,
+                    Color = ColorEnum.Brown,
                     PricePerDay = 350m,
                     IsAvailable = true,
                     Engine = "Automatic",
@@ -211,7 +211,7 @@ namespace Infrastructure.SeedData
                     Model = "Focus",
                     RegistrationNumber = "WA1VMAFEXA",
                     Year = 2002,
-                    Color = ColorEnum.White,
+                    Color = ColorEnum.Blue,
                     PricePerDay = 300.5m,
                     IsAvailable = true,
                     Engine = "Manual",
@@ -230,7 +230,7 @@ namespace Infrastructure.SeedData
                     Model = "GS",
                     RegistrationNumber = "TRURD38JX8",
                     Year = 2010,
-                    Color = ColorEnum.Black,
+                    Color = ColorEnum.White,
                     PricePerDay = 650m,
                     IsAvailable = true,
                     Engine = "Manual",
@@ -249,7 +249,7 @@ namespace Infrastructure.SeedData
                     Model = "Lancer",
                     RegistrationNumber = "1FTEX1C87A",
                     Year = 2005,
-                    Color = ColorEnum.Red,
+                    Color = ColorEnum.White,
                     PricePerDay = 570m,
                     IsAvailable = true,
                     Engine = "Automatic",
@@ -268,8 +268,8 @@ namespace Infrastructure.SeedData
                     Model = "Yukon XL 1500",
                     RegistrationNumber = "SCFEBBAC0A",
                     Year = 2007,
-                    Color = ColorEnum.Purple,
-                    PricePerDay = 340,
+                    Color = ColorEnum.Black,
+                    PricePerDay = 340m,
                     IsAvailable = true,
                     Engine = "Automatic",
                     Speed = 220,
@@ -287,8 +287,8 @@ namespace Infrastructure.SeedData
                     Model = "SL-Class",
                     RegistrationNumber = "WAUYGAFCXC",
                     Year = 2010,
-                    Color = ColorEnum.Black,
-                    PricePerDay = 250,
+                    Color = ColorEnum.White,
+                    PricePerDay = 250m,
                     IsAvailable = true,
                     Engine = "Manual",
                     Speed = 200,
@@ -325,7 +325,7 @@ namespace Infrastructure.SeedData
                     Model = "Passat",
                     RegistrationNumber = "2G4GR5EK9C",
                     Year = 2005,
-                    Color = ColorEnum.Green,
+                    Color = ColorEnum.Gray,
                     PricePerDay = 320.6m,
                     IsAvailable = true,
                     Engine = "Manual",
@@ -344,7 +344,7 @@ namespace Infrastructure.SeedData
                     Model = "Daewoo Lacetti",
                     RegistrationNumber = "1N6AF0LX8E",
                     Year = 2012,
-                    Color = ColorEnum.Gray,
+                    Color = ColorEnum.White,
                     PricePerDay = 550.3m,
                     IsAvailable = true,
                     Engine = "Automatic",
@@ -370,8 +370,44 @@ namespace Infrastructure.SeedData
             if (!_context.Rentals.Any())
             {
                 _context.Rentals.AddRange(
-                    new Rental { RentDate = new DateTime(2023, 5, 6), User = users[0], Car = cars[0] },
-                    new Rental { RentDate = new DateTime(2023, 3, 23), ReturnDate = new DateTime(2023, 9, 23), User = users[1], Car = cars[1] }
+                    new Rental
+                    {
+                        RentDate = new DateTime(2023, 5, 6),
+                        User = users[0],
+                        Car = cars[0],
+                        PaymentMethod = "Direct Bank Transfer"
+                    },
+                    new Rental
+                    {
+                        RentDate = new DateTime(2022, 8, 22),
+                        ReturnDate = new DateTime(2023, 2, 10),
+                        User = users[4],
+                        Car = cars[8],
+                        PaymentMethod = "Direct Bank Transfer"
+                    },
+                    new Rental
+                    {
+                        RentDate = new DateTime(2023, 1, 11),
+                        ReturnDate = new DateTime(2023, 2, 21),
+                        User = users[2],
+                        Car = cars[6],
+                        PaymentMethod = "Direct Bank Transfer"
+                    },
+                    new Rental
+                    {
+                        RentDate = new DateTime(2023, 3, 4),
+                        User = users[3],
+                        Car = cars[2],
+                        PaymentMethod = "Master Card"
+                    },
+                    new Rental
+                    {
+                        RentDate = new DateTime(2022, 12, 10),
+                        ReturnDate = new DateTime(2023, 2, 1),
+                        User = users[4],
+                        Car = cars[4],
+                        PaymentMethod = "Paypal"
+                    }
                 );
                 _context.SaveChanges();
             }

@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Application.Mapper.DTOs;
+using Application.Validators;
 using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation;
 
 namespace Application.Services
 {
@@ -20,12 +22,14 @@ namespace Application.Services
         private readonly ILogger<CarService> _logger;
         private readonly IMapper _mapper;
         private readonly ICarRepository _carRepository;
+        private readonly CarValidator _validator;
 
         public CarService(ILogger<CarService> logger, IMapper mapper, ICarRepository carRepository)
         {
             _logger = logger;
             _mapper = mapper;
             _carRepository = carRepository;
+            _validator = new CarValidator();
         }
 
         #endregion Injection
@@ -50,6 +54,14 @@ namespace Application.Services
 
         public void AddCar(CarDTO carDTO)
         {
+            // Check if the input data is valid
+            var validationResult = _validator.Validate(carDTO);
+
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
             _carRepository.Insert(_mapper.Map<Car>(carDTO));
             _carRepository.Save();
         }
@@ -62,6 +74,14 @@ namespace Application.Services
             var car = _carRepository.GetByID(carID);
             if (car == null)
                 throw new InvalidOperationException($"Car with ID: {carID} not found.");
+
+            // Check if the input data is valid
+            var validationResult = _validator.Validate(carDTO);
+
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
 
             _carRepository.Update(carID, _mapper.Map<Car>(carDTO));
             _carRepository.Save();

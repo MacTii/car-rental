@@ -32,6 +32,7 @@ namespace Infrastructure
             service.AddScoped<IUserCredentialsRepository, UserCredentialsRepository>();
             service.AddScoped<IBlogRepository, BlogRepository>();
             service.AddScoped<ICommentRepository, CommentRepository>();
+            service.AddScoped<IRawQueryRepository, RawQueryRepository>();
 
             return service;
         }

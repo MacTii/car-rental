@@ -325,7 +325,7 @@ const Cars = () => {
                     reader.readAsDataURL(file);
                   }
                 }}
-                required
+                required={!editCar?.image}
               />
             </FormGroup>
             <FormGroup>

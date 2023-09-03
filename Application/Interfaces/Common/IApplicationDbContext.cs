@@ -16,6 +16,5 @@ namespace Application.Interfaces.Common
         public DbSet<UserCredentials> UserCredentials { get; }
         public DbSet<Blog> Blogs { get; }
         public DbSet<Comment> Comments { get; }
-
     }
 }

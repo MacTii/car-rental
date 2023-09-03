@@ -16,6 +16,7 @@ namespace Domain.Enums
         Yellow,
         White,
         Black,
-        Gray
+        Gray,
+        Brown
     }
 }

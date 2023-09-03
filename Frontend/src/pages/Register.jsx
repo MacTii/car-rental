@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 
 import "../styles/register.css";
 import { useAuth } from "../context/AuthContext";
-import { register } from "../services/authService";
+import { register } from "../services/registerService";
 
 const Register = () => {
   const [username, setUsername] = useState("");
