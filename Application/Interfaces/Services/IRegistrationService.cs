@@ -1,6 +1,4 @@
 ﻿using Application.Mapper.DTOs;
-using Domain.Entities;
-using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces.Services
 {
-    public interface IAuthService
+    public interface IRegistrationService
     {
-        public string Login(LoginDTO request);
-        public string RefreshToken();
+        public string Register(RegisterDTO request);
     }
 }

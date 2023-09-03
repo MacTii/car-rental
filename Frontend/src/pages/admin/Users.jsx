@@ -26,7 +26,7 @@ import {
 import {
   generatePasswordCredentials,
   resetPasswordCredentials,
-} from "../../services/authService";
+} from "../../services/passwordService";
 import "../../styles/admin/users.css";
 
 const Users = () => {

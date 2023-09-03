@@ -1,13 +1,9 @@
 ﻿using Application.Helpers;
 using Application.Interfaces.Helpers;
+using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Application.Services;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application
 {
@@ -23,10 +19,15 @@ namespace Application
             service.AddScoped<ICommentService, CommentService>();
 
             service.AddScoped<IAuthService, AuthService>();
-            service.AddScoped<IAuthenticationHelper, AuthenticationHelper>();
+            service.AddScoped<IRegistrationService, RegistrationService>();
+            service.AddScoped<IPasswordService, PasswordService>();
+            service.AddScoped<IUserContextService, UserContextService>();
 
             service.AddScoped<IPasswordHelper, PasswordHelper>();
             service.AddScoped<ITokenHelper, TokenHelper>();
+            service.AddScoped<IUserContextHelper, UserContextHelper>();
+
+            service.AddScoped<IBackupRestoreService, BackupRestoreService>();
 
             return service;
         }
